@@ -2,6 +2,8 @@
 
 @implementation MultitouchManager
 
+@synthesize forwardingMultitouchEventsToListeners;
+
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (forwardingMultitouchEventsToListeners) {
 		for (MultitouchListener *multitouchListenerToForwardEvent in multitouchListeners) {
@@ -14,14 +16,20 @@
 	if ([[NSThread currentThread] isMainThread]) {
 		if (!forwardingMultitouchEventsToListeners) {
 			NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
+            
+            BOOL anyAttachedMtDevices = NO;
+            
 			for (id device in mtDevices) {
 				MTDeviceRef mtDevice = (__bridge MTDeviceRef)device;
 				MTRegisterContactFrameCallback(mtDevice, mtEventHandler);
 				MTDeviceStart(mtDevice, 0);
+                
+                anyAttachedMtDevices = YES;
+                
 				[multitouchDevices addObject:device];
 			}
             
-			forwardingMultitouchEventsToListeners = YES;
+			forwardingMultitouchEventsToListeners = anyAttachedMtDevices;
 		}
 	}
 	else {

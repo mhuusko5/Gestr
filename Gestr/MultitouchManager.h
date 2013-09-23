@@ -9,7 +9,9 @@
 	NSMutableArray *multitouchDevices;
 	BOOL forwardingMultitouchEventsToListeners;
 }
+@property (readonly) BOOL forwardingMultitouchEventsToListeners;
 
+- (void)startForwardingMultitouchEventsToListeners;
 - (void)stopForwardingMultitouchEventsToListeners;
 - (void)removeMultitouchListersWithTarget:(id)target andCallback:(SEL)callback;
 - (void)addMultitouchListenerWithTarget:(id)target callback:(SEL)callback andThread:(NSThread *)thread;

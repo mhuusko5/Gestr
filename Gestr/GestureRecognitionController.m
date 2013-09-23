@@ -33,6 +33,8 @@
     
 	lastRightClick = [NSDate date];
     
+    fourFingerTouches = [NSMutableArray array];
+    
 	return self;
 }
 
@@ -114,19 +116,31 @@ CFMachPortRef eventTap;
     [[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
 }
 
-int fourFingerEventsInARow = 0;
+- (void)checkFourFingerTouches
+{
+    int totalCount = 0;
+    float totalVelocity = 0.0f;    
+    for (MultitouchEvent *fourFingerEvent in fourFingerTouches) {
+        for (MultitouchTouch *touch in fourFingerEvent.touches) {
+            totalCount++;
+            totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+        }
+    }
 
+    [fourFingerTouches removeAllObjects];
+    
+    if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
+        [self shouldStartDetectingGesture];
+    }
+}
+
+static int multitouchTouchActive = 4;
 - (void)handleMultitouchEvent:(MultitouchEvent *)event
 {
-    static int multitouchTouchActive = 4;
-    
     if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
-        fourFingerEventsInARow++;
-    } else {
-        if (fourFingerEventsInARow > 0 && fourFingerEventsInARow < 12) {
-            [self shouldStartDetectingGesture];
-        }
-        fourFingerEventsInARow = 0;
+        [fourFingerTouches addObject:event];
+    } else if (fourFingerTouches.count > 0) {
+        [self checkFourFingerTouches];
     }
 }
 

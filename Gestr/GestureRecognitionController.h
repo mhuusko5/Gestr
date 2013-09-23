@@ -28,6 +28,8 @@
 	NSMutableDictionary *updatedGestureDictionary;
     
 	BOOL gesturesLoaded;
+    
+    NSMutableArray *fourFingerTouches;
 }
 @property BOOL gesturesLoaded;
 @property (retain) GestureRecognitionWindow *recognitionWindow;
