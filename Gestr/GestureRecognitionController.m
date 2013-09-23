@@ -114,17 +114,20 @@ CFMachPortRef eventTap;
     [[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
 }
 
+int fourFingerEventsInARow = 0;
+
 - (void)handleMultitouchEvent:(MultitouchEvent *)event
 {
-    NSMutableString *p = [NSMutableString stringWithString:@""];
-    [p appendString:@"{\n"];
-    for (int i = 0; i < event.touches.count; i++) {
-        [p appendString:[NSString stringWithFormat:@"%i\n", ((MultitouchTouch *)[event.touches objectAtIndex:i]).state]];
+    static int multitouchTouchActive = 4;
+    
+    if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
+        fourFingerEventsInARow++;
+    } else {
+        if (fourFingerEventsInARow > 0 && fourFingerEventsInARow < 12) {
+            [self shouldStartDetectingGesture];
+        }
+        fourFingerEventsInARow = 0;
     }
-    [p appendString:@"}"];
-    NSLog(@"%@", p);
-    //NSLog(@"{\", [event description]);
-    //NSLog(@"%lu", (unsigned long)event.touches.count);
 }
 
 - (void)applicationBecameActive:(NSNotification *)notification {
@@ -157,6 +160,12 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)shouldStartDetectingGesture {
 	if ([[self recognitionWindow] alphaValue] < 0.5 && ([[gestureDetector loadedGestures] count] > 0)) {
+        [appDescriptionAlert setStringValue:@""];
+        [appIconAlert setImage:NULL];
+        
+        [partialDescriptionAlert setStringValue:@""];
+        [partialIconAlert setImage:NULL];
+        
 		[self showGestureRecognitionWindow];
 		[recognitionWindow makeKeyAndOrderFront:self];
 		[recognitionWindow makeFirstResponder:recognitionView];
@@ -213,12 +222,6 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	else {
 		[self hideGestureRecognitionWindow:NO];
 	}
-    
-	[appDescriptionAlert setStringValue:@""];
-	[appIconAlert setImage:NULL];
-    
-	[partialDescriptionAlert setStringValue:@""];
-	[partialIconAlert setImage:NULL];
 }
 
 - (void)hideGestureRecognitionWindow:(BOOL)fade {
@@ -226,9 +229,9 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		float alpha = 1.0;
 		[recognitionWindow setAlphaValue:alpha];
 		while ([recognitionWindow alphaValue] > 0.0) {
-			alpha -= 0.05;
+			alpha -= 0.02;
 			[recognitionWindow setAlphaValue:alpha];
-			[NSThread sleepForTimeInterval:0.001];
+			[NSThread sleepForTimeInterval:0.01];
 		}
         
 		[[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
@@ -238,8 +241,9 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		[recognitionWindow orderOut:self];
 		[recognitionWindow setAlphaValue:0.0];
 	}
-	[recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
-	[[NSApplication sharedApplication] hide:self];
+    
+    [recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
+    [[NSApplication sharedApplication] hide:self];
 }
 
 - (void)showGestureRecognitionWindow {
