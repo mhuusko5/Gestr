@@ -110,6 +110,21 @@ CFMachPortRef eventTap;
 	CGEventTapEnable(eventTap, true);
     
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationBecameActive:) name:NSWorkspaceDidActivateApplicationNotification object:nil];
+    
+    [[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
+}
+
+- (void)handleMultitouchEvent:(MultitouchEvent *)event
+{
+    NSMutableString *p = [NSMutableString stringWithString:@""];
+    [p appendString:@"{\n"];
+    for (int i = 0; i < event.touches.count; i++) {
+        [p appendString:[NSString stringWithFormat:@"%i\n", ((MultitouchTouch *)[event.touches objectAtIndex:i]).state]];
+    }
+    [p appendString:@"}"];
+    NSLog(@"%@", p);
+    //NSLog(@"{\", [event description]);
+    //NSLog(@"%lu", (unsigned long)event.touches.count);
 }
 
 - (void)applicationBecameActive:(NSNotification *)notification {

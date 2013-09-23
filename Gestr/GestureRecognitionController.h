@@ -6,6 +6,7 @@
 #import "GestureRecognitionView.h"
 #import "GestureRecognizer.h"
 #import "App.h"
+#import "MultitouchManager.h"
 
 @class GestureRecognitionView, GestureRecognizer, AppController;
 

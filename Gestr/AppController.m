@@ -14,6 +14,8 @@
 }
 
 - (IBAction)closeAndQuit:(id)outlet {
+	[[MultitouchManager sharedMultitouchManager] stopForwardingMultitouchEventsToListeners];
+    
 	if ([gestureSetupController.setupWindow alphaValue] > 0.5) {
 		[gestureSetupController toggleGestureSetupWindow:nil];
 	}

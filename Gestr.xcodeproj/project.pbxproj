@@ -23,6 +23,10 @@
 		D001B47B16D7441F00F8E413 /* tableCellBack.png in Resources */ = {isa = PBXBuildFile; fileRef = D001B45B16D7441F00F8E413 /* tableCellBack.png */; };
 		D0124A2916FC01E800D85CEF /* AppTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0124A2716FC01E800D85CEF /* AppTableCellView.m */; };
 		D0124A2C16FC02C900D85CEF /* AppTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0124A2B16FC02C900D85CEF /* AppTableView.m */; };
+		D0140F8B17EFD6EE004C19F3 /* MultitouchEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8417EFD6EE004C19F3 /* MultitouchEvent.m */; };
+		D0140F8C17EFD6EE004C19F3 /* MultitouchListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8617EFD6EE004C19F3 /* MultitouchListener.m */; };
+		D0140F8D17EFD6EE004C19F3 /* MultitouchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8817EFD6EE004C19F3 /* MultitouchManager.m */; };
+		D0140F8E17EFD6EE004C19F3 /* MultitouchTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */; };
 		D016016516FFB03B007A197E /* AppTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D016016416FFB03A007A197E /* AppTextFieldCell.m */; };
 		D0516E2317EFCFDE00C48BD8 /* Gesture.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1617EFCFDE00C48BD8 /* Gesture.m */; };
 		D0516E2417EFCFDE00C48BD8 /* GesturePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1817EFCFDE00C48BD8 /* GesturePoint.m */; };
@@ -91,6 +95,15 @@
 		D0124A2816FC01E800D85CEF /* AppTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTableCellView.h; sourceTree = "<group>"; };
 		D0124A2A16FC02C900D85CEF /* AppTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTableView.h; sourceTree = "<group>"; };
 		D0124A2B16FC02C900D85CEF /* AppTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTableView.m; sourceTree = "<group>"; };
+		D0140F8317EFD6EE004C19F3 /* MultitouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultitouchEvent.h; sourceTree = "<group>"; };
+		D0140F8417EFD6EE004C19F3 /* MultitouchEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultitouchEvent.m; sourceTree = "<group>"; };
+		D0140F8517EFD6EE004C19F3 /* MultitouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultitouchListener.h; sourceTree = "<group>"; };
+		D0140F8617EFD6EE004C19F3 /* MultitouchListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultitouchListener.m; sourceTree = "<group>"; };
+		D0140F8717EFD6EE004C19F3 /* MultitouchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultitouchManager.h; sourceTree = "<group>"; };
+		D0140F8817EFD6EE004C19F3 /* MultitouchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultitouchManager.m; sourceTree = "<group>"; };
+		D0140F8917EFD6EE004C19F3 /* MultitouchTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultitouchTouch.h; sourceTree = "<group>"; };
+		D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultitouchTouch.m; sourceTree = "<group>"; };
+		D0140F8F17EFD75E004C19F3 /* MultitouchSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultitouchSupport.h; sourceTree = "<group>"; };
 		D016016316FFB03A007A197E /* AppTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTextFieldCell.h; sourceTree = "<group>"; };
 		D016016416FFB03A007A197E /* AppTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTextFieldCell.m; sourceTree = "<group>"; };
 		D0516E1517EFCFDE00C48BD8 /* Gesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gesture.h; sourceTree = "<group>"; };
@@ -261,6 +274,15 @@
 		D0516E1417EFCFC500C48BD8 /* MultitouchSupport */ = {
 			isa = PBXGroup;
 			children = (
+				D0140F8F17EFD75E004C19F3 /* MultitouchSupport.h */,
+				D0140F8317EFD6EE004C19F3 /* MultitouchEvent.h */,
+				D0140F8417EFD6EE004C19F3 /* MultitouchEvent.m */,
+				D0140F8517EFD6EE004C19F3 /* MultitouchListener.h */,
+				D0140F8617EFD6EE004C19F3 /* MultitouchListener.m */,
+				D0140F8717EFD6EE004C19F3 /* MultitouchManager.h */,
+				D0140F8817EFD6EE004C19F3 /* MultitouchManager.m */,
+				D0140F8917EFD6EE004C19F3 /* MultitouchTouch.h */,
+				D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */,
 			);
 			name = MultitouchSupport;
 			sourceTree = "<group>";
@@ -393,6 +415,7 @@
 				D001B46216D7441F00F8E413 /* App.m in Sources */,
 				D001B46316D7441F00F8E413 /* AppController.m in Sources */,
 				D0516E2917EFCFDE00C48BD8 /* GestureUtils.m in Sources */,
+				D0140F8D17EFD6EE004C19F3 /* MultitouchManager.m in Sources */,
 				D0516E2417EFCFDE00C48BD8 /* GesturePoint.m in Sources */,
 				D001B46C16D7441F00F8E413 /* GestureRecognitionController.m in Sources */,
 				D001B46D16D7441F00F8E413 /* GestureRecognitionView.m in Sources */,
@@ -402,18 +425,21 @@
 				D0516E2317EFCFDE00C48BD8 /* Gesture.m in Sources */,
 				D001B47016D7441F00F8E413 /* GestureSetupView.m in Sources */,
 				D001B47116D7441F00F8E413 /* GestureSetupWindow.m in Sources */,
+				D0140F8B17EFD6EE004C19F3 /* MultitouchEvent.m in Sources */,
 				D001B47516D7441F00F8E413 /* main.m in Sources */,
 				D0B502ED16FBC9850018781C /* RepeatedImageView.m in Sources */,
 				D0B502F516FBCDD10018781C /* AppButtonCell.m in Sources */,
 				D0B502F616FBCDD10018781C /* NSColor+ColorExtensions.m in Sources */,
 				D0516E2817EFCFDE00C48BD8 /* GestureTemplate.m in Sources */,
 				D0124A2916FC01E800D85CEF /* AppTableCellView.m in Sources */,
+				D0140F8C17EFD6EE004C19F3 /* MultitouchListener.m in Sources */,
 				D0124A2C16FC02C900D85CEF /* AppTableView.m in Sources */,
 				D016016516FFB03B007A197E /* AppTextFieldCell.m in Sources */,
 				D0F13B9416FFE7B800EA2B87 /* AppSegmentedCell.m in Sources */,
 				D0F13B9716FFE7F300EA2B87 /* NSBezierPath+MCAdditions.m in Sources */,
 				D0516E2717EFCFDE00C48BD8 /* GestureStroke.m in Sources */,
 				D0CFB9A417089746005EDAB3 /* ShadowTextFieldCell.m in Sources */,
+				D0140F8E17EFD6EE004C19F3 /* MultitouchTouch.m in Sources */,
 				D0516E2517EFCFDE00C48BD8 /* GestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
