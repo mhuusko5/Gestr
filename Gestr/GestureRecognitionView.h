@@ -14,6 +14,8 @@
 	GestureRecognitionController *recognitionController;
     
 	int mouseStrokeIndex;
+    
+    BOOL detectingInput;
 }
 @property (retain) GestureRecognitionController *recognitionController;
 @property BOOL detectingInput;

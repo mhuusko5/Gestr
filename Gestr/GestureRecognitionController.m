@@ -226,10 +226,12 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)hideGestureRecognitionWindow:(BOOL)fade {
 	if (fade) {
+        [NSThread sleepForTimeInterval:0.2];
+        
 		float alpha = 1.0;
 		[recognitionWindow setAlphaValue:alpha];
 		while ([recognitionWindow alphaValue] > 0.0) {
-			alpha -= 0.02;
+			alpha -= 0.03;
 			[recognitionWindow setAlphaValue:alpha];
 			[NSThread sleepForTimeInterval:0.01];
 		}

@@ -16,6 +16,8 @@
 	int detectedStrokeIndex;
     
 	BOOL showingStoredGesture;
+    
+    BOOL detectingInput;
 }
 @property (retain) GestureSetupController *setupController;
 @property BOOL detectingInput;
