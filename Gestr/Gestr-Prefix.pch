@@ -1,0 +1,6 @@
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#endif
+
+#define myGreenColor [NSColor colorWithDeviceRed : (49.0f / 255.0f)green : (212.0f / 255.0f)blue : (74.0f / 255.0f)alpha : 1.0]
+#define myWhiteColor [[NSColorList colorListNamed : @ "Crayons"] colorWithKey : @ "Silver"]
