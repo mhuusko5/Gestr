@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>10C44D56-E0A4-465A-AA47-EFE4F39758D8</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Gestr</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D64FABA5-D12C-4B6B-9872-74CB39AC8901</key>
+		<string>https://github.com/mhuusko5/Gestr.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Gestr.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D64FABA5-D12C-4B6B-9872-74CB39AC8901</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mhuusko5/Gestr.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D64FABA5-D12C-4B6B-9872-74CB39AC8901</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D64FABA5-D12C-4B6B-9872-74CB39AC8901</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Gestr</string>
+		</dict>
+	</array>
+</dict>
+</plist>
