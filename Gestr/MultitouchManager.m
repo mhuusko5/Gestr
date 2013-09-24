@@ -17,14 +17,14 @@
 		if (!forwardingMultitouchEventsToListeners) {
 			NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
             
-            BOOL anyAttachedMtDevices = NO;
+			BOOL anyAttachedMtDevices = NO;
             
 			for (id device in mtDevices) {
 				MTDeviceRef mtDevice = (__bridge MTDeviceRef)device;
 				MTRegisterContactFrameCallback(mtDevice, mtEventHandler);
 				MTDeviceStart(mtDevice, 0);
                 
-                anyAttachedMtDevices = YES;
+				anyAttachedMtDevices = YES;
                 
 				[multitouchDevices addObject:device];
 			}

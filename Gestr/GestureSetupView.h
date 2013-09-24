@@ -17,9 +17,9 @@
     
 	BOOL showingStoredGesture;
     
-    BOOL detectingInput;
+	BOOL detectingInput;
     
-     NSTimer *noInputTimer;
+	NSTimer *noInputTimer;
 }
 @property (retain) GestureSetupController *setupController;
 @property BOOL detectingInput;

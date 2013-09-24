@@ -33,7 +33,7 @@
     
 	lastRightClick = [NSDate date];
     
-    fourFingerTouches = [NSMutableArray array];
+	fourFingerTouches = [NSMutableArray array];
     
 	return self;
 }
@@ -113,39 +113,38 @@ CFMachPortRef eventTap;
     
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationBecameActive:) name:NSWorkspaceDidActivateApplicationNotification object:nil];
     
-    [[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
+	[[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
 }
 
-- (void)checkFourFingerTouches
-{
-    int totalCount = 0;
-    float totalVelocity = 0.0f;    
-    for (MultitouchEvent *fourFingerEvent in fourFingerTouches) {
-        for (MultitouchTouch *touch in fourFingerEvent.touches) {
-            totalCount++;
-            totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
-        }
-    }
-
-    [fourFingerTouches removeAllObjects];
+- (void)checkFourFingerTouches {
+	int totalCount = 0;
+	float totalVelocity = 0.0f;
+	for (MultitouchEvent *fourFingerEvent in fourFingerTouches) {
+		for (MultitouchTouch *touch in fourFingerEvent.touches) {
+			totalCount++;
+			totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+		}
+	}
     
-    if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
-        [self shouldStartDetectingGesture];
-    }
+	[fourFingerTouches removeAllObjects];
+    
+	if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
+		[self shouldStartDetectingGesture];
+	}
 }
 
 static int multitouchTouchActive = 4;
-- (void)handleMultitouchEvent:(MultitouchEvent *)event
-{
-    if ([[self recognitionWindow] alphaValue] > 0.5) {
-        return;
-    }
+- (void)handleMultitouchEvent:(MultitouchEvent *)event {
+	if ([[self recognitionWindow] alphaValue] > 0.5) {
+		return;
+	}
     
-    if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
-        [fourFingerTouches addObject:event];
-    } else if (fourFingerTouches.count > 0) {
-        [self checkFourFingerTouches];
-    }
+	if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
+		[fourFingerTouches addObject:event];
+	}
+	else if (fourFingerTouches.count > 0) {
+		[self checkFourFingerTouches];
+	}
 }
 
 - (void)applicationBecameActive:(NSNotification *)notification {
@@ -158,9 +157,9 @@ static int multitouchTouchActive = 4;
 NSDate *lastRightClick;
 
 - (void)handleEvent:(CGEventRef)event withType:(int)type {
-    if ([[self recognitionWindow] alphaValue] > 0.5) {
-        return;
-    }
+	if ([[self recognitionWindow] alphaValue] > 0.5) {
+		return;
+	}
     
 	if (type == kCGEventRightMouseDown) {
 		if ([[NSDate date] timeIntervalSinceDate:lastRightClick] * 1000 < 400) {
@@ -182,11 +181,11 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)shouldStartDetectingGesture {
 	if ([[self recognitionWindow] alphaValue] < 0.5 && ([[gestureDetector loadedGestures] count] > 0)) {
-        [appDescriptionAlert setStringValue:@""];
-        [appIconAlert setImage:NULL];
+		[appDescriptionAlert setStringValue:@""];
+		[appIconAlert setImage:NULL];
         
-        [partialDescriptionAlert setStringValue:@""];
-        [partialIconAlert setImage:NULL];
+		[partialDescriptionAlert setStringValue:@""];
+		[partialIconAlert setImage:NULL];
         
 		[self showGestureRecognitionWindow];
 		[recognitionWindow makeKeyAndOrderFront:self];
@@ -248,7 +247,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)hideGestureRecognitionWindow:(BOOL)fade {
 	if (fade) {
-        [NSThread sleepForTimeInterval:0.2];
+		[NSThread sleepForTimeInterval:0.2];
         
 		float alpha = 1.0;
 		[recognitionWindow setAlphaValue:alpha];
@@ -266,8 +265,8 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		[recognitionWindow setAlphaValue:0.0];
 	}
     
-    [recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
-    [[NSApplication sharedApplication] hide:self];
+	[recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
+	[[NSApplication sharedApplication] hide:self];
 }
 
 - (void)showGestureRecognitionWindow {

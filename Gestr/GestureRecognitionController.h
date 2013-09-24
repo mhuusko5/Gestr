@@ -29,7 +29,7 @@
     
 	BOOL gesturesLoaded;
     
-    NSMutableArray *fourFingerTouches;
+	NSMutableArray *fourFingerTouches;
 }
 @property BOOL gesturesLoaded;
 @property (retain) GestureRecognitionWindow *recognitionWindow;
@@ -47,6 +47,7 @@
 - (void)setupActivationHanding;
 - (void)handleEvent:(CGEventRef)event withType:(int)type;
 CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon);
+
 - (void)handleMultitouchEvent:(MultitouchEvent *)event;
 - (void)applicationBecameActive:(NSNotification *)notification;
 - (void)shouldStartDetectingGesture;

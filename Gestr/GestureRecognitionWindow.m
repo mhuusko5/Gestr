@@ -5,7 +5,19 @@
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
 	self = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:bufferingType defer:flag];
     
-	[self setLevel:NSPopUpMenuWindowLevel];
+    /*
+     NSNormalWindowLevel
+     NSFloatingWindowLevel
+     NSSubmenuWindowLevel
+     NSTornOffMenuWindowLevel
+     NSMainMenuWindowLevel
+     NSStatusWindowLevel
+     NSModalPanelWindowLevel
+     NSPopUpMenuWindowLevel
+     NSScreenSaverWindowLevel
+     */
+    
+	[self setLevel:NSStatusWindowLevel];
 	[self setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
 	[self setMovableByWindowBackground:NO];
 	[self setAlphaValue:0.0];

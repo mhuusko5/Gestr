@@ -11,17 +11,16 @@
     
 	NSTimer *shouldDetectTimer;
 	NSTimer *checkPartialGestureTimer;
-    NSTimer *noInputTimer;
+	NSTimer *noInputTimer;
     
 	GestureRecognitionController *recognitionController;
     
 	int mouseStrokeIndex;
     
-    NSDate *lastMultitouchRedraw;
-    NSNumber *initialMultitouchDeviceId;
-    int skipTouchesCounter;
+	NSDate *lastMultitouchRedraw;
+	NSNumber *initialMultitouchDeviceId;
     
-    BOOL detectingInput;
+	BOOL detectingInput;
 }
 @property (retain) GestureRecognitionController *recognitionController;
 @property BOOL detectingInput;
