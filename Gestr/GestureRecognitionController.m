@@ -236,7 +236,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.name, rating]];
 			[partialIconAlert setImage:appToLaunch.icon];
             
-			[self launchAppWithBundleId:appToLaunch.bundle];
+            [NSThread detachNewThreadSelector:@selector(launchAppWithBundleId:) toTarget:self withObject:appToLaunch.bundle];
 		}
 		else {
 			[appController.gestureSetupController deleteGestureWithName:result.name];
