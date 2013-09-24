@@ -59,13 +59,14 @@
 			[tempPath lineToPoint:drawPoint];
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
-            if (detectedStrokeIndex == 3) {
-                [self finishDetectingGesture];
-            } else {
-                if (!shouldDetectTimer) {
-                    shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:(800.0f) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
-                }
-            }
+			if (detectedStrokeIndex == 3) {
+				[self finishDetectingGesture];
+			}
+			else {
+				if (!shouldDetectTimer) {
+					shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:(900.0f) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				}
+			}
             
 			NSBezierPath *tempPath = [touchPaths objectForKey:identity];
 			[tempPath lineToPoint:drawPoint];

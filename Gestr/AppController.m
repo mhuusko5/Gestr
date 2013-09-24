@@ -13,10 +13,14 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAndQuit:) name:NSApplicationWillTerminateNotification object:[NSApplication sharedApplication]];
 }
 
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+	[gestureSetupController checkForUpdate:YES];
+}
+
 - (IBAction)closeAndQuit:(id)outlet {
 	[[MultitouchManager sharedMultitouchManager] stopForwardingMultitouchEventsToListeners];
     
-	if ([gestureSetupController.setupWindow alphaValue] > 0.5) {
+	if ([gestureSetupController.setupWindow alphaValue] > 0) {
 		[gestureSetupController toggleGestureSetupWindow:nil];
 	}
     
@@ -24,11 +28,11 @@
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-	if ([gestureRecognitionController.recognitionWindow alphaValue] > 0.5 && gestureRecognitionController.recognitionView.detectingInput) {
+	if ([gestureRecognitionController.recognitionWindow alphaValue] > 0 && gestureRecognitionController.recognitionView.detectingInput) {
 		[gestureRecognitionController.recognitionView finishDetectingGesture:YES];
 	}
     
-	if ([gestureSetupController.setupView alphaValue] > 0.5 && gestureSetupController.setupView.detectingInput) {
+	if ([gestureSetupController.setupView alphaValue] > 0 && gestureSetupController.setupView.detectingInput) {
 		[gestureSetupController.setupView finishDetectingGesture:YES];
 	}
     

@@ -194,7 +194,10 @@ BOOL awakenedFromNib = NO;
 				float updatedVersion = [updatedVersionString floatValue];
 				float thisVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
 				if (updatedVersion > thisVersion) {
-					[self performSelectorOnMainThread:@selector(showUpdateAlert:) withObject:updatedVersionString waitUntilDone:NO];
+					if ([setupWindow alphaValue] <= 0) {
+						[self performSelectorOnMainThread:@selector(toggleGestureSetupWindow:) withObject:nil waitUntilDone:YES];
+					}
+					[self performSelectorOnMainThread:@selector(showUpdateAlert:) withObject:[NSString stringWithFormat:@"%g", updatedVersion] waitUntilDone:NO];
 				}
 			}
 			@catch (NSException *exception)
@@ -464,7 +467,7 @@ BOOL awakenedFromNib = NO;
 	pt.x -= (setupWindow.frame.size.width) / 2;
     
 	NSRect frame = [setupWindow frame];
-	if ([setupWindow alphaValue] < 0.5) {
+	if ([setupWindow alphaValue] <= 0) {
 		frame.origin.y = pt.y;
 		frame.origin.x = pt.x;
 		[setupWindow setFrame:frame display:NO];
@@ -476,8 +479,6 @@ BOOL awakenedFromNib = NO;
         
 		[setupWindow setIgnoresMouseEvents:FALSE];
 		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-        
-		[self checkForUpdate:YES];
 	}
 	else {
 		if ([[NSApplication sharedApplication] isHidden]) {

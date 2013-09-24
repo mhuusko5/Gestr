@@ -59,19 +59,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Gestr/GestureSetupController.m"
-         timestampString = "398920578.202649"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "86"
-         endingLineNumber = "86"
-         landmarkName = "-addAppsAtPath:toArray:levels:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Gestr/GestureUtils.m"
          timestampString = "401685832.84645"
          startingColumnNumber = "9223372036854775807"
@@ -197,15 +184,15 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Gestr/GestureRecognitionController.m"
-         timestampString = "401687291.29063"
+         timestampString = "401740434.683169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "212"
-         endingLineNumber = "212"
+         startingLineNumber = "9"
+         endingLineNumber = "9"
          landmarkName = "-checkPartialGestureWithStrokes:"
          landmarkType = "5">
       </FileBreakpoint>

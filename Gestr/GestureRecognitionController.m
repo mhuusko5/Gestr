@@ -12,18 +12,19 @@
 	[self fetchUpdatedGestureDictionary];
     
 	@try {
-        if (!updatedGestureDictionary) {
-            @throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
-        }
+		if (!updatedGestureDictionary) {
+			@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
+		}
         
-        for (id plistGestureKey in updatedGestureDictionary) {
-            Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
-            if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
-                @throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
-            } else {
-                [gestureDetector addGesture:plistGesture];
-            }
-        }
+		for (id plistGestureKey in updatedGestureDictionary) {
+			Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
+			if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
+				@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
+			}
+			else {
+				[gestureDetector addGesture:plistGesture];
+			}
+		}
 	}
 	@catch (NSException *exception)
 	{
@@ -139,7 +140,7 @@ CFMachPortRef eventTap;
 
 static int multitouchTouchActive = 4;
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
-	if ([[self recognitionWindow] alphaValue] > 0.5) {
+	if ([[self recognitionWindow] alphaValue] > 0) {
 		return;
 	}
     
@@ -161,7 +162,7 @@ static int multitouchTouchActive = 4;
 NSDate *lastRightClick;
 
 - (void)handleEvent:(CGEventRef)event withType:(int)type {
-	if ([[self recognitionWindow] alphaValue] > 0.5) {
+	if ([[self recognitionWindow] alphaValue] > 0) {
 		return;
 	}
     
@@ -184,7 +185,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 }
 
 - (void)shouldStartDetectingGesture {
-	if ([[self recognitionWindow] alphaValue] < 0.5 && ([[gestureDetector loadedGestures] count] > 0)) {
+	if ([[self recognitionWindow] alphaValue] <= 0 && ([[gestureDetector loadedGestures] count] > 0)) {
 		[appDescriptionAlert setStringValue:@""];
 		[appIconAlert setImage:NULL];
         
@@ -236,7 +237,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.name, rating]];
 			[partialIconAlert setImage:appToLaunch.icon];
             
-            [NSThread detachNewThreadSelector:@selector(launchAppWithBundleId:) toTarget:self withObject:appToLaunch.bundle];
+			[NSThread detachNewThreadSelector:@selector(launchAppWithBundleId:) toTarget:self withObject:appToLaunch.bundle];
 		}
 		else {
 			[appController.gestureSetupController deleteGestureWithName:result.name];
@@ -255,7 +256,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
         
 		float alpha = 1.0;
 		[recognitionWindow setAlphaValue:alpha];
-		while ([recognitionWindow alphaValue] > 0.0) {
+		while ([recognitionWindow alphaValue] > 0) {
 			alpha -= 0.03;
 			[recognitionWindow setAlphaValue:alpha];
 			[NSThread sleepForTimeInterval:0.01];
