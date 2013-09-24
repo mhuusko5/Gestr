@@ -149,16 +149,16 @@
 }
 
 - (void)startDetectingGesture {
-	[self resetAll];
+    [self resetAll];
     
-	detectingInput = YES;
-	[setupController.drawNowText setAlphaValue:1.0];
+    detectingInput = YES;
+    [setupController.drawNowText setAlphaValue:1.0];
     
-    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.2 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
-	detectedStrokeIndex = 0;
+    detectedStrokeIndex = 0;
     
-	[self becomeFirstResponder];
+    [self becomeFirstResponder];
 }
 
 - (void)checkNoInput
@@ -168,34 +168,37 @@
     }
 }
 
-
 - (void)finishDetectingGesture {
 	[self finishDetectingGesture:NO];
 }
 
 - (void)finishDetectingGesture:(BOOL)ignore {
-	detectingInput = NO;
+    detectingInput = NO;
     
-	[setupController.drawNowText setAlphaValue:0.0];
+    [setupController.drawNowText setAlphaValue:0.0];
     
-	if (!ignore) {
-		NSMutableArray *orderedStrokes = [NSMutableArray array];
-		for (int i = 0; i < [orderedStrokeIds count]; i++) {
-			[orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
-		}
+    if (!ignore) {
+        NSMutableArray *orderedStrokes = [NSMutableArray array];
+        for (int i = 0; i < [orderedStrokeIds count]; i++) {
+            [orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
+        }
         
-		[setupController saveGestureWithStrokes:[orderedStrokes copy]];
-	}
+        [setupController saveGestureWithStrokes:[orderedStrokes copy]];
+    }
     
-	[setupController updateSetupControls];
+    [setupController updateSetupControls];
     
-	[self resetAll];
-}
+    [self resetAll];}
 
 - (void)resetAll {
 	if (shouldDetectTimer) {
 		[shouldDetectTimer invalidate];
 		shouldDetectTimer = nil;
+	}
+    
+    if (noInputTimer) {
+		[noInputTimer invalidate];
+		noInputTimer = nil;
 	}
     
 	[self clearCanvas];

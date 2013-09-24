@@ -17,7 +17,9 @@
     
 	int mouseStrokeIndex;
     
+    NSDate *lastMultitouchRedraw;
     NSNumber *initialMultitouchDeviceId;
+    int skipTouchesCounter;
     
     BOOL detectingInput;
 }

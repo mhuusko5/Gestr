@@ -137,6 +137,10 @@ CFMachPortRef eventTap;
 static int multitouchTouchActive = 4;
 - (void)handleMultitouchEvent:(MultitouchEvent *)event
 {
+    if ([[self recognitionWindow] alphaValue] > 0.5) {
+        return;
+    }
+    
     if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
         [fourFingerTouches addObject:event];
     } else if (fourFingerTouches.count > 0) {
@@ -154,6 +158,10 @@ static int multitouchTouchActive = 4;
 NSDate *lastRightClick;
 
 - (void)handleEvent:(CGEventRef)event withType:(int)type {
+    if ([[self recognitionWindow] alphaValue] > 0.5) {
+        return;
+    }
+    
 	if (type == kCGEventRightMouseDown) {
 		if ([[NSDate date] timeIntervalSinceDate:lastRightClick] * 1000 < 400) {
 			[self shouldStartDetectingGesture];
