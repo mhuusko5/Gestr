@@ -201,11 +201,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Gestr/GestureRecognitionController.m"
-         timestampString = "401685849.564211"
+         timestampString = "401687291.29063"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "208"
-         endingLineNumber = "208"
+         startingLineNumber = "212"
+         endingLineNumber = "212"
          landmarkName = "-checkPartialGestureWithStrokes:"
          landmarkType = "5">
       </FileBreakpoint>

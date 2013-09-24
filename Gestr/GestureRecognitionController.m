@@ -12,14 +12,18 @@
 	[self fetchUpdatedGestureDictionary];
     
 	@try {
-		[updatedGestureDictionary enumerateKeysAndObjectsUsingBlock: ^(id plistGestureKey, Gesture *plistGesture, BOOL *shouldStop) {
-		    if (plistGesture.name && plistGesture.strokes.count > 0) {
-		        [gestureDetector addGesture:plistGesture];
-			}
-		    else {
-		        @throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
-			}
-		}];
+        if (!updatedGestureDictionary) {
+            @throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
+        }
+        
+        for (id plistGestureKey in updatedGestureDictionary) {
+            Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
+            if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
+                @throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
+            } else {
+                [gestureDetector addGesture:plistGesture];
+            }
+        }
 	}
 	@catch (NSException *exception)
 	{
