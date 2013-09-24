@@ -114,12 +114,14 @@ GestureStroke *Resample(GestureStroke *points) {
 		GesturePoint *point1 = [currentPoints pointAtIndex:(i - 1)];
 		GesturePoint *point2 = [currentPoints pointAtIndex:i];
 		float d = Distance(point1, point2);
-		if ((initialDistance + d) >= newPointDistance) {
+        
+		if ((initialDistance + d) > newPointDistance) {
 			float x = [point1 getX] + ((newPointDistance - initialDistance) / d) * ([point2 getX] - [point1 getX]);
 			float y = [point1 getY] + ((newPointDistance - initialDistance) / d) * ([point2 getY] - [point1 getY]);
             
 			GesturePoint *newPoint = [[GesturePoint alloc] initWithX:x andY:y andStroke:point1.stroke];
 			[newPoints addPoint:newPoint];
+            
 			currentPoints = Splice(currentPoints, newPoint, i);
             
 			initialDistance = 0.0;
@@ -185,6 +187,7 @@ GestureStroke *Splice(GestureStroke *originalPoints, id newVal, int i) {
 	NSMutableArray *spliced = [NSMutableArray arrayWithArray:frontSlice];
 	[spliced addObject:newVal];
 	[spliced addObjectsFromArray:backSlice];
+    
 	return [[GestureStroke alloc] initWithPoints:spliced];
 }
 

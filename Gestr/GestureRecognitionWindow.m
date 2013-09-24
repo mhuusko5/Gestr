@@ -5,7 +5,7 @@
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
 	self = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:bufferingType defer:flag];
     
-    /*
+	/*
      NSNormalWindowLevel
      NSFloatingWindowLevel
      NSSubmenuWindowLevel
@@ -15,7 +15,7 @@
      NSModalPanelWindowLevel
      NSPopUpMenuWindowLevel
      NSScreenSaverWindowLevel
-     */
+	 */
     
 	[self setLevel:NSStatusWindowLevel];
 	[self setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];

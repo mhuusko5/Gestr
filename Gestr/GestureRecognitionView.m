@@ -105,7 +105,7 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 22) {
+				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 28) {
 					for (MultitouchTouch *touch in event.touches) {
 						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
                         
