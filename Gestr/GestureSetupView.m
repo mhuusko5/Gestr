@@ -16,6 +16,16 @@
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
 	if (detectingInput) {
+        if (noInputTimer) {
+            [noInputTimer invalidate];
+            noInputTimer = nil;
+        }
+        
+		if (shouldDetectTimer) {
+			[shouldDetectTimer invalidate];
+			shouldDetectTimer = nil;
+		}
+        
 		NSPoint drawPoint = [self convertPoint:[event locationInWindow] fromView:nil];
         
 		[setupController.drawNowText setAlphaValue:0.0];
@@ -34,11 +44,6 @@
 		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * boundingBoxSize andY:(drawPoint.y / self.frame.size.height) * boundingBoxSize andStroke:[identity intValue]];
         
 		[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
-        
-		if (shouldDetectTimer) {
-			[shouldDetectTimer invalidate];
-			shouldDetectTimer = nil;
-		}
         
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
@@ -149,10 +154,20 @@
 	detectingInput = YES;
 	[setupController.drawNowText setAlphaValue:1.0];
     
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+    
 	detectedStrokeIndex = 0;
     
 	[self becomeFirstResponder];
 }
+
+- (void)checkNoInput
+{
+    if (!gestureStrokes || gestureStrokes.count == 0) {
+        [self finishDetectingGesture:YES];
+    }
+}
+
 
 - (void)finishDetectingGesture {
 	[self finishDetectingGesture:NO];

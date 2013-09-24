@@ -16,9 +16,18 @@
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
 	if (!recognitionController.appController.gestureSetupController.useMultitouchTrackpad && detectingInput) {
-		NSPoint drawPoint = [self convertPoint:[event locationInWindow] fromView:nil];
+        if (noInputTimer) {
+            [noInputTimer invalidate];
+            noInputTimer = nil;
+        }
         
-		[recognitionController.appController.gestureSetupController.drawNowText setAlphaValue:0.0];
+        
+		if (shouldDetectTimer) {
+			[shouldDetectTimer invalidate];
+			shouldDetectTimer = nil;
+		}
+        
+		NSPoint drawPoint = [self convertPoint:[event locationInWindow] fromView:nil];
         
 		if ([mouseType isEqualToString:@"down"]) {
 			mouseStrokeIndex++;
@@ -34,11 +43,6 @@
 		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * boundingBoxSize andY:(drawPoint.y / self.frame.size.height) * boundingBoxSize andStroke:[identity intValue]];
         
 		[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
-        
-		if (shouldDetectTimer) {
-			[shouldDetectTimer invalidate];
-			shouldDetectTimer = nil;
-		}
         
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
@@ -78,17 +82,66 @@
 	[self dealWithMouseEvent:theEvent ofType:@"up"];
 }
 
+- (void)dealWithMultitouchEvent:(MultitouchEvent *)event
+{
+    if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad && detectingInput) {
+        if (!initialMultitouchDeviceId) {
+            initialMultitouchDeviceId = event.deviceIdentifier;
+        }
+        
+        if ([event.deviceIdentifier isEqualToNumber:initialMultitouchDeviceId]) {
+            if (noInputTimer) {
+                [noInputTimer invalidate];
+                noInputTimer = nil;
+            }
+            
+            if (shouldDetectTimer) {
+                [shouldDetectTimer invalidate];
+                shouldDetectTimer = nil;
+            }
+            
+            if (!shouldDetectTimer && event.touches.count == 0) {
+                shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+            } else {
+                NSLog([event description]);
+            }
+            
+            [self setNeedsDisplay:YES];
+        }
+    }
+}
+
+- (void)startDealingWithMultitouchEvents
+{
+    [[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(dealWithMultitouchEvent:) andThread:nil];
+}
+
 - (void)startDetectingGesture {
-	[self resetAll];
-    
-	detectingInput = YES;
-    
+    [self resetAll];
+        
 	mouseStrokeIndex = 0;
+    
+    initialMultitouchDeviceId = nil;
     
 	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
 	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
     
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+
+    if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad) {
+        [self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.1];
+    }
+    
 	[self becomeFirstResponder];
+    
+    detectingInput = YES;
+}
+
+- (void)checkNoInput
+{
+    if (!gestureStrokes || gestureStrokes.count == 0) {
+        [self finishDetectingGesture:YES];
+    }
 }
 
 - (void)checkPartialGesture {
@@ -110,6 +163,8 @@
 }
 
 - (void)finishDetectingGesture:(BOOL)ignore {
+    [[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+    
 	detectingInput = NO;
     
 	NSMutableArray *orderedStrokes = [NSMutableArray array];

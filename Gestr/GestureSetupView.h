@@ -18,6 +18,8 @@
 	BOOL showingStoredGesture;
     
     BOOL detectingInput;
+    
+     NSTimer *noInputTimer;
 }
 @property (retain) GestureSetupController *setupController;
 @property BOOL detectingInput;
@@ -26,6 +28,7 @@
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
 - (void)showGesture:(Gesture *)gesture;
 - (void)startDetectingGesture;
+- (void)checkNoInput;
 - (void)finishDetectingGesture;
 - (void)finishDetectingGesture:(BOOL)ignore;
 - (void)resetAll;

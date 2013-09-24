@@ -1,5 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import "GestureRecognitionController.h"
+#import "MultitouchEvent.h"
 
 @class GestureRecognitionController;
 
@@ -10,10 +11,13 @@
     
 	NSTimer *shouldDetectTimer;
 	NSTimer *checkPartialGestureTimer;
+    NSTimer *noInputTimer;
     
 	GestureRecognitionController *recognitionController;
     
 	int mouseStrokeIndex;
+    
+    NSNumber *initialMultitouchDeviceId;
     
     BOOL detectingInput;
 }
@@ -22,7 +26,10 @@
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
+- (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
+- (void)startDealingWithMultitouchEvents;
 - (void)startDetectingGesture;
+- (void)checkNoInput;
 - (void)checkPartialGesture;
 - (void)finishDetectingGesture;
 - (void)finishDetectingGesture:(BOOL)ignore;
