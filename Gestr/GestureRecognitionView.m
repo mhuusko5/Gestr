@@ -107,37 +107,39 @@
 			else {
 				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 20) {
 					for (MultitouchTouch *touch in event.touches) {
-						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
-                        
-						NSNumber *identity = touch.identifier;
-                        
-						if (![gestureStrokes objectForKey:identity]) {
-							[orderedStrokeIds addObject:identity];
-							[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
-						}
-                        
-						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * boundingBoxSize andY:drawPoint.y * boundingBoxSize andStroke:[identity intValue]];
-                        
-						[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
-                        
-						drawPoint.x *= self.frame.size.width;
-						drawPoint.y *= self.frame.size.height;
-                        
-						NSBezierPath *tempPath;
-						if ((tempPath = [touchPaths objectForKey:identity])) {
-							[tempPath lineToPoint:drawPoint];
-						}
-						else {
-							tempPath = [NSBezierPath bezierPath];
-							[tempPath setLineWidth:self.frame.size.width / 95];
-							[tempPath setLineCapStyle:NSRoundLineCapStyle];
-							[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
-							[tempPath moveToPoint:drawPoint];
+                        float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
+                        if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+                            NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
                             
-							[touchPaths setObject:tempPath forKey:identity];
-						}
+                            NSNumber *identity = touch.identifier;
+                            
+                            if (![gestureStrokes objectForKey:identity]) {
+                                [orderedStrokeIds addObject:identity];
+                                [gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+                            }
+                            
+                            GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * boundingBoxSize andY:drawPoint.y * boundingBoxSize andStroke:[identity intValue]];
+                            
+                            [[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+                            
+                            drawPoint.x *= self.frame.size.width;
+                            drawPoint.y *= self.frame.size.height;
+                            
+                            NSBezierPath *tempPath;
+                            if ((tempPath = [touchPaths objectForKey:identity])) {
+                                [tempPath lineToPoint:drawPoint];
+                            }
+                            else {
+                                tempPath = [NSBezierPath bezierPath];
+                                [tempPath setLineWidth:self.frame.size.width / 95];
+                                [tempPath setLineCapStyle:NSRoundLineCapStyle];
+                                [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
+                                [tempPath moveToPoint:drawPoint];
+                                
+                                [touchPaths setObject:tempPath forKey:identity];
+                            }
+                        }
 					}
-                    
                     
 					[self setNeedsDisplay:YES];
 					lastMultitouchRedraw = [NSDate date];

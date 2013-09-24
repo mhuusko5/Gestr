@@ -193,7 +193,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "9"
          endingLineNumber = "9"
-         landmarkName = "-checkPartialGestureWithStrokes:"
+         landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
