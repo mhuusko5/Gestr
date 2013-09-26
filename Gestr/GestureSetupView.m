@@ -64,7 +64,7 @@
 			}
 			else {
 				if (!shouldDetectTimer) {
-					shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:(900.0f) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+					shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:(800.0f) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 				}
 			}
             

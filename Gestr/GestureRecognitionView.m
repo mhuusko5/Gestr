@@ -170,7 +170,7 @@
 	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
 	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
     
-    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.2 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.8 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
 	if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];

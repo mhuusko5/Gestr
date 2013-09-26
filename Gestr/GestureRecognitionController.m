@@ -316,12 +316,6 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     
 	[recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
 	[[NSApplication sharedApplication] hide:self];
-    
-    [appDescriptionAlert setStringValue:@""];
-    [appIconAlert setImage:NULL];
-    
-    [partialDescriptionAlert setStringValue:@""];
-    [partialIconAlert setImage:NULL];
 }
 
 - (void)showGestureRecognitionWindow {

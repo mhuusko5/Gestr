@@ -13,9 +13,7 @@
 	[attrString addAttribute:NSShadowAttributeName value:textShadow range:((NSRange) {0, [attrString length] }
 	                                                                       )];
     
-	[self setAttributedStringValue:attrString];
-    
-	[super drawWithFrame:cellFrame inView:controlView];
+    [attrString drawInRect:NSIntegralRect(cellFrame)];
 }
 
 @end
