@@ -27,6 +27,8 @@
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;
+- (void)setupPossibleEventBlocking;
+CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon);
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
 - (void)startDealingWithMultitouchEvents;

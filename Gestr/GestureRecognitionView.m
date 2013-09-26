@@ -13,7 +13,27 @@
     
 	lastMultitouchRedraw = [NSDate date];
     
+    [self performSelectorOnMainThread:@selector(setupPossibleEventBlocking) withObject:nil waitUntilDone:NO];
+    
 	return self;
+}
+
+- (void)setupPossibleEventBlocking
+{
+    CFMachPortRef keyUpEventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, NSAnyEventMask, &possibleEventToBlock, self);
+    CFRunLoopSourceRef keyUpRunLoopSourceRef = CFMachPortCreateRunLoopSource(NULL, keyUpEventTap, 0);
+    CFRelease(keyUpEventTap);
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), keyUpRunLoopSourceRef, kCFRunLoopDefaultMode);
+    CFRelease(keyUpRunLoopSourceRef);
+}
+
+CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon)
+{
+    if (((GestureRecognitionView *)refcon).recognitionController.appController.gestureSetupController.useMultitouchTrackpad && ((GestureRecognitionView *)refcon).detectingInput) {
+        return NULL;
+    }
+    
+    return event;
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
