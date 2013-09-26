@@ -10,6 +10,7 @@
 	NSMutableArray *orderedStrokeIds;
     
 	NSTimer *shouldDetectTimer;
+    NSTimer *firstCheckPartialGestureTimer;
 	NSTimer *checkPartialGestureTimer;
 	NSTimer *noInputTimer;
     

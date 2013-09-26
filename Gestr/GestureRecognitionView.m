@@ -18,11 +18,14 @@
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
 	if (!recognitionController.appController.gestureSetupController.useMultitouchTrackpad && detectingInput) {
-		if (noInputTimer) {
+		if (!firstCheckPartialGestureTimer) {
+            firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
+        }
+        
+        if (noInputTimer) {
 			[noInputTimer invalidate];
 			noInputTimer = nil;
 		}
-        
         
 		if (shouldDetectTimer) {
 			[shouldDetectTimer invalidate];
@@ -91,6 +94,10 @@
 		}
         
 		if ([event.deviceIdentifier isEqualToNumber:initialMultitouchDeviceId]) {
+            if (!firstCheckPartialGestureTimer) {
+                firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
+            }
+            
 			if (noInputTimer) {
 				[noInputTimer invalidate];
 				noInputTimer = nil;
@@ -105,7 +112,7 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 20) {
+				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 18) {
 					for (MultitouchTouch *touch in event.touches) {
                         float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
                         if (touch.state == 4 && combinedTouchVelocity > 0.06) {
@@ -160,7 +167,7 @@
     
 	initialMultitouchDeviceId = nil;
     
-	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.33 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
+	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
 	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
     
 	noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.2 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
@@ -220,6 +227,11 @@
 }
 
 - (void)resetAll {
+    if (firstCheckPartialGestureTimer) {
+		[firstCheckPartialGestureTimer invalidate];
+		firstCheckPartialGestureTimer = nil;
+	}
+    
 	if (checkPartialGestureTimer) {
 		[checkPartialGestureTimer invalidate];
 		checkPartialGestureTimer = nil;

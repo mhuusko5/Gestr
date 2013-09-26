@@ -7,6 +7,7 @@
 #import "GestureRecognizer.h"
 #import "App.h"
 #import "MultitouchManager.h"
+#import "RepeatedImageView.h"
 
 @class GestureRecognitionView, GestureRecognizer, AppController;
 
@@ -38,6 +39,7 @@
 @property (retain) NSMutableDictionary *updatedGestureDictionary;
 @property (retain) GestureRecognizer *gestureDetector;
 @property (retain) NSRunningApplication *currentApp;
+@property (retain) NSImageView *recognitionBackground;
 
 - (id)init;
 - (void)layoutRecognitionWindow;

@@ -29,11 +29,11 @@
     
 	IBOutlet NSButton *showGestureButton, *assignGestureButton, *deleteGestureButton;
     
-	IBOutlet NSButton *multitouchCheckbox;
+	IBOutlet NSButton *multitouchCheckbox, *fullscreenCheckbox;
     
 	int successfulRecognitionScore, readingDelayNumber;
     
-	BOOL useMultitouchTrackpad;
+	BOOL useMultitouchTrackpad, fullscreenRecognition;
     
 	NSStatusItem *statusBarItem;
 	IBOutlet NSView *statusBarView;
@@ -47,6 +47,7 @@
 	BOOL checkedForUpdate;
 }
 @property BOOL useMultitouchTrackpad;
+@property BOOL fullscreenRecognition;
 @property int successfulRecognitionScore;
 @property int readingDelayNumber;
 @property (retain) GestureSetupWindow *setupWindow;
@@ -68,6 +69,7 @@
 - (NSTableView *)currentTableView;
 - (IBAction)successfulRecognitionScoreChanged:(id)sender;
 - (IBAction)useMultitouchOptionChanged:(id)sender;
+- (IBAction)fullscreenOptionChanged:(id)sender;
 - (IBAction)readingDelayNumberChanged:(id)sender;
 - (IBAction)deleteSelectedGesture:(id)sender;
 - (IBAction)showSelectedGesture:(id)sender;

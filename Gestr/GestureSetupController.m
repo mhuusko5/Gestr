@@ -2,7 +2,7 @@
 
 @implementation GestureSetupController
 
-@synthesize drawNowText, useMultitouchTrackpad, successfulRecognitionScore, readingDelayNumber, setupView, setupWindow, appController;
+@synthesize drawNowText, useMultitouchTrackpad, fullscreenRecognition, successfulRecognitionScore, readingDelayNumber, setupView, setupWindow, appController;
 
 - (id)init {
 	self = [super init];
@@ -15,9 +15,12 @@
 		[[NSUserDefaults standardUserDefaults] setInteger:(readingDelayNumber = 5) forKey:@"readingDelayNumber"];
 	}
     
-    
 	if (!(useMultitouchTrackpad = (BOOL)[[NSUserDefaults standardUserDefaults] boolForKey : @"useMultitouchTrackpad"])) {
 		[[NSUserDefaults standardUserDefaults] setInteger:(useMultitouchTrackpad = false) forKey:@"useMultitouchTrackpad"];
+	}
+    
+    if (!(fullscreenRecognition = (BOOL)[[NSUserDefaults standardUserDefaults] boolForKey : @"fullscreenRecognition"])) {
+		[[NSUserDefaults standardUserDefaults] setInteger:(fullscreenRecognition = false) forKey:@"fullscreenRecognition"];
 	}
     
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -167,6 +170,7 @@ BOOL awakenedFromNib = NO;
 		[successfulRecognitionScoreTextField setStringValue:[NSString stringWithFormat:@"%i", successfulRecognitionScore]];
 		[readingDelayTextField setStringValue:[NSString stringWithFormat:@"%i", readingDelayNumber]];
 		[multitouchCheckbox setState:useMultitouchTrackpad];
+        [fullscreenCheckbox setState:fullscreenRecognition];
         
 		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
 	}
@@ -320,6 +324,15 @@ BOOL awakenedFromNib = NO;
     
 	[[NSUserDefaults standardUserDefaults] setInteger:(useMultitouchTrackpad = newMultitouchOption) forKey:@"useMultitouchTrackpad"];
 	[multitouchCheckbox setState:useMultitouchTrackpad];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)fullscreenOptionChanged:(id)sender
+{
+    BOOL newFullscreenOption = (BOOL)[fullscreenCheckbox state];
+    
+	[[NSUserDefaults standardUserDefaults] setInteger:(fullscreenRecognition = newFullscreenOption) forKey:@"fullscreenRecognition"];
+	[fullscreenCheckbox setState:fullscreenRecognition];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
