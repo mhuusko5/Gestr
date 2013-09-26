@@ -147,7 +147,7 @@
 
 CFMachPortRef eventTap;
 - (void)setupActivationHanding {
-	eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionListenOnly, kCGEventMaskForAllEvents, handleAllEvents, self);
+	eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleAllEvents, self);
 	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
 	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
 	CGEventTapEnable(eventTap, true);
@@ -215,6 +215,10 @@ NSDate *lastRightClick;
 }
 
 CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
+    if (((GestureRecognitionController *)refcon).appController.gestureSetupController.useMultitouchTrackpad && ((GestureRecognitionController *)refcon).recognitionView.detectingInput) {
+        return NULL;
+    }
+    
 	[(GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];
     
 	return eventRef;
@@ -228,9 +232,12 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		[partialDescriptionAlert setStringValue:@""];
 		[partialIconAlert setImage:NULL];
         
+        
 		[self showGestureRecognitionWindow];
 		[recognitionWindow makeKeyAndOrderFront:self];
 		[recognitionWindow makeFirstResponder:recognitionView];
+        
+        [recognitionView setNeedsDisplay:YES];
 		[recognitionView startDetectingGesture];
 	}
 }
@@ -282,7 +289,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		[self hideGestureRecognitionWindow:YES];
 	}
 	else {
-		[self hideGestureRecognitionWindow:NO];
+        [self hideGestureRecognitionWindow:NO];
 	}
 }
 
@@ -302,12 +309,19 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		[recognitionWindow orderOut:self];
 	}
 	else {
+        [recognitionWindow setAlphaValue:0.0];
 		[recognitionWindow orderOut:self];
-		[recognitionWindow setAlphaValue:0.0];
+		[[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
 	}
     
 	[recognitionWindow setFrame:NSMakeRect(-10000, -10000, recognitionWindow.frame.size.width, recognitionWindow.frame.size.height) display:NO];
 	[[NSApplication sharedApplication] hide:self];
+    
+    [appDescriptionAlert setStringValue:@""];
+    [appIconAlert setImage:NULL];
+    
+    [partialDescriptionAlert setStringValue:@""];
+    [partialIconAlert setImage:NULL];
 }
 
 - (void)showGestureRecognitionWindow {

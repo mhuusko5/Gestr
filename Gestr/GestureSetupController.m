@@ -372,7 +372,7 @@ BOOL awakenedFromNib = NO;
         
 		@try {
 			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appDescription];
-			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
+            showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
 			[showGestureThread start];
 		}
 		@catch (NSException *exception)

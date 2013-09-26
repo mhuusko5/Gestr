@@ -187,7 +187,7 @@
 			[orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
 		}
         
-		[setupController saveGestureWithStrokes:[orderedStrokes copy]];
+		[setupController saveGestureWithStrokes:orderedStrokes];
 	}
     
 	[setupController updateSetupControls];

@@ -13,27 +13,7 @@
     
 	lastMultitouchRedraw = [NSDate date];
     
-    [self performSelectorOnMainThread:@selector(setupPossibleEventBlocking) withObject:nil waitUntilDone:NO];
-    
 	return self;
-}
-
-- (void)setupPossibleEventBlocking
-{
-    CFMachPortRef keyUpEventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, NSAnyEventMask, &possibleEventToBlock, self);
-    CFRunLoopSourceRef keyUpRunLoopSourceRef = CFMachPortCreateRunLoopSource(NULL, keyUpEventTap, 0);
-    CFRelease(keyUpEventTap);
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), keyUpRunLoopSourceRef, kCFRunLoopDefaultMode);
-    CFRelease(keyUpRunLoopSourceRef);
-}
-
-CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon)
-{
-    if (((GestureRecognitionView *)refcon).recognitionController.appController.gestureSetupController.useMultitouchTrackpad && ((GestureRecognitionView *)refcon).detectingInput) {
-        return NULL;
-    }
-    
-    return event;
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
@@ -190,7 +170,7 @@ CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEvent
 	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
 	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
     
-	noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.2 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:2.2 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
 	if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
@@ -219,7 +199,7 @@ CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEvent
 			[partialOrderedStrokes addObject:[partialGestureStrokes objectForKey:[partialOrderedStrokeIds objectAtIndex:i]]];
 		}
         
-		[recognitionController checkPartialGestureWithStrokes:[partialOrderedStrokes copy]];
+		[recognitionController checkPartialGestureWithStrokes:partialOrderedStrokes];
 	}
 }
 
@@ -241,7 +221,7 @@ CGEventRef possibleEventToBlock(CGEventTapProxy proxy, CGEventType type, CGEvent
 		}
 	}
     
-	[NSThread detachNewThreadSelector:@selector(recognizeGestureWithStrokes:) toTarget:recognitionController withObject:[orderedStrokes copy]];
+    [NSThread detachNewThreadSelector:@selector(recognizeGestureWithStrokes:) toTarget:recognitionController withObject:orderedStrokes];
     
 	[self resetAll];
 }
