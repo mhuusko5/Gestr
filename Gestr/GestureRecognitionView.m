@@ -175,7 +175,6 @@
 	if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
 		CGAssociateMouseAndMouseCursorPosition(NO);
-		CGDisplayHideCursor(kCGNullDirectDisplay);
 	}
     
 	[self becomeFirstResponder];
@@ -210,7 +209,6 @@
 - (void)finishDetectingGesture:(BOOL)ignore {
 	[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
 	CGAssociateMouseAndMouseCursorPosition(YES);
-	CGDisplayShowCursor(kCGNullDirectDisplay);
     
 	detectingInput = NO;
     

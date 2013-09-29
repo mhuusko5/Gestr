@@ -215,8 +215,15 @@ NSDate *lastRightClick;
 }
 
 CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
-    if (((GestureRecognitionController *)refcon).appController.gestureSetupController.useMultitouchTrackpad && ((GestureRecognitionController *)refcon).recognitionView.detectingInput) {
-        return NULL;
+    GestureRecognitionController *recognitionController = (GestureRecognitionController *)refcon;
+    
+    if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad && recognitionController.recognitionView.detectingInput) {
+        if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
+            [recognitionController.recognitionView finishDetectingGesture:YES];
+            return eventRef;
+        } else {
+            return NULL;
+        }
     }
     
 	[(GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];

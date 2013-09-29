@@ -422,7 +422,7 @@ BOOL awakenedFromNib = NO;
 }
 
 - (void)updateSetupControls {
-	[setupView clearCanvas];
+	[setupView resetAll];
     
 	[setupWindow makeFirstResponder:[self currentTableView]];
     

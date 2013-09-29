@@ -1,31 +1,36 @@
 #import <Cocoa/Cocoa.h>
 #import "GestureSetupController.h"
 #import "Gesture.h"
+#import "MultitouchManager.h"
 
 @class GestureSetupController;
 
 @interface GestureSetupView : NSView {
-	NSBezierPath *drawPath;
 	NSMutableDictionary *touchPaths;
-	NSTimer *shouldDetectTimer;
 	NSMutableDictionary *gestureStrokes;
 	NSMutableArray *orderedStrokeIds;
     
+    NSTimer *shouldDetectTimer;
+    NSTimer *noInputTimer;
+    
 	GestureSetupController *setupController;
     
-	int detectedStrokeIndex;
+	int mouseStrokeIndex;
     
 	BOOL showingStoredGesture;
     
-	BOOL detectingInput;
+	NSDate *lastMultitouchRedraw;
+	NSNumber *initialMultitouchDeviceId;
     
-	NSTimer *noInputTimer;
+	BOOL detectingInput;
 }
 @property (retain) GestureSetupController *setupController;
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
+- (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
+- (void)startDealingWithMultitouchEvents;
 - (void)showGesture:(Gesture *)gesture;
 - (void)startDetectingGesture;
 - (void)checkNoInput;
@@ -34,7 +39,6 @@
 - (void)resetAll;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;
-- (void)clearCanvas;
 - (void)drawRect:(NSRect)dirtyRect;
 
 @end
