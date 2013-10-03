@@ -2,26 +2,55 @@
 
 @implementation GestureSetupController
 
-@synthesize drawNowText, useMultitouchTrackpad, fullscreenRecognition, successfulRecognitionScore, readingDelayNumber, setupView, setupWindow, appController;
+@synthesize drawNowText, multitouchRecognition, fullscreenRecognition, successfulRecognitionScore, readingDelayNumber, setupView, setupWindow, appController;
 
 - (id)init {
 	self = [super init];
     
-	if (!(successfulRecognitionScore = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"successfulRecognitionScore"])) {
-		[[NSUserDefaults standardUserDefaults] setInteger:(successfulRecognitionScore = 79) forKey:@"successfulRecognitionScore"];
+	id storedSuccessfulRecognitionScore;
+	if ((storedSuccessfulRecognitionScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"successfulRecognitionScore"])) {
+		successfulRecognitionScore = [storedSuccessfulRecognitionScore intValue];
+	}
+	else {
+		[[NSUserDefaults standardUserDefaults] setInteger:(successfulRecognitionScore = 80) forKey:@"successfulRecognitionScore"];
 	}
     
-	if (!(readingDelayNumber = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"readingDelayNumber"])) {
+	id storedReadingDelayNumber;
+	if ((storedReadingDelayNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"readingDelayNumber"])) {
+		readingDelayNumber = [storedReadingDelayNumber intValue];
+	}
+	else {
 		[[NSUserDefaults standardUserDefaults] setInteger:(readingDelayNumber = 5) forKey:@"readingDelayNumber"];
 	}
     
-	if (!(useMultitouchTrackpad = (BOOL)[[NSUserDefaults standardUserDefaults] boolForKey : @"useMultitouchTrackpad"])) {
-		[[NSUserDefaults standardUserDefaults] setInteger:(useMultitouchTrackpad = false) forKey:@"useMultitouchTrackpad"];
+	id storedMultitouchRecognition;
+	if ((storedMultitouchRecognition = [[NSUserDefaults standardUserDefaults] objectForKey:@"multitouchRecognition"])) {
+		multitouchRecognition = [storedMultitouchRecognition boolValue];
+	}
+	else {
+		[[NSUserDefaults standardUserDefaults] setBool:(multitouchRecognition = [MultitouchManager systemIsMultitouchCapable]) forKey:@"multitouchRecognition"];
 	}
     
-    if (!(fullscreenRecognition = (BOOL)[[NSUserDefaults standardUserDefaults] boolForKey : @"fullscreenRecognition"])) {
-		[[NSUserDefaults standardUserDefaults] setInteger:(fullscreenRecognition = false) forKey:@"fullscreenRecognition"];
+	id storedFullscreenRecognition;
+	if ((storedFullscreenRecognition = [[NSUserDefaults standardUserDefaults] objectForKey:@"fullscreenRecognition"])) {
+		fullscreenRecognition = [storedFullscreenRecognition boolValue];
 	}
+	else {
+		[[NSUserDefaults standardUserDefaults] setBool:(fullscreenRecognition = NO) forKey:@"fullscreenRecognition"];
+	}
+    
+	id storedHideDockIcon;
+	if ((storedHideDockIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"hideDockIcon"])) {
+		hideDockIcon = [storedHideDockIcon boolValue];
+	}
+	else {
+		[[NSUserDefaults standardUserDefaults] setBool:(hideDockIcon = NO) forKey:@"hideDockIcon"];
+	}
+    
+	startAtLaunch = [self willStartAtLaunch];
+    
+	[self updateHideDockIcon];
+	[self updateStartAtLaunch];
     
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -169,8 +198,10 @@ BOOL awakenedFromNib = NO;
         
 		[successfulRecognitionScoreTextField setStringValue:[NSString stringWithFormat:@"%i", successfulRecognitionScore]];
 		[readingDelayTextField setStringValue:[NSString stringWithFormat:@"%i", readingDelayNumber]];
-		[multitouchCheckbox setState:useMultitouchTrackpad];
-        [fullscreenCheckbox setState:fullscreenRecognition];
+		[multitouchCheckbox setState:multitouchRecognition];
+		[fullscreenCheckbox setState:fullscreenRecognition];
+		[hideDockIconCheckbox setState:hideDockIcon];
+		[startAtLaunchCheckbox setState:startAtLaunch];
         
 		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
 	}
@@ -322,18 +353,118 @@ BOOL awakenedFromNib = NO;
 - (IBAction)useMultitouchOptionChanged:(id)sender {
 	BOOL newMultitouchOption = (BOOL)[multitouchCheckbox state];
     
-	[[NSUserDefaults standardUserDefaults] setInteger:(useMultitouchTrackpad = newMultitouchOption) forKey:@"useMultitouchTrackpad"];
-	[multitouchCheckbox setState:useMultitouchTrackpad];
+	[[NSUserDefaults standardUserDefaults] setBool:(multitouchRecognition = newMultitouchOption) forKey:@"multitouchRecognition"];
+	[multitouchCheckbox setState:multitouchRecognition];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)fullscreenOptionChanged:(id)sender
-{
-    BOOL newFullscreenOption = (BOOL)[fullscreenCheckbox state];
+- (IBAction)fullscreenOptionChanged:(id)sender {
+	BOOL newFullscreenOption = (BOOL)[fullscreenCheckbox state];
     
-	[[NSUserDefaults standardUserDefaults] setInteger:(fullscreenRecognition = newFullscreenOption) forKey:@"fullscreenRecognition"];
+	[[NSUserDefaults standardUserDefaults] setBool:(fullscreenRecognition = newFullscreenOption) forKey:@"fullscreenRecognition"];
 	[fullscreenCheckbox setState:fullscreenRecognition];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)updateHideDockIcon {
+	ProcessSerialNumber psn = { 0, kCurrentProcess };
+	if (hideDockIcon) {
+		TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+	}
+	else {
+		TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+	}
+}
+
+- (void)updateStartAtLaunch {
+	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+    
+	OSStatus status;
+	LSSharedFileListItemRef existingItem = NULL;
+    
+	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+	if (loginItems) {
+		UInt32 seed = 0U;
+		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
+		for (id itemObject in currentLoginItems) {
+			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
+            
+			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
+			CFURLRef URL = NULL;
+			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
+			if (err == noErr) {
+				Boolean foundIt = CFEqual(URL, itemURL);
+				CFRelease(URL);
+                
+				if (foundIt) {
+					existingItem = item;
+					break;
+				}
+			}
+		}
+        
+		if (startAtLaunch && (existingItem == NULL)) {
+			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (CFURLRef)itemURL, NULL, NULL);
+		}
+		else if (!startAtLaunch && (existingItem != NULL)) {
+			LSSharedFileListItemRemove(loginItems, existingItem);
+		}
+        
+		CFRelease(loginItems);
+	}
+}
+
+- (BOOL)willStartAtLaunch {
+	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+    
+	Boolean foundIt = false;
+	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+	if (loginItems) {
+		UInt32 seed = 0U;
+		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
+		for (id itemObject in currentLoginItems) {
+			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
+            
+			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
+			CFURLRef URL = NULL;
+			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
+			if (err == noErr) {
+				foundIt = CFEqual(URL, itemURL);
+				CFRelease(URL);
+                
+				if (foundIt)
+					break;
+			}
+		}
+		CFRelease(loginItems);
+	}
+	return (BOOL)foundIt;
+}
+
+- (IBAction)hideIconOptionChanged:(id)sender {
+	BOOL newHideDockIconOption = (BOOL)[hideDockIconCheckbox state];
+    
+	[[NSUserDefaults standardUserDefaults] setBool:(hideDockIcon = newHideDockIconOption) forKey:@"hideDockIcon"];
+	[hideDockIconCheckbox setState:hideDockIcon];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+	[self updateHideDockIcon];
+    
+	if (hideDockIcon) {
+		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.005];
+		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.01];
+		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.1];
+		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.25];
+		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.5];
+	}
+}
+
+- (IBAction)loginStartOptionChanged:(id)sender {
+	startAtLaunch = (BOOL)[startAtLaunchCheckbox state];
+    
+	[self updateStartAtLaunch];
+    
+	[startAtLaunchCheckbox setState:startAtLaunch];
 }
 
 - (IBAction)readingDelayNumberChanged:(id)sender {
@@ -372,7 +503,7 @@ BOOL awakenedFromNib = NO;
         
 		@try {
 			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appDescription];
-            showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
+			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
 			[showGestureThread start];
 		}
 		@catch (NSException *exception)
@@ -490,7 +621,7 @@ BOOL awakenedFromNib = NO;
 		[setupWindow makeKeyAndOrderFront:self];
 		[setupWindow setFrame:frame display:YES animate:YES];
         
-		[setupWindow setIgnoresMouseEvents:FALSE];
+		[setupWindow setIgnoresMouseEvents:NO];
 		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 	}
 	else {
@@ -502,7 +633,7 @@ BOOL awakenedFromNib = NO;
 			frame.origin.y = pt.y;
 			[setupWindow setFrame:frame display:YES animate:YES];
             
-			[setupWindow setIgnoresMouseEvents:TRUE];
+			[setupWindow setIgnoresMouseEvents:YES];
 			[setupWindow setAlphaValue:0.0];
 			[setupWindow setFrame:NSMakeRect(-10000, -10000, setupWindow.frame.size.width, setupWindow.frame.size.height) display:NO];
 			[[NSApplication sharedApplication] hide:self];

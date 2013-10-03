@@ -10,8 +10,8 @@
 	NSMutableDictionary *gestureStrokes;
 	NSMutableArray *orderedStrokeIds;
     
-    NSTimer *shouldDetectTimer;
-    NSTimer *noInputTimer;
+	NSTimer *shouldDetectTimer;
+	NSTimer *noInputTimer;
     
 	GestureSetupController *setupController;
     

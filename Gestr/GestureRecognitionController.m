@@ -150,7 +150,7 @@ CFMachPortRef eventTap;
 	eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleAllEvents, self);
 	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
 	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
-	CGEventTapEnable(eventTap, true);
+	CGEventTapEnable(eventTap, YES);
     
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationBecameActive:) name:NSWorkspaceDidActivateApplicationNotification object:nil];
     
@@ -217,7 +217,7 @@ NSDate *lastRightClick;
 CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
     GestureRecognitionController *recognitionController = (GestureRecognitionController *)refcon;
     
-    if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad && recognitionController.recognitionView.detectingInput) {
+    if (recognitionController.appController.gestureSetupController.multitouchRecognition && recognitionController.recognitionView.detectingInput) {
         if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
             [recognitionController.recognitionView finishDetectingGesture:YES];
             return eventRef;
@@ -233,6 +233,10 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)shouldStartDetectingGesture {
 	if ([[self recognitionWindow] alphaValue] <= 0 && ([[gestureDetector loadedGestures] count] > 0)) {
+        if ([self.appController.gestureSetupController.setupWindow alphaValue] > 0) {
+            [self.appController.gestureSetupController toggleGestureSetupWindow:nil];
+        }
+        
 		[appDescriptionAlert setStringValue:@""];
 		[appIconAlert setImage:NULL];
         
@@ -251,7 +255,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)launchAppWithBundleId:(NSString *)bundle {
 	@try {
-		[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundle options:NSWorkspaceLaunchAllowingClassicStartup additionalEventParamDescriptor:nil launchIdentifier:nil];
+		[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundle options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
 	}
 	@catch (NSException *exception)
 	{
@@ -307,7 +311,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 		float alpha = 1.0;
 		[recognitionWindow setAlphaValue:alpha];
 		while ([recognitionWindow alphaValue] > 0) {
-			alpha -= 0.033;
+			alpha -= 0.048;
 			[recognitionWindow setAlphaValue:alpha];
 			[NSThread sleepForTimeInterval:0.01];
 		}

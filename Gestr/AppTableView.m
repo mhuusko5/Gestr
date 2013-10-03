@@ -4,12 +4,12 @@
 
 - (BOOL)resignFirstResponder {
 	[(GestureSetupController *)self.delegate tableViewFocus : YES];
-	return true;
+	return YES;
 }
 
 - (BOOL)becomeFirstResponder {
 	[(GestureSetupController *)self.delegate tableViewFocus : NO];
-	return true;
+	return YES;
 }
 
 @end

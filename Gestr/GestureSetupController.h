@@ -5,6 +5,7 @@
 #import "GestureSetupView.h"
 #import "NSColor+ColorExtensions.h"
 #import "App.h"
+#import "MultitouchManager.h"
 
 @class GestureSetupView, AppController;
 
@@ -31,9 +32,13 @@
     
 	IBOutlet NSButton *multitouchCheckbox, *fullscreenCheckbox;
     
+	IBOutlet NSButton *hideDockIconCheckbox, *startAtLaunchCheckbox;
+    
 	int successfulRecognitionScore, readingDelayNumber;
     
-	BOOL useMultitouchTrackpad, fullscreenRecognition;
+	BOOL multitouchRecognition, fullscreenRecognition;
+    
+	BOOL hideDockIcon, startAtLaunch;
     
 	NSStatusItem *statusBarItem;
 	IBOutlet NSView *statusBarView;
@@ -46,7 +51,7 @@
     
 	BOOL checkedForUpdate;
 }
-@property BOOL useMultitouchTrackpad;
+@property BOOL multitouchRecognition;
 @property BOOL fullscreenRecognition;
 @property int successfulRecognitionScore;
 @property int readingDelayNumber;
@@ -70,6 +75,11 @@
 - (IBAction)successfulRecognitionScoreChanged:(id)sender;
 - (IBAction)useMultitouchOptionChanged:(id)sender;
 - (IBAction)fullscreenOptionChanged:(id)sender;
+- (void)updateHideDockIcon;
+- (void)updateStartAtLaunch;
+- (BOOL)willStartAtLaunch;
+- (IBAction)hideIconOptionChanged:(id)sender;
+- (IBAction)loginStartOptionChanged:(id)sender;
 - (IBAction)readingDelayNumberChanged:(id)sender;
 - (IBAction)deleteSelectedGesture:(id)sender;
 - (IBAction)showSelectedGesture:(id)sender;

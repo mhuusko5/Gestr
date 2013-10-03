@@ -17,7 +17,7 @@
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
-	if (!recognitionController.appController.gestureSetupController.useMultitouchTrackpad && detectingInput) {
+	if (!recognitionController.appController.gestureSetupController.multitouchRecognition && detectingInput) {
 		if (!firstCheckPartialGestureTimer) {
             firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
         }
@@ -88,7 +88,7 @@
 }
 
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event {
-	if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad && detectingInput) {
+	if (recognitionController.appController.gestureSetupController.multitouchRecognition && detectingInput) {
 		if (!initialMultitouchDeviceId) {
 			initialMultitouchDeviceId = event.deviceIdentifier;
 		}
@@ -172,7 +172,7 @@
     
     noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.8 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
-	if (recognitionController.appController.gestureSetupController.useMultitouchTrackpad) {
+	if (recognitionController.appController.gestureSetupController.multitouchRecognition) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
 		CGAssociateMouseAndMouseCursorPosition(NO);
 	}

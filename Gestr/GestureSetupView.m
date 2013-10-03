@@ -17,10 +17,10 @@
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
-	if (!setupController.useMultitouchTrackpad && detectingInput) {
-        [setupController.drawNowText setAlphaValue:0.0];
+	if (!setupController.multitouchRecognition && detectingInput) {
+		[setupController.drawNowText setAlphaValue:0.0];
         
-        if (noInputTimer) {
+		if (noInputTimer) {
 			[noInputTimer invalidate];
 			noInputTimer = nil;
 		}
@@ -49,7 +49,7 @@
         
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
-			[tempPath setLineWidth: 7.0];
+			[tempPath setLineWidth:7.0];
 			[tempPath setLineCapStyle:NSRoundLineCapStyle];
 			[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 			[tempPath moveToPoint:drawPoint];
@@ -86,8 +86,8 @@
 }
 
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event {
-	if (setupController.useMultitouchTrackpad && detectingInput) {
-        [setupController.drawNowText setAlphaValue:0.0];
+	if (setupController.multitouchRecognition && detectingInput) {
+		[setupController.drawNowText setAlphaValue:0.0];
         
 		if (!initialMultitouchDeviceId) {
 			initialMultitouchDeviceId = event.deviceIdentifier;
@@ -110,38 +110,38 @@
 			else {
 				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 18) {
 					for (MultitouchTouch *touch in event.touches) {
-                        float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
-                        if (touch.state == 4 && combinedTouchVelocity > 0.06) {
-                            NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
+						float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
+						if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+							NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
                             
-                            NSNumber *identity = touch.identifier;
+							NSNumber *identity = touch.identifier;
                             
-                            if (![gestureStrokes objectForKey:identity]) {
-                                [orderedStrokeIds addObject:identity];
-                                [gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
-                            }
+							if (![gestureStrokes objectForKey:identity]) {
+								[orderedStrokeIds addObject:identity];
+								[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+							}
                             
-                            GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * boundingBoxSize andY:drawPoint.y * boundingBoxSize andStroke:[identity intValue]];
+							GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * boundingBoxSize andY:drawPoint.y * boundingBoxSize andStroke:[identity intValue]];
                             
-                            [[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+							[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
                             
-                            drawPoint.x *= self.frame.size.width;
-                            drawPoint.y *= self.frame.size.height;
+							drawPoint.x *= self.frame.size.width;
+							drawPoint.y *= self.frame.size.height;
                             
-                            NSBezierPath *tempPath;
-                            if ((tempPath = [touchPaths objectForKey:identity])) {
-                                [tempPath lineToPoint:drawPoint];
-                            }
-                            else {
-                                tempPath = [NSBezierPath bezierPath];
-                                [tempPath setLineWidth: 7.0];
-                                [tempPath setLineCapStyle:NSRoundLineCapStyle];
-                                [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
-                                [tempPath moveToPoint:drawPoint];
+							NSBezierPath *tempPath;
+							if ((tempPath = [touchPaths objectForKey:identity])) {
+								[tempPath lineToPoint:drawPoint];
+							}
+							else {
+								tempPath = [NSBezierPath bezierPath];
+								[tempPath setLineWidth:7.0];
+								[tempPath setLineCapStyle:NSRoundLineCapStyle];
+								[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
+								[tempPath moveToPoint:drawPoint];
                                 
-                                [touchPaths setObject:tempPath forKey:identity];
-                            }
-                        }
+								[touchPaths setObject:tempPath forKey:identity];
+							}
+						}
 					}
                     
 					[self setNeedsDisplay:YES];
@@ -162,7 +162,7 @@
 	[self resetAll];
 	if (gesture) {
 		int pointIndex = 0;
-		while (true) {
+		while (YES) {
 			if ([[NSThread currentThread] isCancelled] || detectingInput) {
 				[NSThread exit];
 			}
@@ -176,7 +176,7 @@
 			BOOL contin;
 			for (GestureStroke *stroke in gesture.strokes) {
 				if (pointIndex < stroke.pointCount) {
-					contin = true;
+					contin = YES;
 					break;
 				}
 			}
@@ -224,7 +224,7 @@
 - (void)startDetectingGesture {
 	[self resetAll];
     
-    mouseStrokeIndex = 0;
+	mouseStrokeIndex = 0;
     
 	initialMultitouchDeviceId = nil;
     
@@ -232,14 +232,14 @@
     
 	noInputTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
-	if (setupController.useMultitouchTrackpad) {
+	if (setupController.multitouchRecognition) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
 		CGAssociateMouseAndMouseCursorPosition(NO);
 	}
     
 	[self becomeFirstResponder];
     
-    detectingInput = YES;
+	detectingInput = YES;
 }
 
 - (void)checkNoInput {
@@ -253,7 +253,7 @@
 }
 
 - (void)finishDetectingGesture:(BOOL)ignore {
-    [[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+	[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
 	CGAssociateMouseAndMouseCursorPosition(YES);
     
 	detectingInput = NO;
