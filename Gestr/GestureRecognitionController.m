@@ -250,7 +250,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 
 - (void)launchAppWithBundleId:(NSString *)bundle {
 	@try {
-		[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundle options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
+		[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundle options:NSWorkspaceLaunchAsync additionalEventParamDescriptor:nil launchIdentifier:nil];
 	}
 	@catch (NSException *exception)
 	{
@@ -286,7 +286,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.name, rating]];
 			[partialIconAlert setImage:appToLaunch.icon];
             
-			[NSThread detachNewThreadSelector:@selector(launchAppWithBundleId:) toTarget:self withObject:appToLaunch.bundle];
+            [self launchAppWithBundleId:appToLaunch.bundle];
 		}
 		else {
 			[appController.gestureSetupController deleteGestureWithName:result.name];
@@ -299,26 +299,28 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	}
 }
 
+- (void)fadeOutGestureRecognitionWindow {
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.18];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        [self hideGestureRecognitionWindow:NO];
+    }];
+    [[recognitionWindow animator] setAlphaValue:0.0];
+    [NSAnimationContext endGrouping];
+}
+
 - (void)hideGestureRecognitionWindow:(BOOL)fade {
 	if (fade) {
-		[NSThread sleepForTimeInterval:0.3];
+        [self performSelector:@selector(fadeOutGestureRecognitionWindow) withObject:nil afterDelay:0.34];
+	} else {
+        [recognitionWindow setAlphaValue:0.0];
+        [recognitionWindow orderOut:self];
+        [[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
         
-		float alpha = 1.0;
-		[recognitionWindow setAlphaValue:alpha];
-		while ([recognitionWindow alphaValue] > 0) {
-			alpha -= 0.09;
-			[recognitionWindow setAlphaValue:alpha];
-			[NSThread sleepForTimeInterval:0.017];
-		}
-	}
-	
-    [recognitionWindow setAlphaValue:0.0];
-    [recognitionWindow orderOut:self];
-    [[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
-    
-	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-    
-	[[NSApplication sharedApplication] hide:self];
+        [recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+        
+        [[NSApplication sharedApplication] hide:self];
+    }
 }
 
 - (void)showGestureRecognitionWindow {

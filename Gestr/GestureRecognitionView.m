@@ -167,10 +167,10 @@
     
 	initialMultitouchDeviceId = nil;
     
-	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
+	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
 	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
     
-    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.4 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+    noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
 	if (recognitionController.appController.gestureSetupController.multitouchRecognition) {
 		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
@@ -219,9 +219,9 @@
 		}
 	}
     
-    [NSThread detachNewThreadSelector:@selector(recognizeGestureWithStrokes:) toTarget:recognitionController withObject:orderedStrokes];
+    [self resetAll];
     
-	[self resetAll];
+    [recognitionController recognizeGestureWithStrokes:orderedStrokes];
 }
 
 - (void)resetAll {
