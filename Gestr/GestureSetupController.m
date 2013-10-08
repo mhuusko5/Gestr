@@ -187,14 +187,14 @@ BOOL awakenedFromNib = NO;
         
 		[setupView setSetupController:self];
         
+        [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+        
 		statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 		[statusBarItem setTitle:@""];
 		[statusBarView setAlphaValue:1.0];
 		[statusBarItem setView:statusBarView];
         
 		[appTypePicker setSelectedSegment:0];
-        
-		[setupWindow setFrame:NSMakeRect(-10000, -10000, setupWindow.frame.size.width, setupWindow.frame.size.height) display:NO];
         
 		[successfulRecognitionScoreTextField setStringValue:[NSString stringWithFormat:@"%i", successfulRecognitionScore]];
 		[readingDelayTextField setStringValue:[NSString stringWithFormat:@"%i", readingDelayNumber]];
@@ -247,6 +247,9 @@ BOOL awakenedFromNib = NO;
 		if (self.appController.gestureRecognitionController.gestureDetector.loadedGestures.count < 1) {
 			[self toggleGestureSetupWindow:nil];
 		}
+        
+        [appController.gestureRecognitionController layoutRecognitionWindow];
+        [appController.gestureRecognitionController.recognitionWindow  setFrameOrigin:NSMakePoint(-10000, -10000)];
 	}
 	else {
 		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
@@ -354,7 +357,6 @@ BOOL awakenedFromNib = NO;
 	BOOL newMultitouchOption = (BOOL)[multitouchCheckbox state];
     
 	[[NSUserDefaults standardUserDefaults] setBool:(multitouchRecognition = newMultitouchOption) forKey:@"multitouchRecognition"];
-	[multitouchCheckbox setState:multitouchRecognition];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -362,7 +364,6 @@ BOOL awakenedFromNib = NO;
 	BOOL newFullscreenOption = (BOOL)[fullscreenCheckbox state];
     
 	[[NSUserDefaults standardUserDefaults] setBool:(fullscreenRecognition = newFullscreenOption) forKey:@"fullscreenRecognition"];
-	[fullscreenCheckbox setState:fullscreenRecognition];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -584,6 +585,19 @@ BOOL awakenedFromNib = NO;
 			[deleteGestureButton setEnabled:NO];
 		}
 	}
+    
+    if (![MultitouchManager systemIsMultitouchCapable]) {
+        [multitouchCheckbox setAlphaValue:0.5];
+        [multitouchCheckbox setEnabled:NO];
+        [multitouchRecognitionLabel setAlphaValue:0.5];
+        
+        [multitouchCheckbox setState:NO];
+        [self useMultitouchOptionChanged:nil];
+    } else {
+        [multitouchCheckbox setAlphaValue:1.0];
+        [multitouchCheckbox setEnabled:YES];
+        [multitouchRecognitionLabel setAlphaValue:1.0];
+    }
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
@@ -614,7 +628,7 @@ BOOL awakenedFromNib = NO;
 	if ([setupWindow alphaValue] <= 0) {
 		frame.origin.y = pt.y;
 		frame.origin.x = pt.x;
-		[setupWindow setFrame:frame display:NO];
+		[setupWindow setFrame:frame display:YES];
         
 		frame.origin.y -= frame.size.height;
 		[setupWindow setAlphaValue:1.0];
@@ -635,7 +649,9 @@ BOOL awakenedFromNib = NO;
             
 			[setupWindow setIgnoresMouseEvents:YES];
 			[setupWindow setAlphaValue:0.0];
-			[setupWindow setFrame:NSMakeRect(-10000, -10000, setupWindow.frame.size.width, setupWindow.frame.size.height) display:NO];
+			
+            [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+            
 			[[NSApplication sharedApplication] hide:self];
 		}
 	}

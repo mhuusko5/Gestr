@@ -6,18 +6,18 @@
 
 #define GoldenRatio (0.5 * (-1.0 + sqrt(5.0)))
 
-#define startVectorDelay 4
-#define startVectorLength 9
+#define startVectorDelay 2
+#define startVectorLength 10
 
-#define minimumPointCount 10
+#define minimumPointCount 13
 
-#define scaleLeniency 0.26f
+#define scaleLeniency 0.25f
 
 #define resampledStrokePointCount 120
 
 #define goldenRatioAngleLeniency 30.0f
 
-#define startAngleLeniency 48.0f
+#define startAngleLeniency 30.0f
 
 #define goldenRatioDegreeConstant 2.0f
 

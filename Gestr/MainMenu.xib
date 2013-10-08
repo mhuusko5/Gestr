@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12F37</string>
+		<string key="IBDocument.SystemVersion">12F45</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.AppKitVersion">1187.40</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -140,7 +140,6 @@
 							</set>
 							<string key="NSFrameSize">{365, 591}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="952714088"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="183860942">
@@ -163,7 +162,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{85, 306}, {194, 24}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="81024735"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -215,7 +213,6 @@
 							</set>
 							<string key="NSFrame">{{8, 373}, {348, 211}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="665894537"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="7265616">
@@ -242,7 +239,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{113, 87}, {110, 24}}</string>
 									<reference key="NSSuperview" ref="665894537"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="611806871"/>
 									<double key="NSViewAlphaValue">0.0</double>
 									<string key="NSReuseIdentifierKey">_NS:1535</string>
@@ -280,7 +276,6 @@
 									<array class="NSMutableArray" key="NSSubviews"/>
 									<string key="NSFrame">{{460, 134}, {82, 32}}</string>
 									<reference key="NSSuperview" ref="665894537"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="968392800"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
 									<bool key="NSEnabled">YES</bool>
@@ -303,7 +298,6 @@
 							</array>
 							<string key="NSFrame">{{16, 381}, {332, 195}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="886596119"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">GestureSetupView</string>
@@ -330,7 +324,6 @@
 															<array class="NSMutableArray" key="NSSubviews"/>
 															<string key="NSFrameSize">{365, 165}</string>
 															<reference key="NSSuperview" ref="903704971"/>
-															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="770914905"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
@@ -416,7 +409,6 @@
 													</array>
 													<string key="NSFrameSize">{365, 165}</string>
 													<reference key="NSSuperview" ref="345327363"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="922645674"/>
 													<string key="NSReuseIdentifierKey">_NS:11</string>
 													<reference key="NSDocView" ref="922645674"/>
@@ -431,7 +423,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{-100, -100}, {15, 102}}</string>
 													<reference key="NSSuperview" ref="345327363"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="722328047"/>
 													<string key="NSReuseIdentifierKey">_NS:58</string>
 													<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -444,7 +435,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{-100, -100}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="345327363"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="903704971"/>
 													<string key="NSReuseIdentifierKey">_NS:60</string>
 													<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -456,7 +446,6 @@
 											</array>
 											<string key="NSFrameSize">{365, 165}</string>
 											<reference key="NSSuperview" ref="550573607"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="4142545"/>
 											<string key="NSReuseIdentifierKey">_NS:9</string>
 											<int key="NSsFlags">133648</int>
@@ -471,7 +460,6 @@
 									</array>
 									<string key="NSFrame">{{0, -2}, {365, 165}}</string>
 									<reference key="NSSuperview" ref="885821343"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="345327363"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
 									<string key="NSClassName">NSView</string>
@@ -479,7 +467,6 @@
 							</array>
 							<string key="NSFrame">{{0, 145}, {365, 163}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="550573607"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -490,7 +477,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{37, 78}, {197, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1016762618"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -518,7 +504,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{276, 78}, {52, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="141177162"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -539,7 +524,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{236, 76}, {34, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="803940373"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -574,7 +558,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{40, 111}, {81, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="613924349"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -595,7 +578,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{169, 111}, {159, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1029009251"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -619,7 +601,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{123, 109}, {40, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="998711175"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -642,7 +623,6 @@
 							<array class="NSMutableArray" key="NSSubviews"/>
 							<string key="NSFrame">{{245, 341}, {72, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="767699645"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -668,7 +648,6 @@
 							<array class="NSMutableArray" key="NSSubviews"/>
 							<string key="NSFrame">{{47, 341}, {72, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="831017089"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -694,7 +673,6 @@
 							<array class="NSMutableArray" key="NSSubviews"/>
 							<string key="NSFrame">{{146, 341}, {72, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="920544384"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -728,7 +706,6 @@
 							</set>
 							<string key="NSFrame">{{0, 141}, {365, 4}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="984385015"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="990924929">
@@ -760,7 +737,6 @@
 							</set>
 							<string key="NSFrame">{{0, 307}, {365, 4}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="885821343"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="547116901">
@@ -783,7 +759,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{20, 45}, {133, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="165824216"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -807,7 +782,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{185, 45}, {145, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="194113932"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -831,7 +805,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{150, 42}, {22, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="448440079"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -863,7 +836,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{62, 12}, {100, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="88647782"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -887,7 +859,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{162, 9}, {22, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="755912210"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -914,7 +885,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{197, 12}, {90, 18}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1051683696"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -938,8 +908,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{285, 9}, {22, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="293659553">
@@ -965,7 +933,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{327, 42}, {22, 22}}</string>
 							<reference key="NSSuperview" ref="726328563"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="702311606"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
@@ -990,7 +957,6 @@
 					</array>
 					<string key="NSFrameSize">{365, 591}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="1070571697"/>
 					<string key="NSReuseIdentifierKey">_NS:224</string>
 				</object>
@@ -1024,7 +990,6 @@
 							</set>
 							<string key="NSFrameSize">{365, 277}</string>
 							<reference key="NSSuperview" ref="232362358"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="198312823"/>
 							<double key="NSViewAlphaValue">0.93000000000000005</double>
 							<bool key="NSEnabled">YES</bool>
@@ -1052,7 +1017,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{132, 126}, {100, 24}}</string>
 									<reference key="NSSuperview" ref="198312823"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="774145285"/>
 									<string key="NSReuseIdentifierKey">_NS:1505</string>
 									<bool key="NSEnabled">YES</bool>
@@ -1085,7 +1049,6 @@
 									</set>
 									<string key="NSFrame">{{132, 88}, {100, 100}}</string>
 									<reference key="NSSuperview" ref="198312823"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="970145194"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSImageCell" key="NSCell" id="459100010">
@@ -1102,7 +1065,6 @@
 							</array>
 							<string key="NSFrameSize">{365, 277}</string>
 							<reference key="NSSuperview" ref="232362358"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="165585513"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<string key="NSClassName">GestureRecognitionView</string>
@@ -1120,7 +1082,6 @@
 							</set>
 							<string key="NSFrame">{{132, 88}, {100, 100}}</string>
 							<reference key="NSSuperview" ref="232362358"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="927846932"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="299658402">
@@ -1139,8 +1100,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{132, 118}, {100, 41}}</string>
 							<reference key="NSSuperview" ref="232362358"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1505</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="592614575">
@@ -1162,7 +1121,6 @@
 					</array>
 					<string key="NSFrameSize">{365, 277}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="1021146466"/>
 					<string key="NSReuseIdentifierKey">_NS:224</string>
 				</object>
@@ -1179,8 +1137,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{6, 1}, {18, 17}}</string>
 						<reference key="NSSuperview" ref="853580426"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:1597</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="611733552">
@@ -1206,7 +1162,6 @@
 				</array>
 				<string key="NSFrameSize">{30, 20}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="575003510"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="NSClassName">NSView</string>
@@ -1544,6 +1499,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">multitouchRecognitionLabel</string>
+						<reference key="source" ref="377443182"/>
+						<reference key="destination" ref="141177162"/>
+					</object>
+					<int key="connectionID">4170</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="669819904"/>
 						<reference key="destination" ref="288277082"/>
@@ -1643,7 +1606,6 @@
 									</set>
 									<string key="NSFrameSize">{365, 36}</string>
 									<reference key="NSSuperview" ref="770914905"/>
-									<reference key="NSNextKeyView" ref="252268847"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSImageCell" key="NSCell" id="337729661">
 										<int key="NSCellFlags">134217728</int>
@@ -2437,6 +2399,10 @@
 				<string key="3817.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="3817.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="3818.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<real value="0.0" key="3818.IBViewIntegration.shadowBlurRadius"/>
+				<reference key="3818.IBViewIntegration.shadowColor" ref="167873564"/>
+				<real value="0.0" key="3818.IBViewIntegration.shadowOffsetHeight"/>
+				<real value="0.0" key="3818.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="3820.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3836.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3859.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2590,341 +2556,9 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">4167</int>
+			<int key="maxID">4170</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AppButtonCell</string>
-					<string key="superclassName">NSButtonCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppButtonCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AppController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">closeAndQuit:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">closeAndQuit:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">closeAndQuit:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="gestureRecognitionController">GestureRecognitionController</string>
-						<string key="gestureSetupController">GestureSetupController</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="gestureRecognitionController">
-							<string key="name">gestureRecognitionController</string>
-							<string key="candidateClassName">GestureRecognitionController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="gestureSetupController">
-							<string key="name">gestureSetupController</string>
-							<string key="candidateClassName">GestureSetupController</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AppSegmentedCell</string>
-					<string key="superclassName">NSSegmentedCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppSegmentedCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AppTableCellView</string>
-					<string key="superclassName">NSTableCellView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppTableCellView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AppTableView</string>
-					<string key="superclassName">NSTableView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppTableView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AppTextFieldCell</string>
-					<string key="superclassName">NSTextFieldCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppTextFieldCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureRecognitionController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="appDescriptionAlert">NSTextField</string>
-						<string key="appIconAlert">NSImageView</string>
-						<string key="partialDescriptionAlert">NSTextField</string>
-						<string key="partialIconAlert">NSImageView</string>
-						<string key="recognitionBackground">NSImageView</string>
-						<string key="recognitionView">GestureRecognitionView</string>
-						<string key="recognitionWindow">GestureRecognitionWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="appDescriptionAlert">
-							<string key="name">appDescriptionAlert</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="appIconAlert">
-							<string key="name">appIconAlert</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="partialDescriptionAlert">
-							<string key="name">partialDescriptionAlert</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="partialIconAlert">
-							<string key="name">partialIconAlert</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="recognitionBackground">
-							<string key="name">recognitionBackground</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="recognitionView">
-							<string key="name">recognitionView</string>
-							<string key="candidateClassName">GestureRecognitionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="recognitionWindow">
-							<string key="name">recognitionWindow</string>
-							<string key="candidateClassName">GestureRecognitionWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureRecognitionController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureRecognitionView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureRecognitionView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureRecognitionWindow</string>
-					<string key="superclassName">NSPanel</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureRecognitionWindow.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureSetupController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="appTypeChanged:">id</string>
-						<string key="assignSelectedGesture:">id</string>
-						<string key="deleteSelectedGesture:">id</string>
-						<string key="fullscreenOptionChanged:">id</string>
-						<string key="hideIconOptionChanged:">id</string>
-						<string key="loginStartOptionChanged:">id</string>
-						<string key="readingDelayNumberChanged:">id</string>
-						<string key="showSelectedGesture:">id</string>
-						<string key="successfulRecognitionScoreChanged:">id</string>
-						<string key="toggleGestureSetupWindow:">id</string>
-						<string key="useMultitouchOptionChanged:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="appTypeChanged:">
-							<string key="name">appTypeChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="assignSelectedGesture:">
-							<string key="name">assignSelectedGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSelectedGesture:">
-							<string key="name">deleteSelectedGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="fullscreenOptionChanged:">
-							<string key="name">fullscreenOptionChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hideIconOptionChanged:">
-							<string key="name">hideIconOptionChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="loginStartOptionChanged:">
-							<string key="name">loginStartOptionChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="readingDelayNumberChanged:">
-							<string key="name">readingDelayNumberChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showSelectedGesture:">
-							<string key="name">showSelectedGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="successfulRecognitionScoreChanged:">
-							<string key="name">successfulRecognitionScoreChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleGestureSetupWindow:">
-							<string key="name">toggleGestureSetupWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="useMultitouchOptionChanged:">
-							<string key="name">useMultitouchOptionChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="appArrayController">NSArrayController</string>
-						<string key="appTableView">NSTableView</string>
-						<string key="appTypePicker">NSSegmentedControl</string>
-						<string key="appView">NSView</string>
-						<string key="assignGestureButton">NSButton</string>
-						<string key="deleteGestureButton">NSButton</string>
-						<string key="drawNowText">NSTextField</string>
-						<string key="fullscreenCheckbox">NSButton</string>
-						<string key="hideDockIconCheckbox">NSButton</string>
-						<string key="multitouchCheckbox">NSButton</string>
-						<string key="parentAppView">NSView</string>
-						<string key="readingDelayTextField">NSTextField</string>
-						<string key="setupView">GestureSetupView</string>
-						<string key="setupWindow">GestureSetupWindow</string>
-						<string key="showGestureButton">NSButton</string>
-						<string key="startAtLaunchCheckbox">NSButton</string>
-						<string key="statusBarView">NSView</string>
-						<string key="successfulRecognitionScoreTextField">NSTextField</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="appArrayController">
-							<string key="name">appArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="appTableView">
-							<string key="name">appTableView</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="appTypePicker">
-							<string key="name">appTypePicker</string>
-							<string key="candidateClassName">NSSegmentedControl</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="appView">
-							<string key="name">appView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="assignGestureButton">
-							<string key="name">assignGestureButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="deleteGestureButton">
-							<string key="name">deleteGestureButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="drawNowText">
-							<string key="name">drawNowText</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="fullscreenCheckbox">
-							<string key="name">fullscreenCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="hideDockIconCheckbox">
-							<string key="name">hideDockIconCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="multitouchCheckbox">
-							<string key="name">multitouchCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="parentAppView">
-							<string key="name">parentAppView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="readingDelayTextField">
-							<string key="name">readingDelayTextField</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="setupView">
-							<string key="name">setupView</string>
-							<string key="candidateClassName">GestureSetupView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="setupWindow">
-							<string key="name">setupWindow</string>
-							<string key="candidateClassName">GestureSetupWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="showGestureButton">
-							<string key="name">showGestureButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="startAtLaunchCheckbox">
-							<string key="name">startAtLaunchCheckbox</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="statusBarView">
-							<string key="name">statusBarView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="successfulRecognitionScoreTextField">
-							<string key="name">successfulRecognitionScoreTextField</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureSetupController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureSetupView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureSetupView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GestureSetupWindow</string>
-					<string key="superclassName">NSPanel</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GestureSetupWindow.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">RepeatedImageView</string>
-					<string key="superclassName">NSImageView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/RepeatedImageView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ShadowTextFieldCell</string>
-					<string key="superclassName">NSTextFieldCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ShadowTextFieldCell.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">

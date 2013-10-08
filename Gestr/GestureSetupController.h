@@ -34,6 +34,8 @@
     
 	IBOutlet NSButton *hideDockIconCheckbox, *startAtLaunchCheckbox;
     
+    IBOutlet NSTextField *multitouchRecognitionLabel;
+    
 	int successfulRecognitionScore, readingDelayNumber;
     
 	BOOL multitouchRecognition, fullscreenRecognition;

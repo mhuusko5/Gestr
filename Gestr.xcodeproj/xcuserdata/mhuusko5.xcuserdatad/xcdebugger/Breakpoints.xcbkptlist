@@ -183,19 +183,6 @@
          landmarkName = "Resample()"
          landmarkType = "7">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Gestr/GestureRecognitionController.m"
-         timestampString = "401740434.683169"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "9"
-         endingLineNumber = "9"
-         landmarkName = "-init"
-         landmarkType = "5">
-      </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
