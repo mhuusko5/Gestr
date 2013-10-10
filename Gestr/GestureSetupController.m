@@ -616,45 +616,47 @@ BOOL awakenedFromNib = NO;
 }
 
 - (IBAction)toggleGestureSetupWindow:(id)sender {
-	NSRect menuBarFrame = [[[statusBarItem view] window] frame];
-	NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
-    
-	pt.y -= menuBarFrame.size.height / 2;
-	pt.x -= (setupWindow.frame.size.width) / 2;
-    
-	NSRect frame = [setupWindow frame];
-	if ([setupWindow alphaValue] <= 0) {
-		frame.origin.y = pt.y;
-		frame.origin.x = pt.x;
-		[setupWindow setFrame:frame display:YES];
+    if (self.appController.gestureRecognitionController.gesturesLoaded) {
+        NSRect menuBarFrame = [[[statusBarItem view] window] frame];
+        NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
         
-		frame.origin.y -= frame.size.height;
-		[setupWindow setAlphaValue:1.0];
-		[setupWindow makeKeyAndOrderFront:self];
-		[setupWindow setFrame:frame display:YES animate:YES];
+        pt.y -= menuBarFrame.size.height / 2;
+        pt.x -= (setupWindow.frame.size.width) / 2;
         
-		[setupWindow setIgnoresMouseEvents:NO];
-		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-	}
-	else {
-		if ([[NSApplication sharedApplication] isHidden]) {
-			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-		}
-		else {
-			frame.origin.x = pt.x;
-			frame.origin.y = pt.y;
-			[setupWindow setFrame:frame display:YES animate:YES];
+        NSRect frame = [setupWindow frame];
+        if ([setupWindow alphaValue] <= 0) {
+            frame.origin.y = pt.y;
+            frame.origin.x = pt.x;
+            [setupWindow setFrame:frame display:YES];
             
-			[setupWindow setIgnoresMouseEvents:YES];
-			[setupWindow setAlphaValue:0.0];
-			
-            [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+            frame.origin.y -= frame.size.height;
+            [setupWindow setAlphaValue:1.0];
+            [setupWindow makeKeyAndOrderFront:self];
+            [setupWindow setFrame:frame display:YES animate:YES];
             
-			[[NSApplication sharedApplication] hide:self];
-		}
-	}
-    
-	[self updateSetupControls];
+            [setupWindow setIgnoresMouseEvents:NO];
+            [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+        }
+        else {
+            if ([[NSApplication sharedApplication] isHidden]) {
+                [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+            }
+            else {
+                frame.origin.x = pt.x;
+                frame.origin.y = pt.y;
+                [setupWindow setFrame:frame display:YES animate:YES];
+                
+                [setupWindow setIgnoresMouseEvents:YES];
+                [setupWindow setAlphaValue:0.0];
+                
+                [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+                
+                [[NSApplication sharedApplication] hide:self];
+            }
+        }
+        
+        [self updateSetupControls];
+    }
 }
 
 @end

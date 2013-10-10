@@ -228,7 +228,7 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 }
 
 - (void)shouldStartDetectingGesture {
-	if ([[self recognitionWindow] alphaValue] <= 0 && ([[gestureDetector loadedGestures] count] > 0)) {
+	if (gesturesLoaded && [[self recognitionWindow] alphaValue] <= 0) {
 		if ([self.appController.gestureSetupController.setupWindow alphaValue] > 0) {
 			[self.appController.gestureSetupController toggleGestureSetupWindow:nil];
 		}
