@@ -7,65 +7,13 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Gestr/Gesture.m"
-         timestampString = "398291150.301043"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "14"
-         endingLineNumber = "14"
-         landmarkName = "-initWithName:andStrokes:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Gestr/Gesture.m"
-         timestampString = "398291150.301043"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "21"
-         endingLineNumber = "21"
-         landmarkName = "-generateTemplates"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Gestr/Gesture.m"
-         timestampString = "398291150.301043"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "22"
-         endingLineNumber = "22"
-         landmarkName = "-generateTemplates"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Gestr/Gesture.m"
-         timestampString = "398291150.301043"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "36"
-         endingLineNumber = "36"
-         landmarkName = "-generateTemplates"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Gestr/GestureUtils.m"
          timestampString = "401685832.84645"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "261"
          endingLineNumber = "261"
-         landmarkName = "DegreesToRadians()"
+         landmarkName = "GUDegreesToRadians()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -89,7 +37,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "106"
          endingLineNumber = "106"
-         landmarkName = "Resample()"
+         landmarkName = "GUResample()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -102,7 +50,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "107"
          endingLineNumber = "107"
-         landmarkName = "Resample()"
+         landmarkName = "GUResample()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -115,7 +63,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "183"
          endingLineNumber = "183"
-         landmarkName = "Splice()"
+         landmarkName = "GUSplice()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -128,7 +76,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "185"
          endingLineNumber = "185"
-         landmarkName = "Splice()"
+         landmarkName = "GUSplice()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -141,7 +89,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "187"
          endingLineNumber = "187"
-         landmarkName = "Splice()"
+         landmarkName = "GUSplice()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -154,7 +102,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "127"
          endingLineNumber = "127"
-         landmarkName = "Resample()"
+         landmarkName = "GUResample()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -167,7 +115,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "124"
          endingLineNumber = "124"
-         landmarkName = "Resample()"
+         landmarkName = "GUResample()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -180,7 +128,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "123"
          endingLineNumber = "123"
-         landmarkName = "Resample()"
+         landmarkName = "GUResample()"
          landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>

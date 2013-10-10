@@ -18,7 +18,7 @@
         
 		for (id plistGestureKey in updatedGestureDictionary) {
 			Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
-			if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
+			if (!plistGesture || !plistGesture.identifier || !plistGesture.strokes || plistGesture.strokes.count < 1) {
 				@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
 			}
 			else {
@@ -262,10 +262,13 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToShow = [appController.gestureSetupController appWithName:result.name];
+		App *appToShow = [appController.gestureSetupController appWithBundleId:result.gestureId];
 		if (appToShow != nil) {
-			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToShow.name, rating]];
+			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating]];
 			[partialIconAlert setImage:appToShow.icon];
+		}
+        else {
+			[appController.gestureSetupController deleteGestureWithId:result.gestureId];
 		}
 	}
 	else {
@@ -278,18 +281,18 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToLaunch = [appController.gestureSetupController appWithName:result.name];
+		App *appToLaunch = [appController.gestureSetupController appWithBundleId:result.gestureId];
 		if (appToLaunch != nil) {
-			[appDescriptionAlert setStringValue:appToLaunch.name];
-			[appIconAlert setImage:appToLaunch.icon];
-            
-			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.name, rating]];
+            [partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating]];
 			[partialIconAlert setImage:appToLaunch.icon];
             
-            [self launchAppWithBundleId:appToLaunch.bundle];
+			[appDescriptionAlert setStringValue:appToLaunch.displayName];
+			[appIconAlert setImage:appToLaunch.icon];
+            
+            [self launchAppWithBundleId:appToLaunch.bundleId];
 		}
 		else {
-			[appController.gestureSetupController deleteGestureWithName:result.name];
+			[appController.gestureSetupController deleteGestureWithId:result.gestureId];
 		}
         
 		[self hideGestureRecognitionWindow:YES];

@@ -90,10 +90,10 @@
 	[self addAppsAtPath:@"/System/Library/CoreServices" toArray:systemArray levels:0];
 	systemArray = [NSMutableArray arrayWithArray:[systemArray sortedArrayUsingComparator: ^NSComparisonResult (App *a, App *b) {
 	    NSComparisonResult *result = [b.lastUsed compare:a.lastUsed];
-	    if ([a.name isEqualToString:@"Finder"]) {
+	    if ([[a.bundleId lowercaseString] isEqualToString:@"com.apple.finder"]) {
 	        result = NSOrderedAscending;
 		}
-	    else if ([b.name isEqualToString:@"Finder"]) {
+	    else if ([[b.bundleId lowercaseString] isEqualToString:@"com.apple.finder"]) {
 	        result = NSOrderedDescending;
 		}
         
@@ -112,70 +112,69 @@
 	if (!(url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]])) {
 		return;
 	}
-    
-	NSURL *file;
+	
 	NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:url includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
     
-	while (file = [directoryEnumerator nextObject]) {
-		if ([[file pathExtension] isEqualToString:@"app"]) {
-			NSDictionary *dict = [[NSBundle bundleWithPath:[file path]] infoDictionary];
-            
-			NSString *name = [dict objectForKey:@"CFBundleName"];
-			if (!name) {
-				name = [dict objectForKey:@"CFBundleExecutable"];
-			}
-            
-			if (![name isEqualToString:@"Gestr"]) {
-				NSImage *icon = nil;
-				@try {
-					icon = [[NSWorkspace sharedWorkspace] iconForFile:[file path]];
-				}
-				@catch (NSException *ex)
-				{
-					icon = [NSImage imageNamed:@"noIcon.png"];
-				}
+    NSURL *fileUrl;
+	while (fileUrl = [directoryEnumerator nextObject]) {
+        NSString *filePath = [fileUrl path];
+        
+        BOOL isDir;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
+            if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
+                NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
                 
-				NSDate *lastUsed = nil;
-				int useCount = 0;
-				@try {
-					MDItemRef item = MDItemCreate(kCFAllocatorDefault, (CFStringRef)[file path]);
-					CFArrayRef attributeNames = MDItemCopyAttributeNames(item);
-					NSArray *array = (NSArray *)attributeNames;
-					NSEnumerator *e = [array objectEnumerator];
-					id arrayObject;
-					while ((arrayObject = [e nextObject])) {
-						CFTypeRef ref = MDItemCopyAttribute(item, (CFStringRef)[arrayObject description]);
-						NSObject *tempObject = (NSObject *)ref;
-                        
-						if ([arrayObject isEqualToString:@"kMDItemLastUsedDate"]) {
-							lastUsed = [tempObject copy];
-						}
-						else if ([arrayObject isEqualToString:@"kMDItemUseCount"]) {
-							useCount = (int)tempObject;
-						}
-						if (ref != NULL) {
-							CFRelease(ref);
-						}
-					}
+                NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
+                
+                if (![displayName isEqualToString:@"Gestr"]) {
+                    NSImage *icon = nil;
+                    @try {
+                        icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
+                    }
+                    @catch (NSException *ex)
+                    {
+                        icon = [NSImage imageNamed:@"noIcon.png"];
+                    }
                     
-					if (attributeNames != NULL) {
-						CFRelease(attributeNames);
-					}
-				}
-				@catch (NSException *exception)
-				{
-					lastUsed = nil;
-					useCount = 0;
-				}
-                
-				if (name && ![name isEqualToString:@"(null)"]) {
-					[arr addObject:[[App alloc] initWithName:name andIcon:icon andBundle:[dict objectForKey:@"CFBundleIdentifier"] andLastUsed:lastUsed andUseCount:useCount]];
-				}
-			}
-		}
-		else if ([[file pathExtension] isEqualToString:@""] && l > 0 && ![[file path] isEqualToString:@"/Applications/Utilities"]) {
-			[self addAppsAtPath:[file path] toArray:arr levels:l - 1];
-		}
+                    NSDate *lastUsed = nil;
+                    int useCount = 0;
+                    @try {
+                        MDItemRef item = MDItemCreate(kCFAllocatorDefault, (CFStringRef)filePath);
+                        CFArrayRef attributeNames = MDItemCopyAttributeNames(item);
+                        NSArray *array = (NSArray *)attributeNames;
+                        NSEnumerator *e = [array objectEnumerator];
+                        id arrayObject;
+                        while ((arrayObject = [e nextObject])) {
+                            CFTypeRef ref = MDItemCopyAttribute(item, (CFStringRef)[arrayObject description]);
+                            NSObject *tempObject = (NSObject *)ref;
+                            
+                            if ([arrayObject isEqualToString:@"kMDItemLastUsedDate"]) {
+                                lastUsed = [tempObject copy];
+                            }
+                            else if ([arrayObject isEqualToString:@"kMDItemUseCount"]) {
+                                useCount = (int)tempObject;
+                            }
+                            if (ref != NULL) {
+                                CFRelease(ref);
+                            }
+                        }
+                        
+                        if (attributeNames != NULL) {
+                            CFRelease(attributeNames);
+                        }
+                    }
+                    @catch (NSException *exception)
+                    {
+                        lastUsed = nil;
+                        useCount = 0;
+                    }
+                    
+                    [arr addObject:[[App alloc] initWithDisplayName:displayName andIcon:icon andBundle:[dict objectForKey:@"CFBundleIdentifier"] andLastUsed:lastUsed andUseCount:useCount]];
+                }
+            } else if (isDir && l > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {
+                [self addAppsAtPath:filePath toArray:arr levels:l - 1];
+            }
+        }
 	}
 }
 
@@ -260,7 +259,7 @@ BOOL awakenedFromNib = NO;
 
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
 	for (GestureStroke *stroke in gestureStrokes) {
-		if ([stroke.points count] < minimumPointCount) {
+		if ([stroke.points count] < GUMinimumPointCount) {
 			NSAlert *infoAlert = [[NSAlert alloc] init];
 			[infoAlert addButtonWithTitle:@"Ok, then"];
 			[infoAlert setMessageText:@"Please make your gesture strokes a tad longer..."];
@@ -271,9 +270,9 @@ BOOL awakenedFromNib = NO;
 	}
     
 	App *gestureToSaveApp = [[self currentAppArray] objectAtIndex:[[self currentTableView] selectedRow]];
-	Gesture *gestureToSave = [[Gesture alloc] initWithName:gestureToSaveApp.name andStrokes:gestureStrokes];
+	Gesture *gestureToSave = [[Gesture alloc] initWithId:gestureToSaveApp.bundleId andStrokes:gestureStrokes];
     
-	[appController.gestureRecognitionController.updatedGestureDictionary setObject:gestureToSave forKey:gestureToSaveApp.name];
+	[appController.gestureRecognitionController.updatedGestureDictionary setObject:gestureToSave forKey:gestureToSaveApp.bundleId];
     
 	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
     
@@ -282,29 +281,29 @@ BOOL awakenedFromNib = NO;
 	[self updateSetupControls];
 }
 
-- (void)deleteGestureWithName:(NSString *)name {
-	[appController.gestureRecognitionController.updatedGestureDictionary removeObjectForKey:name];
+- (void)deleteGestureWithId:(NSString *)_id {
+	[appController.gestureRecognitionController.updatedGestureDictionary removeObjectForKey:_id];
     
 	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
     
-	[[[appController gestureRecognitionController] gestureDetector] removeGestureWithName:name];
+	[[[appController gestureRecognitionController] gestureDetector] removeGestureWithId:_id];
 }
 
-- (App *)appWithName:(NSString *)name {
+- (App *)appWithBundleId:(NSString *)_bundleId {
 	for (App *app in appArray) {
-		if ([[app name] isEqualTo:name]) {
+		if ([app.bundleId isEqualTo:_bundleId]) {
 			return app;
 		}
 	}
     
 	for (App *app in utilitiesArray) {
-		if ([[app name] isEqualTo:name]) {
+		if ([app.bundleId isEqualTo:_bundleId]) {
 			return app;
 		}
 	}
     
 	for (App *app in systemArray) {
-		if ([[app name] isEqualTo:name]) {
+		if ([app.bundleId isEqualTo:_bundleId]) {
 			return app;
 		}
 	}
@@ -486,8 +485,7 @@ BOOL awakenedFromNib = NO;
 
 - (IBAction)deleteSelectedGesture:(id)sender {
 	if (selectedIndex >= 0) {
-		NSString *appDescription = [[[self currentAppArray] objectAtIndex:selectedIndex] name];
-		[self deleteGestureWithName:appDescription];
+		[self deleteGestureWithId:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleId]];
 	}
     
 	[self updateSetupControls];
@@ -500,10 +498,10 @@ BOOL awakenedFromNib = NO;
 	}
     
 	if (selectedIndex >= 0) {
-		NSString *appDescription = [[[self currentAppArray] objectAtIndex:selectedIndex] name];
+		NSString *appBundleId = [[[self currentAppArray] objectAtIndex:selectedIndex] bundleId];
         
 		@try {
-			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appDescription];
+			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appBundleId];
 			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
 			[showGestureThread start];
 		}
@@ -561,11 +559,11 @@ BOOL awakenedFromNib = NO;
 	selectedIndex = (int)([[self currentTableView] selectedRow]);
     
 	if (selectedIndex >= 0) {
-		NSString *appDescription = [[[self currentAppArray] objectAtIndex:selectedIndex] name];
+		NSString *appBundleId = [[[self currentAppArray] objectAtIndex:selectedIndex] bundleId];
         
 		BOOL gestureExistsForSelectedApp = NO;
         
-		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appDescription] != nil);
+		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appBundleId] != nil);
         
 		if ([[NSApplication sharedApplication] isActive]) {
 			if (gestureExistsForSelectedApp) {
@@ -612,7 +610,7 @@ BOOL awakenedFromNib = NO;
 	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 	App *app = [[self currentAppArray] objectAtIndex:row];
 	result.imageView.image = app.icon;
-	result.textField.stringValue = app.name;
+	result.textField.stringValue = app.displayName;
     
 	return result;
 }

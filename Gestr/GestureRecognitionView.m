@@ -95,7 +95,7 @@
         
 		if ([event.deviceIdentifier isEqualToNumber:initialMultitouchDeviceId]) {
             if (!firstCheckPartialGestureTimer) {
-                firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
+                firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
             }
             
 			if (noInputTimer) {
@@ -112,23 +112,26 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 18) {
-					for (MultitouchTouch *touch in event.touches) {
-                        float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
-                        if (touch.state == 4 && combinedTouchVelocity > 0.06) {
-                            NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
-                            
-                            NSNumber *identity = touch.identifier;
-                            
-                            if (![gestureStrokes objectForKey:identity]) {
-                                [orderedStrokeIds addObject:identity];
-                                [gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
-                            }
-                            
-                            GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
-                            
-                            [[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
-                            
+                int shouldDrawLimit = recognitionController.appController.gestureSetupController.fullscreenRecognition ? 16 : 10;
+                BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > shouldDrawLimit);
+                
+				for (MultitouchTouch *touch in event.touches) {
+					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
+					if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
+                        
+						NSNumber *identity = touch.identifier;
+                        
+						if (![gestureStrokes objectForKey:identity]) {
+							[orderedStrokeIds addObject:identity];
+							[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+						}
+                        
+						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
+                        
+						[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+                        
+                        if (shouldDraw) {
                             drawPoint.x *= self.frame.size.width;
                             drawPoint.y *= self.frame.size.height;
                             
@@ -147,10 +150,12 @@
                             }
                         }
 					}
-                    
-					[self setNeedsDisplay:YES];
-					lastMultitouchRedraw = [NSDate date];
 				}
+                
+                if (shouldDraw) {
+                    [self setNeedsDisplay:YES];
+					lastMultitouchRedraw = [NSDate date];
+                }
 			}
 		}
 	}

@@ -108,45 +108,49 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				if ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 18) {
-					for (MultitouchTouch *touch in event.touches) {
-						float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
-						if (touch.state == 4 && combinedTouchVelocity > 0.06) {
-							NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
-                            
-							NSNumber *identity = touch.identifier;
-                            
-							if (![gestureStrokes objectForKey:identity]) {
-								[orderedStrokeIds addObject:identity];
-								[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
-							}
-                            
-							GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
-                            
-							[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
-                            
-							drawPoint.x *= self.frame.size.width;
-							drawPoint.y *= self.frame.size.height;
-                            
-							NSBezierPath *tempPath;
-							if ((tempPath = [touchPaths objectForKey:identity])) {
-								[tempPath lineToPoint:drawPoint];
-							}
-							else {
-								tempPath = [NSBezierPath bezierPath];
-								[tempPath setLineWidth:7.0];
-								[tempPath setLineCapStyle:NSRoundLineCapStyle];
-								[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
-								[tempPath moveToPoint:drawPoint];
-                                
-								[touchPaths setObject:tempPath forKey:identity];
-							}
+                BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 10);
+                
+				for (MultitouchTouch *touch in event.touches) {
+					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
+					if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
+                        
+						NSNumber *identity = touch.identifier;
+                        
+						if (![gestureStrokes objectForKey:identity]) {
+							[orderedStrokeIds addObject:identity];
+							[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
 						}
+                        
+						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
+                        
+						[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+                        
+                        if (shouldDraw) {
+                            drawPoint.x *= self.frame.size.width;
+                            drawPoint.y *= self.frame.size.height;
+                            
+                            NSBezierPath *tempPath;
+                            if ((tempPath = [touchPaths objectForKey:identity])) {
+                                [tempPath lineToPoint:drawPoint];
+                            }
+                            else {
+                                tempPath = [NSBezierPath bezierPath];
+                                [tempPath setLineWidth:7.0];
+                                [tempPath setLineCapStyle:NSRoundLineCapStyle];
+                                [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
+                                [tempPath moveToPoint:drawPoint];
+                                
+                                [touchPaths setObject:tempPath forKey:identity];
+                            }
+                        }
 					}
-                    
-					[self setNeedsDisplay:YES];
-					lastMultitouchRedraw = [NSDate date];
 				}
+                
+                if (shouldDraw) {
+                    [self setNeedsDisplay:YES];
+					lastMultitouchRedraw = [NSDate date];
+                } 
 			}
 		}
 	}
@@ -214,7 +218,7 @@
 				}
 			}
             
-			[NSThread sleepForTimeInterval:0.007];
+			[NSThread sleepForTimeInterval:0.006];
 		}
 	}
     
