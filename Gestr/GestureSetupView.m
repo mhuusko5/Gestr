@@ -43,7 +43,7 @@
 			[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
 		}
         
-		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * boundingBoxSize andY:(drawPoint.y / self.frame.size.height) * boundingBoxSize andStroke:[identity intValue]];
+		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / self.frame.size.height) * GUBoundingBoxSize andStroke:[identity intValue]];
         
 		[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
         
@@ -121,7 +121,7 @@
 								[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
 							}
                             
-							GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * boundingBoxSize andY:drawPoint.y * boundingBoxSize andStroke:[identity intValue]];
+							GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
                             
 							[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
                             
@@ -190,7 +190,7 @@
 				if (pointIndex < cStroke.pointCount) {
 					GesturePoint *cPoint = [cStroke.points objectAtIndex:pointIndex];
                     
-					NSPoint drawPoint = NSMakePoint([cPoint getX] / boundingBoxSize * self.frame.size.width, [cPoint getY] / boundingBoxSize * self.frame.size.height);
+					NSPoint drawPoint = NSMakePoint([cPoint getX] / GUBoundingBoxSize * self.frame.size.width, [cPoint getY] / GUBoundingBoxSize * self.frame.size.height);
                     
 					NSString *ident = [NSString stringWithFormat:@"%i", strokeIndex];
                     

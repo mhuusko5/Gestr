@@ -1,16 +1,16 @@
 #import <Foundation/Foundation.h>
 
 @interface App : NSObject {
-	NSString *name;
+	NSString *displayName;
 	NSImage *icon;
-	NSString *bundle;
+	NSString *bundleId;
 	NSDate *lastUsed;
 	int useCount;
 }
-@property (assign) NSString *name, *bundle;
+@property (assign) NSString *displayName, *bundleId;
 @property (assign) NSImage *icon;
 @property (assign) NSDate *lastUsed;
 @property (assign) int useCount;
 
-- (id)initWithName:(NSString *)_name andIcon:(NSImage *)_icon andBundle:(NSString *)_bundle andLastUsed:(NSDate *)_used andUseCount:(int)_count;
+- (id)initWithDisplayName:(NSString *)_displayName andIcon:(NSImage *)_icon andBundle:(NSString *)_bundle andLastUsed:(NSDate *)_used andUseCount:(int)_count;
 @end
