@@ -4,7 +4,7 @@
 
 @synthesize stroke;
 
-- (id)initWithX:(float)_x andY:(float)_y andStroke:(int)_id {
+- (id)initWithX:(float)_x andY:(float)_y andStroke:(int)_strokeId {
 	self = [super init];
     
 #if (TARGET_OS_IPHONE || TARGET_OS_IPAD || TARGET_IPHONE_SIMULATOR)
@@ -13,29 +13,29 @@
 	point = [NSValue valueWithPoint:NSMakePoint(_x, _y)];
 #endif
     
-	stroke = _id;
+	stroke = _strokeId;
     
 	return self;
 }
 
 #if (TARGET_OS_IPHONE || TARGET_OS_IPAD || TARGET_IPHONE_SIMULATOR)
-- (id)initWithPoint:(CGPoint)_point andStroke:(int)_id {
-	return [self initWithX:_point.x andY:_point.y andStroke:_id];
+- (id)initWithPoint:(CGPoint)_point andStroke:(int)_strokeId {
+	return [self initWithX:_point.x andY:_point.y andStroke:_strokeId];
 }
 
 #else
-- (id)initWithPoint:(NSPoint)_point andStroke:(int)_id {
-	return [self initWithX:_point.x andY:_point.y andStroke:_id];
+- (id)initWithPoint:(NSPoint)_point andStroke:(int)_strokeId {
+	return [self initWithX:_point.x andY:_point.y andStroke:_strokeId];
 }
 
 #endif
 
 
-- (id)initWithValue:(NSValue *)_value andStroke:(int)_id {
+- (id)initWithValue:(NSValue *)_value andStroke:(int)_strokeId {
 	self = [super init];
     
 	point = _value;
-	stroke = _id;
+	stroke = _strokeId;
     
 	return self;
 }

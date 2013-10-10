@@ -9,11 +9,11 @@
     
 	originalStroke = _points;
     
-	stroke = Resample(originalStroke);
-	stroke = Scale(stroke);
-	stroke = TranslateToOrigin(stroke);
+	stroke = GUResample(originalStroke);
+	stroke = GUScale(stroke);
+	stroke = GUTranslateToOrigin(stroke);
     
-	startUnitVector = CalcStartUnitVector(stroke);
+	startUnitVector = GUCalcStartUnitVector(stroke);
     
 	return self;
 }

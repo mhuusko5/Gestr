@@ -1,40 +1,40 @@
 #import "GestureUtils.h"
 
-float DistanceAtBestAngle(GestureStroke *inputPoints, GestureStroke *matchPoints) {
-	float minAngleRange = DegreesToRadians(-goldenRatioAngleLeniency);
-	float maxAngleRange = DegreesToRadians(goldenRatioAngleLeniency);
+float GUDistanceAtBestAngle(GestureStroke *inputPoints, GestureStroke *matchPoints) {
+	float minAngleRange = GUDegreesToRadians(-GUGoldenRatioAngleLeniency);
+	float maxAngleRange = GUDegreesToRadians(GUGoldenRatioAngleLeniency);
     
-	float x1 = GoldenRatio * minAngleRange + (1.0 - GoldenRatio) * maxAngleRange;
-	float f1 = DistanceAtAngle(inputPoints, matchPoints, x1);
-	float x2 = (1.0 - GoldenRatio) * minAngleRange + GoldenRatio * maxAngleRange;
-	float f2 = DistanceAtAngle(inputPoints, matchPoints, x2);
-	while (abs(maxAngleRange - minAngleRange) > DegreesToRadians(goldenRatioDegreeConstant)) {
+	float x1 = GUGoldenRatio * minAngleRange + (1.0 - GUGoldenRatio) * maxAngleRange;
+	float f1 = GUDistanceAtAngle(inputPoints, matchPoints, x1);
+	float x2 = (1.0 - GUGoldenRatio) * minAngleRange + GUGoldenRatio * maxAngleRange;
+	float f2 = GUDistanceAtAngle(inputPoints, matchPoints, x2);
+	while (abs(maxAngleRange - minAngleRange) > GUDegreesToRadians(GUGoldenRatioDegreeConstant)) {
 		if (f1 < f2) {
 			maxAngleRange = x2;
 			x2 = x1;
 			f2 = f1;
-			x1 = GoldenRatio * minAngleRange + (1.0 - GoldenRatio) * maxAngleRange;
-			f1 = DistanceAtAngle(inputPoints, matchPoints, x1);
+			x1 = GUGoldenRatio * minAngleRange + (1.0 - GUGoldenRatio) * maxAngleRange;
+			f1 = GUDistanceAtAngle(inputPoints, matchPoints, x1);
 		}
 		else {
 			minAngleRange = x1;
 			x1 = x2;
 			f1 = f2;
-			x2 = (1.0 - GoldenRatio) * minAngleRange + GoldenRatio * maxAngleRange;
-			f2 = DistanceAtAngle(inputPoints, matchPoints, x2);
+			x2 = (1.0 - GUGoldenRatio) * minAngleRange + GUGoldenRatio * maxAngleRange;
+			f2 = GUDistanceAtAngle(inputPoints, matchPoints, x2);
 		}
 	}
     
 	return MIN(f1, f2);
 }
 
-NSMutableArray *HeapPermute(int count, NSMutableArray *order, NSMutableArray *newOrders) {
+NSMutableArray *GUHeapPermute(int count, NSMutableArray *order, NSMutableArray *newOrders) {
 	if (count == 1) {
 		[newOrders addObject:[order copy]];
 	}
 	else {
 		for (int i = 0; i < count; i++) {
-			HeapPermute(count - 1, order, newOrders);
+			GUHeapPermute(count - 1, order, newOrders);
 			int last = [[order objectAtIndex:(count - 1)] intValue];
 			if (count % 2 == 1) {
 				int first = [[order objectAtIndex:0] intValue];
@@ -52,7 +52,7 @@ NSMutableArray *HeapPermute(int count, NSMutableArray *order, NSMutableArray *ne
 	return newOrders;
 }
 
-NSMutableArray *MakeUnistrokes(NSMutableArray *strokes, NSMutableArray *orders) {
+NSMutableArray *GUMakeUnistrokes(NSMutableArray *strokes, NSMutableArray *orders) {
 	NSMutableArray *unistrokes = [NSMutableArray array];
 	for (int r = 0; r < [orders count]; r++) {
 		NSMutableArray *strokeOrder = [orders objectAtIndex:r];
@@ -85,8 +85,8 @@ NSMutableArray *MakeUnistrokes(NSMutableArray *strokes, NSMutableArray *orders) 
 	return unistrokes;
 }
 
-GestureStroke *RotateBy(GestureStroke *points, float radians) {
-	GesturePoint *centroid = Centroid(points);
+GestureStroke *GURotateBy(GestureStroke *points, float radians) {
+	GesturePoint *centroid = GUCentroid(points);
 	float cosValue = cosf(radians);
 	float sinValue = sinf(radians);
     
@@ -102,18 +102,18 @@ GestureStroke *RotateBy(GestureStroke *points, float radians) {
 	return rotatedPoints;
 }
 
-GestureStroke *Resample(GestureStroke *points) {
+GestureStroke *GUResample(GestureStroke *points) {
 	GestureStroke *currentPoints = [points copy];
 	GestureStroke *newPoints = [[GestureStroke alloc] init];
 	[newPoints addPoint:[points pointAtIndex:0]];
     
-	float newPointDistance = PathLength(points) / (resampledStrokePointCount - 1);
+	float newPointDistance = GUPathLength(points) / (GUResampledStrokePointCount - 1);
 	float initialDistance = 0.0;
     
 	for (int i = 1; i < [currentPoints pointCount]; i++) {
 		GesturePoint *point1 = [currentPoints pointAtIndex:(i - 1)];
 		GesturePoint *point2 = [currentPoints pointAtIndex:i];
-		float d = Distance(point1, point2);
+		float d = GUDistance(point1, point2);
         
 		if ((initialDistance + d) > newPointDistance) {
 			float x = [point1 getX] + ((newPointDistance - initialDistance) / d) * ([point2 getX] - [point1 getX]);
@@ -122,7 +122,7 @@ GestureStroke *Resample(GestureStroke *points) {
 			GesturePoint *newPoint = [[GesturePoint alloc] initWithX:x andY:y andStroke:point1.stroke];
 			[newPoints addPoint:newPoint];
             
-			currentPoints = Splice(currentPoints, newPoint, i);
+			currentPoints = GUSplice(currentPoints, newPoint, i);
             
 			initialDistance = 0.0;
 		}
@@ -131,9 +131,9 @@ GestureStroke *Resample(GestureStroke *points) {
 		}
 	}
     
-	if ([newPoints pointCount] < resampledStrokePointCount) {
+	if ([newPoints pointCount] < GUResampledStrokePointCount) {
 		GesturePoint *lastPoint = [points pointAtIndex:[points pointCount] - 1];
-		for (int j = 0; j < (resampledStrokePointCount - [newPoints pointCount]); j++) {
+		for (int j = 0; j < (GUResampledStrokePointCount - [newPoints pointCount]); j++) {
 			[newPoints addPoint:[lastPoint copy]];
 		}
 	}
@@ -141,9 +141,9 @@ GestureStroke *Resample(GestureStroke *points) {
 	return newPoints;
 }
 
-GestureStroke *Scale(GestureStroke *points) {
-	CGRect currentBox = BoundingBox(points);
-	BOOL isLine = MIN(currentBox.size.width / currentBox.size.height, currentBox.size.height / currentBox.size.width) <= scaleLeniency;
+GestureStroke *GUScale(GestureStroke *points) {
+	CGRect currentBox = GUBoundingBox(points);
+	BOOL isLine = MIN(currentBox.size.width / currentBox.size.height, currentBox.size.height / currentBox.size.width) <= GUScaleLeniency;
     
 	GestureStroke *scaled = [[GestureStroke alloc] init];
 	for (GesturePoint *point in points.points) {
@@ -151,13 +151,13 @@ GestureStroke *Scale(GestureStroke *points) {
 		float scaledX;
 		float scaledY;
 		if (isLine) {
-			scale = (boundingBoxSize / MAX(currentBox.size.width, currentBox.size.height));
+			scale = (GUBoundingBoxSize / MAX(currentBox.size.width, currentBox.size.height));
 			scaledX = [point getX] * scale;
 			scaledY = [point getY] * scale;
 		}
 		else {
-			scaledX = [point getX] * (boundingBoxSize / currentBox.size.width);
-			scaledY = [point getY] * (boundingBoxSize / currentBox.size.height);
+			scaledX = [point getX] * (GUBoundingBoxSize / currentBox.size.width);
+			scaledY = [point getY] * (GUBoundingBoxSize / currentBox.size.height);
 		}
         
 		[scaled addPoint:[[GesturePoint alloc] initWithX:scaledX andY:scaledY andStroke:point.stroke]];
@@ -166,8 +166,8 @@ GestureStroke *Scale(GestureStroke *points) {
 	return scaled;
 }
 
-GestureStroke *TranslateToOrigin(GestureStroke *points) {
-	GesturePoint *centroid = Centroid(points);
+GestureStroke *GUTranslateToOrigin(GestureStroke *points) {
+	GesturePoint *centroid = GUCentroid(points);
 	GestureStroke *translated = [[GestureStroke alloc] init];
 	for (int i = 0; i < [points pointCount]; i++) {
 		GesturePoint *point = [points pointAtIndex:i];
@@ -179,7 +179,7 @@ GestureStroke *TranslateToOrigin(GestureStroke *points) {
 	return translated;
 }
 
-GestureStroke *Splice(GestureStroke *originalPoints, id newVal, int i) {
+GestureStroke *GUSplice(GestureStroke *originalPoints, id newVal, int i) {
 	NSArray *frontSlice = [originalPoints.points subarrayWithRange:NSMakeRange(0, i)];
 	int len = (int)([originalPoints pointCount] - i);
 	NSArray *backSlice = [originalPoints.points subarrayWithRange:NSMakeRange(i, len)];
@@ -191,28 +191,28 @@ GestureStroke *Splice(GestureStroke *originalPoints, id newVal, int i) {
 	return [[GestureStroke alloc] initWithPoints:spliced];
 }
 
-float AngleBetweenUnitVectors(GesturePoint *unitVector1, GesturePoint *unitVector2) {
+float GUAngleBetweenUnitVectors(GesturePoint *unitVector1, GesturePoint *unitVector2) {
 	float angle = ([unitVector1 getX] * [unitVector2 getX] + [unitVector1 getY] * [unitVector2 getY]);
 	if (angle < -1.0 || angle > 1.0) {
-		angle = RoundToDigits(angle, 5);
+		angle = GURoundToDigits(angle, 5);
 	}
     
 	return acos(angle);
 }
 
-float PathDistance(GestureStroke *points1, GestureStroke *points2) {
+float GUPathDistance(GestureStroke *points1, GestureStroke *points2) {
 	float distance = 0.0;
 	for (int i = 0; i < [points1 pointCount] && i < [points2 pointCount]; i++) {
-		distance += Distance([points1 pointAtIndex:i], [points2 pointAtIndex:i]);
+		distance += GUDistance([points1 pointAtIndex:i], [points2 pointAtIndex:i]);
 	}
     
 	return distance / [points1 pointCount];
 }
 
-GesturePoint *CalcStartUnitVector(GestureStroke *points) {
-	int endPointIndex = startVectorDelay + startVectorLength;
+GesturePoint *GUCalcStartUnitVector(GestureStroke *points) {
+	int endPointIndex = GUStartVectorDelay + GUStartVectorLength;
 	GesturePoint *pointAtIndex = [points pointAtIndex:endPointIndex];
-	GesturePoint *firstPoint = [points pointAtIndex:startVectorDelay];
+	GesturePoint *firstPoint = [points pointAtIndex:GUStartVectorDelay];
     
 	GesturePoint *unitVector = [[GesturePoint alloc] initWithX:[pointAtIndex getX] - [firstPoint getX] andY:[pointAtIndex getY] - [firstPoint getY] andStroke:0];
 	float magnitude = sqrtf([unitVector getX] * [unitVector getX] + [unitVector getY] * [unitVector getY]);
@@ -220,7 +220,7 @@ GesturePoint *CalcStartUnitVector(GestureStroke *points) {
 	return [[GesturePoint alloc] initWithX:[unitVector getX] / magnitude andY:[unitVector getY] / magnitude andStroke:0];
 }
 
-CGRect BoundingBox(GestureStroke *points) {
+CGRect GUBoundingBox(GestureStroke *points) {
 	float minX = FLT_MAX;
 	float maxX = -FLT_MAX;
 	float minY = FLT_MAX;
@@ -247,43 +247,43 @@ CGRect BoundingBox(GestureStroke *points) {
 	return CGRectMake(minX, minY, (maxX - minX), (maxY - minY));
 }
 
-float DistanceAtAngle(GestureStroke *recognizingPoints, GestureStroke *matchPoints, float radians) {
-	GestureStroke *newPoints = RotateBy(recognizingPoints, radians);
-	return PathDistance(newPoints, matchPoints);
+float GUDistanceAtAngle(GestureStroke *recognizingPoints, GestureStroke *matchPoints, float radians) {
+	GestureStroke *newPoints = GURotateBy(recognizingPoints, radians);
+	return GUPathDistance(newPoints, matchPoints);
 }
 
-float RoundToDigits(float number, int decimals) {
+float GURoundToDigits(float number, int decimals) {
 	decimals = pow(10, decimals);
 	return round(number * decimals) / decimals;
 }
 
-float DegreesToRadians(float degrees) {
+float GUDegreesToRadians(float degrees) {
 	return degrees * M_PI / 180.0;
 }
 
-float RadiansToDegrees(float radians) {
+float GURadiansToDegrees(float radians) {
 	return radians * 180.0 / M_PI;
 }
 
-float PathLength(GestureStroke *points) {
+float GUPathLength(GestureStroke *points) {
 	float distance = 0.0;
 	for (int i = 1; i < [points pointCount]; i++) {
 		GesturePoint *point1 = [points pointAtIndex:(i - 1)];
 		GesturePoint *point2 = [points pointAtIndex:i];
-		distance += Distance(point1, point2);
+		distance += GUDistance(point1, point2);
 	}
     
 	return distance;
 }
 
-float Distance(GesturePoint *point1, GesturePoint *point2) {
+float GUDistance(GesturePoint *point1, GesturePoint *point2) {
 	int xDiff = [point2 getX] - [point1 getX];
 	int yDiff = [point2 getY] - [point1 getY];
 	float dist = sqrt(xDiff * xDiff + yDiff * yDiff);
 	return dist;
 }
 
-GesturePoint *Centroid(GestureStroke *points) {
+GesturePoint *GUCentroid(GestureStroke *points) {
 	float x = 0.0;
 	float y = 0.0;
 	for (GesturePoint *point in points.points) {

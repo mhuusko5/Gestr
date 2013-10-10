@@ -2,41 +2,41 @@
 #import "GestureStroke.h"
 #import "GesturePoint.h"
 
-#define boundingBoxSize 400
+#define GUBoundingBoxSize 400
 
-#define GoldenRatio (0.5 * (-1.0 + sqrt(5.0)))
+#define GUGoldenRatio (0.5 * (-1.0 + sqrt(5.0)))
 
-#define startVectorDelay 2
-#define startVectorLength 10
+#define GUStartVectorDelay 2
+#define GUStartVectorLength 10
 
-#define minimumPointCount 13
+#define GUMinimumPointCount 13
 
-#define scaleLeniency 0.25f
+#define GUScaleLeniency 0.25f
 
-#define resampledStrokePointCount 120
+#define GUResampledStrokePointCount 120
 
-#define goldenRatioAngleLeniency 30.0f
+#define GUGoldenRatioAngleLeniency 30.0f
 
-#define startAngleLeniency 30.0f
+#define GUStartAngleLeniency 30.0f
 
-#define goldenRatioDegreeConstant 2.0f
+#define GUGoldenRatioDegreeConstant 2.0f
 
-float DistanceAtBestAngle(GestureStroke *inputPoints, GestureStroke *matchPoints);
-NSMutableArray *HeapPermute(int count, NSMutableArray *order, NSMutableArray *newOrders);
-NSMutableArray *MakeUnistrokes(NSMutableArray *strokes, NSMutableArray *orders);
-GestureStroke *RotateBy(GestureStroke *points, float radians);
-GestureStroke *Resample(GestureStroke *points);
-GestureStroke *Scale(GestureStroke *points);
-GestureStroke *TranslateToOrigin(GestureStroke *points);
-GestureStroke *Splice(GestureStroke *originalPoints, id newVal, int i);
-float AngleBetweenUnitVectors(GesturePoint *unitVector1, GesturePoint *unitVector2);
-float PathDistance(GestureStroke *points1, GestureStroke *points2);
-GesturePoint *CalcStartUnitVector(GestureStroke *points);
-CGRect BoundingBox(GestureStroke *points);
-float DistanceAtAngle(GestureStroke *recognizingPoints, GestureStroke *matchPoints, float radians);
-float RoundToDigits(float number, int decimals);
-float DegreesToRadians(float degrees);
-float RadiansToDegrees(float radians);
-float PathLength(GestureStroke *points);
-float Distance(GesturePoint *point1, GesturePoint *point2);
-GesturePoint *Centroid(GestureStroke *points);
+float GUDistanceAtBestAngle(GestureStroke *inputPoints, GestureStroke *matchPoints);
+NSMutableArray *GUHeapPermute(int count, NSMutableArray *order, NSMutableArray *newOrders);
+NSMutableArray *GUMakeUnistrokes(NSMutableArray *strokes, NSMutableArray *orders);
+GestureStroke *GURotateBy(GestureStroke *points, float radians);
+GestureStroke *GUResample(GestureStroke *points);
+GestureStroke *GUScale(GestureStroke *points);
+GestureStroke *GUTranslateToOrigin(GestureStroke *points);
+GestureStroke *GUSplice(GestureStroke *originalPoints, id newVal, int i);
+float GUAngleBetweenUnitVectors(GesturePoint *unitVector1, GesturePoint *unitVector2);
+float GUPathDistance(GestureStroke *points1, GestureStroke *points2);
+GesturePoint *GUCalcStartUnitVector(GestureStroke *points);
+CGRect GUBoundingBox(GestureStroke *points);
+float GUDistanceAtAngle(GestureStroke *recognizingPoints, GestureStroke *matchPoints, float radians);
+float GURoundToDigits(float number, int decimals);
+float GUDegreesToRadians(float degrees);
+float GURadiansToDegrees(float radians);
+float GUPathLength(GestureStroke *points);
+float GUDistance(GesturePoint *point1, GesturePoint *point2);
+GesturePoint *GUCentroid(GestureStroke *points);

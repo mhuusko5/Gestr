@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 
 @interface GestureResult : NSObject {
-	NSString *name;
+	NSString *gestureId;
 	int score;
 }
-@property NSString *name;
+@property NSString *gestureId;
 @property int score;
 
 @end
