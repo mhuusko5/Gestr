@@ -32,8 +32,11 @@
 		[gestureRecognitionController.recognitionView finishDetectingGesture:YES];
 	}
     
-	if ([gestureSetupController.setupView alphaValue] > 0 && gestureSetupController.setupView.detectingInput) {
-		[gestureSetupController.setupView finishDetectingGesture:YES];
+	if ([gestureSetupController.setupView alphaValue] > 0) {
+        if (gestureSetupController.setupView.detectingInput) {
+            [gestureSetupController.setupView finishDetectingGesture:YES];
+        }
+		[gestureSetupController toggleGestureSetupWindow:nil];
 	}
     
 	[gestureSetupController updateSetupControls];
