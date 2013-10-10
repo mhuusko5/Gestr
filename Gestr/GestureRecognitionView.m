@@ -18,10 +18,6 @@
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
 	if (!recognitionController.appController.gestureSetupController.multitouchRecognition && detectingInput) {
-		if (!firstCheckPartialGestureTimer) {
-            firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
-        }
-        
         if (noInputTimer) {
 			[noInputTimer invalidate];
 			noInputTimer = nil;
@@ -94,10 +90,6 @@
 		}
         
 		if ([event.deviceIdentifier isEqualToNumber:initialMultitouchDeviceId]) {
-            if (!firstCheckPartialGestureTimer) {
-                firstCheckPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:NO];
-            }
-            
 			if (noInputTimer) {
 				[noInputTimer invalidate];
 				noInputTimer = nil;
@@ -172,8 +164,7 @@
     
 	initialMultitouchDeviceId = nil;
     
-	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
-	[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
+	checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
     
     noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
     
@@ -194,17 +185,17 @@
 }
 
 - (void)checkPartialGesture {
-	NSMutableArray *partialOrderedStrokeIds = [orderedStrokeIds copy];
-	NSMutableDictionary *partialGestureStrokes = [gestureStrokes copy];
-    
-	if ([partialOrderedStrokeIds count] > 0) {
-		NSMutableArray *partialOrderedStrokes = [NSMutableArray array];
-		for (int i = 0; i < [partialOrderedStrokeIds count]; i++) {
-			[partialOrderedStrokes addObject:[partialGestureStrokes objectForKey:[partialOrderedStrokeIds objectAtIndex:i]]];
-		}
+    if ([orderedStrokeIds count] > 0) {
+        NSMutableArray *partialOrderedStrokeIds = [orderedStrokeIds copy];
+        NSMutableDictionary *partialGestureStrokes = [gestureStrokes copy];
         
-		[recognitionController checkPartialGestureWithStrokes:partialOrderedStrokes];
-	}
+        NSMutableArray *partialOrderedStrokes = [NSMutableArray array];
+        for (int i = 0; i < [partialOrderedStrokeIds count]; i++) {
+            [partialOrderedStrokes addObject:[partialGestureStrokes objectForKey:[partialOrderedStrokeIds objectAtIndex:i]]];
+        }
+        
+        [recognitionController checkPartialGestureWithStrokes:partialOrderedStrokes];
+    }
 }
 
 - (void)finishDetectingGesture {
@@ -230,11 +221,6 @@
 }
 
 - (void)resetAll {
-    if (firstCheckPartialGestureTimer) {
-		[firstCheckPartialGestureTimer invalidate];
-		firstCheckPartialGestureTimer = nil;
-	}
-    
 	if (checkPartialGestureTimer) {
 		[checkPartialGestureTimer invalidate];
 		checkPartialGestureTimer = nil;
