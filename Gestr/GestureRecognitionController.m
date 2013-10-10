@@ -7,11 +7,40 @@
 - (id)init {
 	self = [super init];
     
-	gestureDetector = [[GestureRecognizer alloc] init];
+	BOOL freshData = ![self fetchUpdatedGestureDictionary];
     
-	[self fetchUpdatedGestureDictionary];
+    float newDataVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
     
-	@try {
+    float currentDataVersion;
+    if (freshData) {
+        currentDataVersion = newDataVersion;
+    } else {
+        id storedLastVersion;
+        if ((storedLastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentDataVersion"])) {
+            currentDataVersion = [storedLastVersion floatValue];
+        } else {
+            currentDataVersion = 1.21;
+        }
+    }
+    
+    //Any data migrations based on discrepancy in data versions
+    
+    [[NSUserDefaults standardUserDefaults] setFloat:newDataVersion forKey:@"currentDataVersion"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+	[self loadGesturesFromStoredData];
+    
+	lastRightClick = [NSDate date];
+    
+	fourFingerTouches = [NSMutableArray array];
+    
+	return self;
+}
+
+- (void)loadGesturesFromStoredData {
+    gestureDetector = [[GestureRecognizer alloc] init];
+    
+    @try {
 		if (!updatedGestureDictionary) {
 			@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
 		}
@@ -35,12 +64,6 @@
 	}
     
 	gesturesLoaded = YES;
-    
-	lastRightClick = [NSDate date];
-    
-	fourFingerTouches = [NSMutableArray array];
-    
-	return self;
 }
 
 - (void)layoutRecognitionWindow {
@@ -114,12 +137,15 @@
 	[self setupActivationHanding];
 }
 
-- (void)fetchUpdatedGestureDictionary {
+- (BOOL)fetchUpdatedGestureDictionary {
+    BOOL success = NO;
+    
 	NSMutableDictionary *gestures;
 	@try {
 		NSData *gestureData;
 		if ((gestureData = [[NSUserDefaults standardUserDefaults] objectForKey:@"Gestures"])) {
 			gestures = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:gestureData]];
+            success = YES;
 		}
 		else {
 			gestures = [NSMutableDictionary dictionary];
@@ -133,6 +159,8 @@
 	updatedGestureDictionary = gestures;
     
 	[self saveUpdatedGestureDictionary];
+    
+    return success;
 }
 
 - (void)saveUpdatedGestureDictionary {

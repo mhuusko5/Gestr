@@ -42,9 +42,10 @@
 @property (retain) NSImageView *recognitionBackground;
 
 - (id)init;
+- (void)loadGesturesFromStoredData;
 - (void)layoutRecognitionWindow;
 - (void)awakeFromNib;
-- (void)fetchUpdatedGestureDictionary;
+- (BOOL)fetchUpdatedGestureDictionary;
 - (void)saveUpdatedGestureDictionary;
 - (void)setupActivationHanding;
 - (void)handleEvent:(CGEventRef)event withType:(int)type;

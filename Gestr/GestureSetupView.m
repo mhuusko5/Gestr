@@ -49,7 +49,7 @@
         
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
-			[tempPath setLineWidth:7.0];
+			[tempPath setLineWidth:6.0];
 			[tempPath setLineCapStyle:NSRoundLineCapStyle];
 			[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 			[tempPath moveToPoint:drawPoint];
@@ -136,7 +136,7 @@
                             }
                             else {
                                 tempPath = [NSBezierPath bezierPath];
-                                [tempPath setLineWidth:7.0];
+                                [tempPath setLineWidth:6.0];
                                 [tempPath setLineCapStyle:NSRoundLineCapStyle];
                                 [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
                                 [tempPath moveToPoint:drawPoint];
@@ -200,7 +200,7 @@
                     
 					if (pointIndex == 1) {
 						NSBezierPath *tempPath = [NSBezierPath bezierPath];
-						[tempPath setLineWidth:7.0];
+						[tempPath setLineWidth:6.0];
 						[tempPath setLineCapStyle:NSRoundLineCapStyle];
 						[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 						[tempPath moveToPoint:drawPoint];
