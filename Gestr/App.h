@@ -2,15 +2,16 @@
 
 @interface App : NSObject {
 	NSString *displayName;
-	NSImage *icon;
+	NSString *bundleName;
 	NSString *bundleId;
+	NSImage *icon;
 	NSDate *lastUsed;
 	int useCount;
 }
-@property (assign) NSString *displayName, *bundleId;
+@property (assign) NSString *displayName, *bundleName, *bundleId;
 @property (assign) NSImage *icon;
 @property (assign) NSDate *lastUsed;
 @property (assign) int useCount;
 
-- (id)initWithDisplayName:(NSString *)_displayName andIcon:(NSImage *)_icon andBundle:(NSString *)_bundle andLastUsed:(NSDate *)_used andUseCount:(int)_count;
+- (id)initWithDisplayName:(NSString *)_displayName bundleName:(NSString *)_bundleName bundleId:(NSString *)_bundle icon:(NSImage *)_icon lastUsed:(NSDate *)_used andUseCount:(int)_count;
 @end

@@ -10,10 +10,9 @@
 	[textShadow setShadowColor:AppButtonBlackTextShadowColor];
 	[textShadow setShadowBlurRadius:AppButtonBlackTextShadowBlurRadius];
     
-	[attrString addAttribute:NSShadowAttributeName value:textShadow range:((NSRange) {0, [attrString length] }
-	                                                                       )];
+	[attrString addAttribute:NSShadowAttributeName value:textShadow range:((NSRange) {0, [attrString length] })];
     
-    [attrString drawInRect:NSIntegralRect(cellFrame)];
+	[attrString drawInRect:NSIntegralRect(cellFrame)];
 }
 
 @end

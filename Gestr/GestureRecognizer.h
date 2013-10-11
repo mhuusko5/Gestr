@@ -10,7 +10,7 @@
 @property NSMutableArray *loadedGestures;
 
 - (GestureResult *)recognizeGestureWithStrokes:(NSMutableArray *)strokes;
-- (void)removeGestureWithId:(NSString *)_id;
+- (void)removeGestureWithName:(NSString *)name;
 - (void)addGesture:(Gesture *)gesture;
 
 @end

@@ -90,10 +90,10 @@
 	[self addAppsAtPath:@"/System/Library/CoreServices" toArray:systemArray levels:0];
 	systemArray = [NSMutableArray arrayWithArray:[systemArray sortedArrayUsingComparator: ^NSComparisonResult (App *a, App *b) {
 	    NSComparisonResult *result = [b.lastUsed compare:a.lastUsed];
-	    if ([[a.bundleId lowercaseString] isEqualToString:@"com.apple.finder"]) {
+	    if ([a.bundleName isEqualToString:@"Finder"]) {
 	        result = NSOrderedAscending;
 		}
-	    else if ([[b.bundleId lowercaseString] isEqualToString:@"com.apple.finder"]) {
+	    else if ([b.bundleName isEqualToString:@"Finder"]) {
 	        result = NSOrderedDescending;
 		}
         
@@ -112,81 +112,79 @@
 	if (!(url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]])) {
 		return;
 	}
-	
+    
 	NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:url includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
     
-    NSURL *fileUrl;
+	NSURL *fileUrl;
 	while (fileUrl = [directoryEnumerator nextObject]) {
-        NSString *filePath = [fileUrl path];
+		NSString *filePath = [fileUrl path];
         
-        BOOL isDir;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
-            if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
-                NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
+		BOOL isDir;
+		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
+			if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
+				NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
                 
-                NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
-                
-                if (![displayName isEqualToString:@"Gestr"]) {
-                    NSImage *icon = nil;
-                    @try {
-                        icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
-                    }
-                    @catch (NSException *ex)
-                    {
-                        icon = [NSImage imageNamed:@"noIcon.png"];
-                    }
-                    
-                    NSDate *lastUsed = nil;
-                    int useCount = 0;
-                    @try {
-                        MDItemRef item = MDItemCreate(kCFAllocatorDefault, (CFStringRef)filePath);
-                        CFArrayRef attributeNames = MDItemCopyAttributeNames(item);
-                        NSArray *array = (NSArray *)attributeNames;
-                        NSEnumerator *e = [array objectEnumerator];
-                        id arrayObject;
-                        while ((arrayObject = [e nextObject])) {
-                            CFTypeRef ref = MDItemCopyAttribute(item, (CFStringRef)[arrayObject description]);
-                            NSObject *tempObject = (NSObject *)ref;
-                            
-                            if ([arrayObject isEqualToString:@"kMDItemLastUsedDate"]) {
-                                lastUsed = [tempObject copy];
-                            }
-                            else if ([arrayObject isEqualToString:@"kMDItemUseCount"]) {
-                                useCount = (int)tempObject;
-                            }
-                            if (ref != NULL) {
-                                CFRelease(ref);
-                            }
-                        }
-                        
-                        if (attributeNames != NULL) {
-                            CFRelease(attributeNames);
-                        }
-                    }
-                    @catch (NSException *exception)
-                    {
-                        lastUsed = nil;
-                        useCount = 0;
-                    }
-                    
-                    [arr addObject:[[App alloc] initWithDisplayName:displayName andIcon:icon andBundle:[dict objectForKey:@"CFBundleIdentifier"] andLastUsed:lastUsed andUseCount:useCount]];
+				NSString *bundleName = [dict objectForKey:@"CFBundleName"];
+                if (!bundleName || [bundleName isEqualToString:@"(null)"]) {
+                    bundleName = [dict objectForKey:@"CFBundleExecutable"];
                 }
-            } else if (isDir && l > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {
-                [self addAppsAtPath:filePath toArray:arr levels:l - 1];
-            }
-        }
+                
+				if (![bundleName isEqualToString:@"Gestr"]) {
+					NSDate *lastUsed = nil;
+					int useCount = 0;
+					@try {
+						MDItemRef item = MDItemCreate(kCFAllocatorDefault, (CFStringRef)filePath);
+						CFArrayRef attributeNames = MDItemCopyAttributeNames(item);
+						NSArray *array = (NSArray *)attributeNames;
+						NSEnumerator *e = [array objectEnumerator];
+						id arrayObject;
+						while ((arrayObject = [e nextObject])) {
+							CFTypeRef ref = MDItemCopyAttribute(item, (CFStringRef)[arrayObject description]);
+							NSObject *tempObject = (NSObject *)ref;
+                            
+							if ([arrayObject isEqualToString:@"kMDItemLastUsedDate"]) {
+								lastUsed = [tempObject copy];
+							}
+							else if ([arrayObject isEqualToString:@"kMDItemUseCount"]) {
+								useCount = (int)tempObject;
+							}
+							if (ref != NULL) {
+								CFRelease(ref);
+							}
+						}
+                        
+						if (attributeNames != NULL) {
+							CFRelease(attributeNames);
+						}
+					}
+					@catch (NSException *exception)
+					{
+						lastUsed = nil;
+						useCount = 0;
+					}
+                    
+					NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
+					NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
+					NSString *bundleId = [dict objectForKey:@"CFBundleIdentifier"];
+                    
+					[arr addObject:[[App alloc] initWithDisplayName:displayName bundleName:bundleName bundleId:bundleId icon:icon lastUsed:lastUsed andUseCount:useCount]];
+				}
+			}
+			else if (isDir && l > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {
+				[self addAppsAtPath:filePath toArray:arr levels:l - 1];
+			}
+		}
 	}
 }
 
 BOOL awakenedFromNib = NO;
-
 - (void)awakeFromNib {
 	if (!awakenedFromNib) {
 		awakenedFromNib = YES;
         
 		[setupView setSetupController:self];
         
-        [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+		[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
         
 		statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 		[statusBarItem setTitle:@""];
@@ -247,8 +245,8 @@ BOOL awakenedFromNib = NO;
 			[self toggleGestureSetupWindow:nil];
 		}
         
-        [appController.gestureRecognitionController layoutRecognitionWindow];
-        [appController.gestureRecognitionController.recognitionWindow  setFrameOrigin:NSMakePoint(-10000, -10000)];
+		[appController.gestureRecognitionController layoutRecognitionWindow];
+		[appController.gestureRecognitionController.recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
 	}
 	else {
 		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
@@ -270,9 +268,9 @@ BOOL awakenedFromNib = NO;
 	}
     
 	App *gestureToSaveApp = [[self currentAppArray] objectAtIndex:[[self currentTableView] selectedRow]];
-	Gesture *gestureToSave = [[Gesture alloc] initWithId:gestureToSaveApp.bundleId andStrokes:gestureStrokes];
+	Gesture *gestureToSave = [[Gesture alloc] initWithName:gestureToSaveApp.bundleName andStrokes:gestureStrokes];
     
-	[appController.gestureRecognitionController.updatedGestureDictionary setObject:gestureToSave forKey:gestureToSaveApp.bundleId];
+	[appController.gestureRecognitionController.updatedGestureDictionary setObject:gestureToSave forKey:gestureToSaveApp.bundleName];
     
 	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
     
@@ -281,29 +279,29 @@ BOOL awakenedFromNib = NO;
 	[self updateSetupControls];
 }
 
-- (void)deleteGestureWithId:(NSString *)_id {
-	[appController.gestureRecognitionController.updatedGestureDictionary removeObjectForKey:_id];
+- (void)deleteGestureWithName:(NSString *)bundleName {
+	[appController.gestureRecognitionController.updatedGestureDictionary removeObjectForKey:bundleName];
     
 	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
     
-	[[[appController gestureRecognitionController] gestureDetector] removeGestureWithId:_id];
+	[[[appController gestureRecognitionController] gestureDetector] removeGestureWithName:bundleName];
 }
 
-- (App *)appWithBundleId:(NSString *)_bundleId {
+- (App *)appWithBundleName:(NSString *)bundleName {
 	for (App *app in appArray) {
-		if ([app.bundleId isEqualTo:_bundleId]) {
+		if ([app.bundleName isEqualTo:bundleName]) {
 			return app;
 		}
 	}
     
 	for (App *app in utilitiesArray) {
-		if ([app.bundleId isEqualTo:_bundleId]) {
+		if ([app.bundleName isEqualTo:bundleName]) {
 			return app;
 		}
 	}
     
 	for (App *app in systemArray) {
-		if ([app.bundleId isEqualTo:_bundleId]) {
+		if ([app.bundleName isEqualTo:bundleName]) {
 			return app;
 		}
 	}
@@ -485,7 +483,7 @@ BOOL awakenedFromNib = NO;
 
 - (IBAction)deleteSelectedGesture:(id)sender {
 	if (selectedIndex >= 0) {
-		[self deleteGestureWithId:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleId]];
+		[self deleteGestureWithName:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]];
 	}
     
 	[self updateSetupControls];
@@ -498,10 +496,8 @@ BOOL awakenedFromNib = NO;
 	}
     
 	if (selectedIndex >= 0) {
-		NSString *appBundleId = [[[self currentAppArray] objectAtIndex:selectedIndex] bundleId];
-        
 		@try {
-			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appBundleId];
+			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]];
 			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
 			[showGestureThread start];
 		}
@@ -559,11 +555,9 @@ BOOL awakenedFromNib = NO;
 	selectedIndex = (int)([[self currentTableView] selectedRow]);
     
 	if (selectedIndex >= 0) {
-		NSString *appBundleId = [[[self currentAppArray] objectAtIndex:selectedIndex] bundleId];
-        
 		BOOL gestureExistsForSelectedApp = NO;
         
-		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.updatedGestureDictionary objectForKey:appBundleId] != nil);
+		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.updatedGestureDictionary objectForKey:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]] != nil);
         
 		if ([[NSApplication sharedApplication] isActive]) {
 			if (gestureExistsForSelectedApp) {
@@ -584,18 +578,19 @@ BOOL awakenedFromNib = NO;
 		}
 	}
     
-    if (![MultitouchManager systemIsMultitouchCapable]) {
-        [multitouchCheckbox setAlphaValue:0.5];
-        [multitouchCheckbox setEnabled:NO];
-        [multitouchRecognitionLabel setAlphaValue:0.5];
+	if (![MultitouchManager systemIsMultitouchCapable]) {
+		[multitouchCheckbox setAlphaValue:0.5];
+		[multitouchCheckbox setEnabled:NO];
+		[multitouchRecognitionLabel setAlphaValue:0.5];
         
-        [multitouchCheckbox setState:NO];
-        [self useMultitouchOptionChanged:nil];
-    } else {
-        [multitouchCheckbox setAlphaValue:1.0];
-        [multitouchCheckbox setEnabled:YES];
-        [multitouchRecognitionLabel setAlphaValue:1.0];
-    }
+		[multitouchCheckbox setState:NO];
+		[self useMultitouchOptionChanged:nil];
+	}
+	else {
+		[multitouchCheckbox setAlphaValue:1.0];
+		[multitouchCheckbox setEnabled:YES];
+		[multitouchRecognitionLabel setAlphaValue:1.0];
+	}
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
@@ -616,47 +611,47 @@ BOOL awakenedFromNib = NO;
 }
 
 - (IBAction)toggleGestureSetupWindow:(id)sender {
-    if (self.appController.gestureRecognitionController.gesturesLoaded) {
-        NSRect menuBarFrame = [[[statusBarItem view] window] frame];
-        NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
+	if (self.appController.gestureRecognitionController.gesturesLoaded) {
+		NSRect menuBarFrame = [[[statusBarItem view] window] frame];
+		NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
         
-        pt.y -= menuBarFrame.size.height / 2;
-        pt.x -= (setupWindow.frame.size.width) / 2;
+		pt.y -= menuBarFrame.size.height / 2;
+		pt.x -= (setupWindow.frame.size.width) / 2;
         
-        NSRect frame = [setupWindow frame];
-        if ([setupWindow alphaValue] <= 0) {
-            frame.origin.y = pt.y;
-            frame.origin.x = pt.x;
-            [setupWindow setFrame:frame display:YES];
+		NSRect frame = [setupWindow frame];
+		if ([setupWindow alphaValue] <= 0) {
+			frame.origin.y = pt.y;
+			frame.origin.x = pt.x;
+			[setupWindow setFrame:frame display:YES];
             
-            frame.origin.y -= frame.size.height;
-            [setupWindow setAlphaValue:1.0];
-            [setupWindow makeKeyAndOrderFront:self];
-            [setupWindow setFrame:frame display:YES animate:YES];
+			frame.origin.y -= frame.size.height;
+			[setupWindow setAlphaValue:1.0];
+			[setupWindow makeKeyAndOrderFront:self];
+			[setupWindow setFrame:frame display:YES animate:YES];
             
-            [setupWindow setIgnoresMouseEvents:NO];
-            [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-        }
-        else {
-            if ([[NSApplication sharedApplication] isHidden]) {
-                [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-            }
-            else {
-                frame.origin.x = pt.x;
-                frame.origin.y = pt.y;
-                [setupWindow setFrame:frame display:YES animate:YES];
+			[setupWindow setIgnoresMouseEvents:NO];
+			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+		}
+		else {
+			if ([[NSApplication sharedApplication] isHidden]) {
+				[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+			}
+			else {
+				frame.origin.x = pt.x;
+				frame.origin.y = pt.y;
+				[setupWindow setFrame:frame display:YES animate:YES];
                 
-                [setupWindow setIgnoresMouseEvents:YES];
-                [setupWindow setAlphaValue:0.0];
+				[setupWindow setIgnoresMouseEvents:YES];
+				[setupWindow setAlphaValue:0.0];
                 
-                [setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+				[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
                 
-                [[NSApplication sharedApplication] hide:self];
-            }
-        }
+				[[NSApplication sharedApplication] hide:self];
+			}
+		}
         
-        [self updateSetupControls];
-    }
+		[self updateSetupControls];
+	}
 }
 
 @end

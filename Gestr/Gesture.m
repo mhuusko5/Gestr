@@ -2,12 +2,12 @@
 
 @implementation Gesture
 
-@synthesize identifier, strokes, templates;
+@synthesize name, strokes, templates;
 
-- (id)initWithId:(NSString *)_id andStrokes:(NSMutableArray *)_strokes {
+- (id)initWithName:(NSString *)_name andStrokes:(NSMutableArray *)_strokes {
 	self = [super init];
     
-	identifier = _id;
+	name = _name;
 	strokes = _strokes;
     
 	return self;
@@ -37,20 +37,20 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:strokes forKey:@"strokes"];
-	[coder encodeObject:identifier forKey:@"identifier"];
+	[coder encodeObject:name forKey:@"name"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
     
 	strokes = [coder decodeObjectForKey:@"strokes"];
-	identifier = [coder decodeObjectForKey:@"identifier"];
+	name = [coder decodeObjectForKey:@"name"];
     
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	Gesture *copy = [[Gesture allocWithZone:zone] initWithId:[identifier copy] andStrokes:[strokes copy]];
+	Gesture *copy = [[Gesture allocWithZone:zone] initWithName:[name copy] andStrokes:[strokes copy]];
     
 	return copy;
 }

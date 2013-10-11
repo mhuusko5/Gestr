@@ -33,9 +33,9 @@
 	}
     
 	if ([gestureSetupController.setupWindow alphaValue] > 0) {
-        if (gestureSetupController.setupView.detectingInput) {
-            [gestureSetupController.setupView finishDetectingGesture:YES];
-        }
+		if (gestureSetupController.setupView.detectingInput) {
+			[gestureSetupController.setupView finishDetectingGesture:YES];
+		}
         
 		[gestureSetupController toggleGestureSetupWindow:nil];
 	}

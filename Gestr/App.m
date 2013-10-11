@@ -2,14 +2,15 @@
 
 @implementation App
 
-@synthesize displayName, icon, bundleId, lastUsed, useCount;
+@synthesize displayName, bundleName, bundleId, icon, lastUsed, useCount;
 
-- (id)initWithDisplayName:(NSString *)_displayName andIcon:(NSImage *)_icon andBundle:(NSString *)_bundle andLastUsed:(NSDate *)_used andUseCount:(int)_count {
+- (id)initWithDisplayName:(NSString *)_displayName bundleName:(NSString *)_bundleName bundleId:(NSString *)_bundle icon:(NSImage *)_icon lastUsed:(NSDate *)_used andUseCount:(int)_count {
 	self = [super init];
     
 	self.displayName = _displayName;
-	self.icon = _icon;
+	self.bundleName = _bundleName;
 	self.bundleId = _bundle;
+	self.icon = _icon;
 	self.lastUsed = _used;
 	self.useCount = _count;
     

@@ -39,7 +39,7 @@
 							if (distance < lowestDistance) {
 								lowestDistance = distance;
                                 
-								result.gestureId = gestureToMatch.identifier;
+								result.gestureName = gestureToMatch.name;
 								result.score = (int)ceilf(100.0 * (1.0 - (lowestDistance / (0.5 * sqrt(2 * pow(GUBoundingBoxSize, 2))))));
 							}
 						}
@@ -48,7 +48,7 @@
 			}
 		}
         
-		if ([result.gestureId length] > 0 && result.score > 0) {
+		if ([result.gestureName length] > 0 && result.score > 0) {
 			return result;
 		}
 	}
@@ -60,9 +60,9 @@
 	return nil;
 }
 
-- (void)removeGestureWithId:(NSString *)_id {
+- (void)removeGestureWithName:(NSString *)name {
 	for (int i = 0; i < [loadedGestures count]; i++) {
-		if ([[[loadedGestures objectAtIndex:i] identifier] isEqualToString:_id]) {
+		if ([((Gesture *)[loadedGestures objectAtIndex:i]).name isEqualToString:name]) {
 			[loadedGestures removeObjectAtIndex:i];
 			return;
 		}
@@ -70,7 +70,7 @@
 }
 
 - (void)addGesture:(Gesture *)gesture {
-	[self removeGestureWithId:gesture.identifier];
+	[self removeGestureWithName:gesture.name];
     
 	[gesture generateTemplates];
     

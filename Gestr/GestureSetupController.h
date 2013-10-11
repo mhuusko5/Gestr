@@ -70,8 +70,8 @@
 - (void)showUpdateAlert:(NSString *)version;
 - (void)checkForUpdate:(BOOL)async;
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes;
-- (void)deleteGestureWithId:(NSString *)_id;
-- (App *)appWithBundleId:(NSString *)_bundleId;
+- (void)deleteGestureWithName:(NSString *)bundleName;
+- (App *)appWithBundleName:(NSString *)bundleName;
 - (NSMutableArray *)currentAppArray;
 - (NSTableView *)currentTableView;
 - (IBAction)successfulRecognitionScoreChanged:(id)sender;

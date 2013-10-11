@@ -10,7 +10,6 @@
 		D001B46216D7441F00F8E413 /* App.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B43316D7441F00F8E413 /* App.m */; };
 		D001B46316D7441F00F8E413 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B43516D7441F00F8E413 /* AppController.m */; };
 		D001B46616D7441F00F8E413 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = D001B43A16D7441F00F8E413 /* background.png */; };
-		D001B46716D7441F00F8E413 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = D001B43B16D7441F00F8E413 /* close.png */; };
 		D001B46C16D7441F00F8E413 /* GestureRecognitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B44516D7441F00F8E413 /* GestureRecognitionController.m */; };
 		D001B46D16D7441F00F8E413 /* GestureRecognitionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B44716D7441F00F8E413 /* GestureRecognitionView.m */; };
 		D001B46E16D7441F00F8E413 /* GestureRecognitionWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B44916D7441F00F8E413 /* GestureRecognitionWindow.m */; };
@@ -19,7 +18,6 @@
 		D001B47116D7441F00F8E413 /* GestureSetupWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B44F16D7441F00F8E413 /* GestureSetupWindow.m */; };
 		D001B47516D7441F00F8E413 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D001B45516D7441F00F8E413 /* main.m */; };
 		D001B47616D7441F00F8E413 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D001B45616D7441F00F8E413 /* MainMenu.xib */; };
-		D001B47816D7441F00F8E413 /* noIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D001B45816D7441F00F8E413 /* noIcon.png */; };
 		D001B47B16D7441F00F8E413 /* tableCellBack.png in Resources */ = {isa = PBXBuildFile; fileRef = D001B45B16D7441F00F8E413 /* tableCellBack.png */; };
 		D0124A2916FC01E800D85CEF /* AppTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0124A2716FC01E800D85CEF /* AppTableCellView.m */; };
 		D0124A2C16FC02C900D85CEF /* AppTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0124A2B16FC02C900D85CEF /* AppTableView.m */; };
@@ -72,7 +70,6 @@
 		D001B43416D7441F00F8E413 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		D001B43516D7441F00F8E413 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		D001B43A16D7441F00F8E413 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
-		D001B43B16D7441F00F8E413 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		D001B44416D7441F00F8E413 /* GestureRecognitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureRecognitionController.h; sourceTree = "<group>"; };
 		D001B44516D7441F00F8E413 /* GestureRecognitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GestureRecognitionController.m; sourceTree = "<group>"; };
 		D001B44616D7441F00F8E413 /* GestureRecognitionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureRecognitionView.h; sourceTree = "<group>"; };
@@ -87,7 +84,6 @@
 		D001B44F16D7441F00F8E413 /* GestureSetupWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GestureSetupWindow.m; sourceTree = "<group>"; };
 		D001B45516D7441F00F8E413 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D001B45616D7441F00F8E413 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		D001B45816D7441F00F8E413 /* noIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noIcon.png; sourceTree = "<group>"; };
 		D001B45B16D7441F00F8E413 /* tableCellBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableCellBack.png; sourceTree = "<group>"; };
 		D001B45C16D7441F00F8E413 /* Gestr-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Gestr-Info.plist"; sourceTree = "<group>"; };
 		D001B45D16D7441F00F8E413 /* Gestr-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Gestr-Prefix.pch"; sourceTree = "<group>"; };
@@ -259,8 +255,6 @@
 			isa = PBXGroup;
 			children = (
 				D001B43A16D7441F00F8E413 /* background.png */,
-				D001B43B16D7441F00F8E413 /* close.png */,
-				D001B45816D7441F00F8E413 /* noIcon.png */,
 				D0B502E916FBC87C0018781C /* background2.png */,
 				D0B5030016FBE4640018781C /* menuIcon.png */,
 				D0F13B9816FFEE1A00EA2B87 /* niceLine.png */,
@@ -392,9 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D001B46616D7441F00F8E413 /* background.png in Resources */,
-				D001B46716D7441F00F8E413 /* close.png in Resources */,
 				D001B47616D7441F00F8E413 /* MainMenu.xib in Resources */,
-				D001B47816D7441F00F8E413 /* noIcon.png in Resources */,
 				D001B47B16D7441F00F8E413 /* tableCellBack.png in Resources */,
 				D0B502EA16FBC87C0018781C /* background2.png in Resources */,
 				D0B5030116FBE4640018781C /* menuIcon.png in Resources */,

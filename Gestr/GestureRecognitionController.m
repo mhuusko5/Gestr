@@ -9,24 +9,24 @@
     
 	BOOL freshData = ![self fetchUpdatedGestureDictionary];
     
-    float newDataVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
+	float newDataVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
     
-    float currentDataVersion;
-    if (freshData) {
-        currentDataVersion = newDataVersion;
-    } else {
-        id storedLastVersion;
-        if ((storedLastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentDataVersion"])) {
-            currentDataVersion = [storedLastVersion floatValue];
-        } else {
-            currentDataVersion = 1.21;
-        }
-    }
+	float currentDataVersion;
+	if (freshData) {
+		currentDataVersion = newDataVersion;
+	}
+	else {
+		id storedLastVersion;
+		if ((storedLastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentDataVersion"])) {
+			currentDataVersion = [storedLastVersion floatValue];
+		}
+		else {
+			currentDataVersion = 1.21;
+		}
+	}
     
-    //Any data migrations based on discrepancy in data versions
-    
-    [[NSUserDefaults standardUserDefaults] setFloat:newDataVersion forKey:@"currentDataVersion"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+	[[NSUserDefaults standardUserDefaults] setFloat:newDataVersion forKey:@"currentDataVersion"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
     
 	[self loadGesturesFromStoredData];
     
@@ -38,16 +38,16 @@
 }
 
 - (void)loadGesturesFromStoredData {
-    gestureDetector = [[GestureRecognizer alloc] init];
+	gestureDetector = [[GestureRecognizer alloc] init];
     
-    @try {
+	@try {
 		if (!updatedGestureDictionary) {
 			@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
 		}
         
 		for (id plistGestureKey in updatedGestureDictionary) {
 			Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
-			if (!plistGesture || !plistGesture.identifier || !plistGesture.strokes || plistGesture.strokes.count < 1) {
+			if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
 				@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
 			}
 			else {
@@ -73,11 +73,11 @@
 	while ((screen = [screenEnum nextObject]) && !NSMouseInRect(mouseLoc, [screen frame], NO)) {
 	}
 	NSRect screenRect = [screen frame];
-    [recognitionWindow setFrame:screenRect display:NO];
+	[recognitionWindow setFrame:screenRect display:NO];
     
-    NSRect recognitionRect = NSMakeRect(0, 0, screenRect.size.width, screenRect.size.height);
+	NSRect recognitionRect = NSMakeRect(0, 0, screenRect.size.width, screenRect.size.height);
 	if (appController.gestureSetupController.fullscreenRecognition) {
-        NSRect alertDescriptionRect = NSMakeRect(recognitionRect.origin.x + (recognitionRect.size.height / 40), recognitionRect.size.height / 3, recognitionRect.size.width - 2 * (recognitionRect.size.height / 40), recognitionRect.size.height / 22);
+		NSRect alertDescriptionRect = NSMakeRect(recognitionRect.origin.x + (recognitionRect.size.height / 40), recognitionRect.size.height / 3, recognitionRect.size.width - 2 * (recognitionRect.size.height / 40), recognitionRect.size.height / 22);
 		[appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 52]];
 		[appDescriptionAlert setFrame:alertDescriptionRect];
         
@@ -132,20 +132,20 @@
 - (void)awakeFromNib {
 	[recognitionView setRecognitionController:self];
     
-    [recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
     
 	[self setupActivationHanding];
 }
 
 - (BOOL)fetchUpdatedGestureDictionary {
-    BOOL success = NO;
+	BOOL success = NO;
     
 	NSMutableDictionary *gestures;
 	@try {
 		NSData *gestureData;
 		if ((gestureData = [[NSUserDefaults standardUserDefaults] objectForKey:@"Gestures"])) {
 			gestures = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:gestureData]];
-            success = YES;
+			success = YES;
 		}
 		else {
 			gestures = [NSMutableDictionary dictionary];
@@ -160,7 +160,7 @@
     
 	[self saveUpdatedGestureDictionary];
     
-    return success;
+	return success;
 }
 
 - (void)saveUpdatedGestureDictionary {
@@ -290,13 +290,13 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToShow = [appController.gestureSetupController appWithBundleId:result.gestureId];
+		App *appToShow = [appController.gestureSetupController appWithBundleName:result.gestureName];
 		if (appToShow != nil) {
 			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating]];
 			[partialIconAlert setImage:appToShow.icon];
 		}
-        else {
-			[appController.gestureSetupController deleteGestureWithId:result.gestureId];
+		else {
+			[appController.gestureSetupController deleteGestureWithName:result.gestureName];
 		}
 	}
 	else {
@@ -309,18 +309,18 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToLaunch = [appController.gestureSetupController appWithBundleId:result.gestureId];
+		App *appToLaunch = [appController.gestureSetupController appWithBundleName:result.gestureName];
 		if (appToLaunch != nil) {
-            [partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating]];
+			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating]];
 			[partialIconAlert setImage:appToLaunch.icon];
             
 			[appDescriptionAlert setStringValue:appToLaunch.displayName];
 			[appIconAlert setImage:appToLaunch.icon];
             
-            [self launchAppWithBundleId:appToLaunch.bundleId];
+			[self launchAppWithBundleId:appToLaunch.bundleId];
 		}
 		else {
-			[appController.gestureSetupController deleteGestureWithId:result.gestureId];
+			[appController.gestureSetupController deleteGestureWithName:result.gestureName];
 		}
         
 		[self hideGestureRecognitionWindow:YES];
@@ -331,31 +331,32 @@ CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef e
 }
 
 - (void)fadeOutGestureRecognitionWindow {
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0.18];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-        [self hideGestureRecognitionWindow:NO];
-    }];
-    [[recognitionWindow animator] setAlphaValue:0.0];
-    [NSAnimationContext endGrouping];
+	[NSAnimationContext beginGrouping];
+	[[NSAnimationContext currentContext] setDuration:0.18];
+	[[NSAnimationContext currentContext] setCompletionHandler: ^{
+	    [self hideGestureRecognitionWindow:NO];
+	}];
+	[[recognitionWindow animator] setAlphaValue:0.0];
+	[NSAnimationContext endGrouping];
 }
 
 - (void)hideGestureRecognitionWindow:(BOOL)fade {
 	if (fade) {
-        [self performSelector:@selector(fadeOutGestureRecognitionWindow) withObject:nil afterDelay:0.34];
-	} else {
-        [recognitionWindow setAlphaValue:0.0];
-        [recognitionWindow orderOut:self];
-        [[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
+		[self performSelector:@selector(fadeOutGestureRecognitionWindow) withObject:nil afterDelay:0.34];
+	}
+	else {
+		[recognitionWindow setAlphaValue:0.0];
+		[recognitionWindow orderOut:self];
+		[[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
         
-        [recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+		[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
         
-        [[NSApplication sharedApplication] hide:self];
-    }
+		[[NSApplication sharedApplication] hide:self];
+	}
 }
 
 - (void)showGestureRecognitionWindow {
-    [recognitionWindow setAlphaValue:1.0];
+	[recognitionWindow setAlphaValue:1.0];
 	[self layoutRecognitionWindow];
     
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
