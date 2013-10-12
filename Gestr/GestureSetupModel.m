@@ -28,21 +28,21 @@
 #pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
-    for (Launchable *launch in normalAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
+    for (Application *app in normalAppArray) {
+		if ([app.launchId isEqualTo:identity]) {
+			return app;
 		}
 	}
     
-	for (Launchable *launch in utilitiesAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
+	for (Application *app in utilitiesAppArray) {
+		if ([app.launchId isEqualTo:identity]) {
+			return app;
 		}
 	}
     
-	for (Launchable *launch in systemAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
+	for (Application *app in systemAppArray) {
+		if ([app.launchId isEqualTo:identity]) {
+			return app;
 		}
 	}
     
@@ -62,7 +62,7 @@
 
 - (NSMutableArray *)fetchSystemAppArray {
     systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
-    for (Launchable *maybeFinder in systemAppArray) {
+    for (Application *maybeFinder in systemAppArray) {
         if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
             [systemAppArray removeObject:maybeFinder];
             [systemAppArray insertObject:maybeFinder atIndex:0];
@@ -91,7 +91,7 @@
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                 
 				if (![displayName isEqualToString:@"Gestr"]) {
-					[arr addObject:[[Launchable alloc] initWithDisplayName:displayName launchId:bundleId icon:icon]];
+					[arr addObject:[[Application alloc] initWithDisplayName:displayName launchId:bundleId icon:icon]];
 				}
 			}
 			else if (isDir && depth > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {

@@ -16,12 +16,7 @@
         
 		setupModel = [[GestureSetupModel alloc] init];
         
-        minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
-        readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
-        multitouchOptionField.state = setupModel.multitouchOption;
-        fullscreenOptionField.state = setupModel.fullscreenOption;
-        hiddenIconOptionField.state = setupModel.hiddenIconOption;
-        loginStartOptionField.state = setupModel.loginStartOption;
+        [self updateSetupControls];
         
         statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
         statusBarItem.title = @"";
@@ -104,9 +99,9 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-	Launchable *app = [[self currentLaunchableArray] objectAtIndex:row];
-	result.imageView.image = app.icon;
-	result.textField.stringValue = app.displayName;
+	Launchable *launchable = [[self currentLaunchableArray] objectAtIndex:row];
+	result.imageView.image = launchable.icon;
+	result.textField.stringValue = launchable.displayName;
     
 	return result;
 }
@@ -150,14 +145,22 @@
 		[multitouchOptionField setEnabled:NO];
 		multitouchRecognitionLabel.alphaValue = 0.5;
         
-		[multitouchOptionField setState:NO];
-		[self multitouchOptionChanged:nil];
+        if (setupModel.multitouchOption) {
+            [setupModel saveMultitouchOption:NO];
+        }
 	}
 	else {
 		multitouchOptionField.alphaValue = 1.0;
 		[multitouchOptionField setEnabled:YES];
 		multitouchRecognitionLabel.alphaValue = 1.0;
 	}
+    
+    minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
+    readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
+    multitouchOptionField.state = setupModel.multitouchOption;
+    fullscreenOptionField.state = setupModel.fullscreenOption;
+    hiddenIconOptionField.state = setupModel.hiddenIconOption;
+    loginStartOptionField.state = setupModel.loginStartOption;
 }
 
 - (void)showDrawNotification:(BOOL)show {
@@ -193,9 +196,9 @@
 		return;
 	}
     
-	Launchable *gestureToSaveApp = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
+	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
     
-	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveApp.launchId];
+	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
     
 	[self updateSetupControls];
 }
@@ -313,6 +316,8 @@
 		[infoAlert setAlertStyle:NSInformationalAlertStyle];
 		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
+    
+    [self updateSetupControls];
 }
 
 - (IBAction)readingDelayTimeChanged:(id)sender {
@@ -329,24 +334,32 @@
 		[infoAlert setAlertStyle:NSInformationalAlertStyle];
 		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
+    
+    [self updateSetupControls];
 }
 
 - (IBAction)multitouchOptionChanged:(id)sender {
     [setupView finishDetectingGesture:YES];
     
 	[setupModel saveMultitouchOption:multitouchOptionField.state];
+    
+    [self updateSetupControls];
 }
 
 - (IBAction)fullscreenOptionChanged:(id)sender {
     [setupView finishDetectingGesture:YES];
     
 	[setupModel saveFullscreenOption:fullscreenOptionField.state];
+    
+    [self updateSetupControls];
 }
 
 - (IBAction)hiddenIconOptionChanged:(id)sender {
     [setupView finishDetectingGesture:YES];
     
 	[setupModel saveHiddenIconOption:hiddenIconOptionField.state];
+    
+    [self updateSetupControls];
 }
 
 - (IBAction)loginStartOptionChanged:(id)sender {
@@ -355,6 +368,8 @@
 	[setupModel saveLoginStartOption:loginStartOptionField.state];
     
     loginStartOptionField.state = [setupModel fetchLoginStartOption];
+    
+    [self updateSetupControls];
 }
 
 #pragma mark -

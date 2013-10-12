@@ -26,6 +26,7 @@
 		D0140F8D17EFD6EE004C19F3 /* MultitouchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8817EFD6EE004C19F3 /* MultitouchManager.m */; };
 		D0140F8E17EFD6EE004C19F3 /* MultitouchTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */; };
 		D016016516FFB03B007A197E /* AppTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D016016416FFB03A007A197E /* AppTextFieldCell.m */; };
+		D02D55E71809D97C001F0AC3 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = D02D55E61809D97C001F0AC3 /* Application.m */; };
 		D0516E2317EFCFDE00C48BD8 /* Gesture.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1617EFCFDE00C48BD8 /* Gesture.m */; };
 		D0516E2417EFCFDE00C48BD8 /* GesturePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1817EFCFDE00C48BD8 /* GesturePoint.m */; };
 		D0516E2517EFCFDE00C48BD8 /* GestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1A17EFCFDE00C48BD8 /* GestureRecognizer.m */; };
@@ -39,6 +40,8 @@
 		D071FF99180888E300CDC8FF /* GestureRecognitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D071FF98180888E300CDC8FF /* GestureRecognitionModel.m */; };
 		D073F55D15C358FF00843B5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D073F55C15C358FF00843B5D /* QuartzCore.framework */; };
 		D09EF01316FE4EC2009DEE99 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */; };
+		D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */; };
+		D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */; };
 		D0B502EA16FBC87C0018781C /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B502E916FBC87C0018781C /* background2.png */; };
 		D0B502ED16FBC9850018781C /* RepeatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502EC16FBC9850018781C /* RepeatedImageView.m */; };
 		D0B502F516FBCDD10018781C /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502F116FBCDD00018781C /* AppButtonCell.m */; };
@@ -104,6 +107,8 @@
 		D0140F8F17EFD75E004C19F3 /* MultitouchSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultitouchSupport.h; sourceTree = "<group>"; };
 		D016016316FFB03A007A197E /* AppTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTextFieldCell.h; sourceTree = "<group>"; };
 		D016016416FFB03A007A197E /* AppTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTextFieldCell.m; sourceTree = "<group>"; };
+		D02D55E51809D97C001F0AC3 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
+		D02D55E61809D97C001F0AC3 /* Application.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		D0516E1517EFCFDE00C48BD8 /* Gesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gesture.h; sourceTree = "<group>"; };
 		D0516E1617EFCFDE00C48BD8 /* Gesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gesture.m; sourceTree = "<group>"; };
 		D0516E1717EFCFDE00C48BD8 /* GesturePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GesturePoint.h; sourceTree = "<group>"; };
@@ -130,6 +135,11 @@
 		D07340F5152578F400FC7910 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D073F55C15C358FF00843B5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trackpadBackground.png; sourceTree = "<group>"; };
+		D09FCFC81809D9FD00EBCFF7 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chrome.h; sourceTree = "<group>"; };
+		D09FCFC91809D9FD00EBCFF7 /* Safari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Safari.h; sourceTree = "<group>"; };
+		D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromePage.h; sourceTree = "<group>"; };
+		D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromePage.m; sourceTree = "<group>"; };
 		D0B502E916FBC87C0018781C /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
 		D0B502EB16FBC9850018781C /* RepeatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatedImageView.h; sourceTree = "<group>"; };
 		D0B502EC16FBC9850018781C /* RepeatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RepeatedImageView.m; sourceTree = "<group>"; };
@@ -156,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */,
 				D066470017EFD66A00A59967 /* MultitouchSupport.framework in Frameworks */,
 				D0F2DEA317000E8D009A19B9 /* CoreServices.framework in Frameworks */,
 				D0CB917416DD419100BE0E9A /* Carbon.framework in Frameworks */,
@@ -185,6 +196,8 @@
 		D001B47F16D7446000F8E413 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D09FCFC81809D9FD00EBCFF7 /* Chrome.h */,
+				D09FCFC91809D9FD00EBCFF7 /* Safari.h */,
 				D0B502FA16FBE05F0018781C /* Categories */,
 				D0516E1317EFCF9500C48BD8 /* Images */,
 				D001B45516D7441F00F8E413 /* main.m */,
@@ -286,6 +299,7 @@
 		D07340EF152578F400FC7910 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */,
 				D06646FF17EFD66A00A59967 /* MultitouchSupport.framework */,
 				D0F2DEA217000E8D009A19B9 /* CoreServices.framework */,
 				D0CB917316DD419100BE0E9A /* Carbon.framework */,
@@ -358,6 +372,10 @@
 				D05E69CD18086F7800BD4646 /* GestureSetupModel.m */,
 				D001B43216D7441F00F8E413 /* Launchable.h */,
 				D001B43316D7441F00F8E413 /* Launchable.m */,
+				D02D55E51809D97C001F0AC3 /* Application.h */,
+				D02D55E61809D97C001F0AC3 /* Application.m */,
+				D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */,
+				D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -493,6 +511,8 @@
 				D0516E2517EFCFDE00C48BD8 /* GestureRecognizer.m in Sources */,
 				D05E69CE18086F7800BD4646 /* GestureSetupModel.m in Sources */,
 				D071FF99180888E300CDC8FF /* GestureRecognitionModel.m in Sources */,
+				D02D55E71809D97C001F0AC3 /* Application.m in Sources */,
+				D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

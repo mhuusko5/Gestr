@@ -2394,7 +2394,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="613924349"/>
-						<string key="toolTip">Must be greater than 1, and less than 1500</string>
+						<string key="toolTip">Must be greater than 1, and less than 1000</string>
 					</object>
 				</object>
 				<string key="4086.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

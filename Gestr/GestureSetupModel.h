@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "MultitouchManager.h"
 #import "Launchable.h"
+#import "Application.h"
 
 @interface GestureSetupModel : NSObject {
 	NSUserDefaults *userDefaults;

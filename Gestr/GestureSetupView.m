@@ -61,9 +61,14 @@
 			[tempPath lineToPoint:drawPoint];
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
-			if (!shouldDetectTimer) {
-				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
-			}
+            if (mouseStrokeIndex < 3) {
+                if (!shouldDetectTimer) {
+                    shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+                }
+            } else {
+                [self finishDetectingGesture];
+                return;
+            }
             
 			NSBezierPath *tempPath = [touchPaths objectForKey:identity];
 			[tempPath lineToPoint:drawPoint];
@@ -118,8 +123,12 @@
 						NSNumber *identity = touch.identifier;
                         
 						if (![gestureStrokes objectForKey:identity]) {
-							[orderedStrokeIds addObject:identity];
-							[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+                            if (orderedStrokeIds.count < 3) {
+                                [orderedStrokeIds addObject:identity];
+                                [gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+                            } else {
+                                continue;
+                            }
 						}
                         
 						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStrokeId:[identity intValue]];

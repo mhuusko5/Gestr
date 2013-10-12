@@ -41,10 +41,10 @@
 	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
-		Launchable *appToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
-		if (appToShow != nil) {
-            partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating];
-            partialIconAlert.image = appToShow.icon;
+		Launchable *launchableToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
+		if (launchableToShow != nil) {
+            partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
+            partialIconAlert.image = launchableToShow.icon;
 		}
 		else {
 			[recognitionModel deleteGestureWithName:result.gestureIdentity];
@@ -60,15 +60,15 @@
 	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
-		Launchable *appToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
-		if (appToLaunch != nil) {
-			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating];
-            partialIconAlert.image = appToLaunch.icon;
+		Launchable *launchableToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
+		if (launchableToLaunch != nil) {
+			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToLaunch.displayName, rating];
+            partialIconAlert.image = launchableToLaunch.icon;
             
-            appDescriptionAlert.stringValue = appToLaunch.displayName;
-            appIconAlert.image = appToLaunch.icon;
+            appDescriptionAlert.stringValue = launchableToLaunch.displayName;
+            appIconAlert.image = launchableToLaunch.icon;
             
-			[appToLaunch launchWithNewThread:YES];
+			[launchableToLaunch launchWithNewThread:YES];
 		}
 		else {
 			[recognitionModel deleteGestureWithName:result.gestureIdentity];

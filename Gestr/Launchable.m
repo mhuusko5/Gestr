@@ -19,8 +19,8 @@
         [NSThread detachNewThreadSelector:@selector(launchWithNewThread:) toTarget:self withObject:NO];
     } else {
         @try {
-            if ([launchId hasPrefix:@"com."]) {
-                [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:launchId options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
+            if ([self respondsToSelector:@selector(launch)]) {
+                [self performSelector:@selector(launch)];
             }
         }
         @catch (NSException *exception) {}
