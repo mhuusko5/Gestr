@@ -16,12 +16,12 @@
         
 		setupModel = [[GestureSetupModel alloc] init];
         
-        successfulRecognitionScoreTextField.stringValue = [NSString stringWithFormat:@"%i", setupModel.successfulRecognitionScore];
-        readingDelayTextField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayNumber];
-        multitouchCheckbox.state = setupModel.multitouchRecognition;
-        fullscreenCheckbox.state = setupModel.fullscreenRecognition;
-        hideDockIconCheckbox.state = setupModel.hideDockIcon;
-        startAtLaunchCheckbox.state = setupModel.startAtLaunch;
+        minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
+        readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
+        multitouchOptionField.state = setupModel.multitouchOption;
+        fullscreenOptionField.state = setupModel.fullscreenOption;
+        hiddenIconOptionField.state = setupModel.hiddenIconOption;
+        loginStartOptionField.state = setupModel.loginStartOption;
         
         statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
         statusBarItem.title = @"";
@@ -33,42 +33,20 @@
 - (void)applicationDidFinishLaunching {
     [[statusBarView animator] setAlphaValue:1.0];
     
+    [launchableTypePicker setSelectedSegment:0];
+    launchableArrayController.content = setupModel.normalAppArray;
+    
 	if (appController.gestureRecognitionController.recognitionModel.gestureDetector.loadedGestures.count < 1) {
 		[self toggleSetupWindow:nil];
 	}
     
 	[self updateSetupControls];
-    
-    [launchableTypePicker setSelectedSegment:0];
-    launchableArrayController.content = setupModel.normalAppArray;
 }
 
 #pragma mark -
 
 #pragma mark -
-#pragma mark Launchable Management
-- (Launchable *)launchableWithId:(NSString *)identity {
-	for (Launchable *launch in setupModel.normalAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
-		}
-	}
-    
-	for (Launchable *launch in setupModel.utilitiesAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
-		}
-	}
-    
-	for (Launchable *launch in setupModel.systemAppArray) {
-		if ([launch.launchId isEqualTo:identity]) {
-			return launch;
-		}
-	}
-    
-	return nil;
-}
-
+#pragma mark Tableview Management
 - (NSMutableArray *)currentLaunchableArray {
 	return (NSMutableArray *)launchableArrayController.content;
 }
@@ -80,14 +58,17 @@
 - (IBAction)launchableTypeChanged:(id)sender {
 	switch (launchableTypePicker.selectedSegment) {
 		case 0:
+            [setupModel fetchNormalAppArray];
             launchableArrayController.content = setupModel.normalAppArray;
 			break;
             
 		case 1:
+            [setupModel fetchUtilitiesAppArray];
             launchableArrayController.content = setupModel.utilitiesAppArray;
 			break;
             
 		case 2:
+            [setupModel fetchSystemAppArray];
 			launchableArrayController.content = setupModel.systemAppArray;
 			break;
             
@@ -97,17 +78,14 @@
     
 	[showGestureButton setEnabled:NO];
 	[assignGestureButton setEnabled:NO];
-	[deleteGestureButton setEnabled:NO];
+	[clearGestureButton setEnabled:NO];
 }
-#pragma mark -
 
-#pragma mark -
-#pragma mark Tableview Control
 - (void)tableViewFocus:(BOOL)lost {
 	if (lost) {
 		[showGestureButton setEnabled:NO];
 		[assignGestureButton setEnabled:NO];
-		[deleteGestureButton setEnabled:NO];
+		[clearGestureButton setEnabled:NO];
 	}
 	else {
 		[self updateSetupControls];
@@ -152,42 +130,48 @@
 			if (gestureExistsForSelectedApp) {
 				[showGestureButton setEnabled:YES];
 				[assignGestureButton setEnabled:YES];
-				[deleteGestureButton setEnabled:YES];
+				[clearGestureButton setEnabled:YES];
 			}
 			else {
 				[showGestureButton setEnabled:NO];
 				[assignGestureButton setEnabled:YES];
-				[deleteGestureButton setEnabled:NO];
+				[clearGestureButton setEnabled:NO];
 			}
 		}
 		else {
 			[showGestureButton setEnabled:NO];
 			[assignGestureButton setEnabled:NO];
-			[deleteGestureButton setEnabled:NO];
+			[clearGestureButton setEnabled:NO];
 		}
 	}
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
-        multitouchCheckbox.alphaValue = 0.5;
-		[multitouchCheckbox setEnabled:NO];
+        multitouchOptionField.alphaValue = 0.5;
+		[multitouchOptionField setEnabled:NO];
 		multitouchRecognitionLabel.alphaValue = 0.5;
         
-		[multitouchCheckbox setState:NO];
-		[self multitouchRecognitionSelected:nil];
+		[multitouchOptionField setState:NO];
+		[self multitouchOptionChanged:nil];
 	}
 	else {
-		multitouchCheckbox.alphaValue = 1.0;
-		[multitouchCheckbox setEnabled:YES];
+		multitouchOptionField.alphaValue = 1.0;
+		[multitouchOptionField setEnabled:YES];
 		multitouchRecognitionLabel.alphaValue = 1.0;
 	}
 }
 
-- (void)showDrawNowText:(BOOL)show {
+- (void)showDrawNotification:(BOOL)show {
+    if (setupModel.multitouchOption) {
+        drawNotificationText.stringValue = @"Draw now!";
+    } else {
+        drawNotificationText.stringValue = @"Draw here!";
+    }
+    
 	if (show) {
-		drawNowText.alphaValue = 1.0;
+		drawNotificationText.alphaValue = 1.0;
 	}
 	else {
-		drawNowText.alphaValue = 0.0;
+		drawNotificationText.alphaValue = 0.0;
 	}
 }
 
@@ -315,10 +299,12 @@
 
 #pragma mark -
 #pragma mark Recognition Options
-- (IBAction)successfulRecognitionScoreSelected:(id)sender {
-	int newScore = [successfulRecognitionScoreTextField intValue];
+- (IBAction)minimumRecognitionScoreChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
+    
+	int newScore = [minimumRecognitionScoreField intValue];
 	if (newScore >= 70 && newScore <= 100) {
-		[setupModel saveSuccessfulRecognitionScore:newScore];
+		[setupModel saveMinimumRecognitionScore:newScore];
 	}
 	else {
 		NSAlert *infoAlert = [[NSAlert alloc] init];
@@ -329,10 +315,12 @@
 	}
 }
 
-- (IBAction)readingDelayNumberSelected:(id)sender {
-	int newNum = [readingDelayTextField intValue];
-	if (newNum >= 1 && newNum <= 1000) {
-		[setupModel saveReadingDelayNumber:newNum];
+- (IBAction)readingDelayTimeChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
+    
+	int newTime = [readingDelayTimeField intValue];
+	if (newTime >= 1 && newTime <= 1000) {
+		[setupModel saveReadingDelayTime:newTime];
 	}
 	else {
 		NSAlert *infoAlert = [[NSAlert alloc] init];
@@ -343,22 +331,30 @@
 	}
 }
 
-- (IBAction)multitouchRecognitionSelected:(id)sender {
-	[setupModel saveMultitouchRecognition:multitouchCheckbox.state];
-}
-
-- (IBAction)fullscreenRecognitionSelected:(id)sender {
-	[setupModel saveFullscreenRecognition:fullscreenCheckbox.state];
-}
-
-- (IBAction)hideDockIconSelected:(id)sender {
-	[setupModel saveHideDockIcon:hideDockIconCheckbox.state];
-}
-
-- (IBAction)startAtLaunchSelected:(id)sender {
-	[setupModel saveStartAtLaunch:startAtLaunchCheckbox.state];
+- (IBAction)multitouchOptionChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
     
-    startAtLaunchCheckbox.state = [setupModel fetchStartAtLaunch];
+	[setupModel saveMultitouchOption:multitouchOptionField.state];
+}
+
+- (IBAction)fullscreenOptionChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
+    
+	[setupModel saveFullscreenOption:fullscreenOptionField.state];
+}
+
+- (IBAction)hiddenIconOptionChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
+    
+	[setupModel saveHiddenIconOption:hiddenIconOptionField.state];
+}
+
+- (IBAction)loginStartOptionChanged:(id)sender {
+    [setupView finishDetectingGesture:YES];
+    
+	[setupModel saveLoginStartOption:loginStartOptionField.state];
+    
+    loginStartOptionField.state = [setupModel fetchLoginStartOption];
 }
 
 #pragma mark -

@@ -40,8 +40,8 @@
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
 	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.successfulRecognitionScore) {
-		Launchable *appToShow = [appController.gestureSetupController launchableWithId:result.gestureIdentity];
+	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
+		Launchable *appToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (appToShow != nil) {
             partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating];
             partialIconAlert.image = appToShow.icon;
@@ -59,8 +59,8 @@
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
 	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.successfulRecognitionScore) {
-		Launchable *appToLaunch = [appController.gestureSetupController launchableWithId:result.gestureIdentity];
+	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
+		Launchable *appToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (appToLaunch != nil) {
 			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating];
             partialIconAlert.image = appToLaunch.icon;
@@ -132,7 +132,7 @@
 }
 
 - (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type {
-	if (appController.gestureSetupController.setupModel.multitouchRecognition && recognitionView.detectingInput) {
+	if (appController.gestureSetupController.setupModel.multitouchOption && recognitionView.detectingInput) {
 		if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
 			[recognitionView finishDetectingGesture:YES];
 			return event;
@@ -214,7 +214,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 	[recognitionWindow setFrame:screenRect display:NO];
     
 	NSRect recognitionRect = NSMakeRect(0, 0, screenRect.size.width, screenRect.size.height);
-	if (appController.gestureSetupController.setupModel.fullscreenRecognition) {
+	if (appController.gestureSetupController.setupModel.fullscreenOption) {
 		NSRect alertDescriptionRect = NSMakeRect(recognitionRect.origin.x + (recognitionRect.size.height / 40), recognitionRect.size.height / 3, recognitionRect.size.width - 2 * (recognitionRect.size.height / 40), recognitionRect.size.height / 22);
 		[appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 52]];
 		[appDescriptionAlert setFrame:alertDescriptionRect];

@@ -7,12 +7,17 @@
     
     NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
     
-	int readingDelayNumber, successfulRecognitionScore;
-	BOOL multitouchRecognition, fullscreenRecognition, hideDockIcon, startAtLaunch;
+	int readingDelayTime, minimumRecognitionScore;
+	BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
 }
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
-@property int readingDelayNumber, successfulRecognitionScore;
-@property BOOL multitouchRecognition, fullscreenRecognition, hideDockIcon, startAtLaunch;
+@property int readingDelayTime, minimumRecognitionScore;
+@property BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
+
+#pragma mark -
+#pragma mark Launchable Management
+- (Launchable *)findLaunchableWithId:(NSString *)identity;
+#pragma mark -
 
 #pragma mark -
 #pragma mark Applications Arrays
@@ -24,18 +29,18 @@
 
 #pragma mark -
 #pragma mark Recognition Options
-- (int)fetchSuccessfulRecognitionScore;
-- (void)saveSuccessfulRecognitionScore:(int)newScore;
-- (int)fetchReadingDelayNumber;
-- (void)saveReadingDelayNumber:(int)newNum;
-- (BOOL)fetchMultitouchRecognition;
-- (void)saveMultitouchRecognition:(BOOL)newValue;
-- (BOOL)fetchFullscreenRecognition;
-- (void)saveFullscreenRecognition:(BOOL)newValue;
-- (BOOL)fetchHideDockIcon;
-- (void)saveHideDockIcon:(BOOL)newValue;
-- (BOOL)fetchStartAtLaunch;
-- (void)saveStartAtLaunch:(BOOL)newValue;
+- (int)fetchMinimumRecognitionScore;
+- (void)saveMinimumRecognitionScore:(int)newScore;
+- (int)fetchReadingDelayTime;
+- (void)saveReadingDelayTime:(int)newTime;
+- (BOOL)fetchMultitouchOption;
+- (void)saveMultitouchOption:(BOOL)newChoice;
+- (BOOL)fetchFullscreenOption;
+- (void)saveFullscreenOption:(BOOL)newChoice;
+- (BOOL)fetchHiddenIconOption;
+- (void)saveHiddenIconOption:(BOOL)newChoice;
+- (BOOL)fetchLoginStartOption;
+- (void)saveLoginStartOption:(BOOL)newChoice;
 #pragma mark -
 
 @end

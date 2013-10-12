@@ -17,8 +17,8 @@
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
-	if (!setupController.setupModel.multitouchRecognition && detectingInput) {
-		[setupController showDrawNowText:NO];
+	if (!setupController.setupModel.multitouchOption && detectingInput) {
+		[setupController showDrawNotification:NO];
         
 		if (noInputTimer) {
 			[noInputTimer invalidate];
@@ -62,7 +62,7 @@
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
 			if (!shouldDetectTimer) {
-				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
             
 			NSBezierPath *tempPath = [touchPaths objectForKey:identity];
@@ -86,8 +86,8 @@
 }
 
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event {
-	if (setupController.setupModel.multitouchRecognition && detectingInput) {
-		[setupController showDrawNowText:NO];
+	if (setupController.setupModel.multitouchOption && detectingInput) {
+		[setupController showDrawNotification:NO];
         
 		if (!initialMultitouchDeviceId) {
 			initialMultitouchDeviceId = event.deviceIdentifier;
@@ -105,7 +105,7 @@
 			}
             
 			if (!shouldDetectTimer && event.touches.count == 0) {
-				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
 				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 10);
@@ -233,11 +233,11 @@
         
         initialMultitouchDeviceId = nil;
         
-        [setupController showDrawNowText:YES];
+        [setupController showDrawNotification:YES];
         
         noInputTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
         
-        if (setupController.setupModel.multitouchRecognition) {
+        if (setupController.setupModel.multitouchOption) {
             [self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
             CGAssociateMouseAndMouseCursorPosition(NO);
         }
@@ -285,7 +285,7 @@
 }
 
 - (void)resetAll {
-    [setupController showDrawNowText:NO];
+    [setupController showDrawNotification:NO];
     
 	if (shouldDetectTimer) {
 		[shouldDetectTimer invalidate];

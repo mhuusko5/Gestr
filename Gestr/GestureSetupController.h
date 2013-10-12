@@ -26,7 +26,7 @@
 	IBOutlet GestureSetupWindow *setupWindow;
 	IBOutlet GestureSetupView *setupView;
     
-	IBOutlet NSTextField *drawNowText;
+	IBOutlet NSTextField *drawNotificationText;
     
     int launchableSelectedIndex;
 	IBOutlet NSSegmentedControl *launchableTypePicker;
@@ -35,12 +35,12 @@
 	IBOutlet NSTableView *launchableTableView;
 	IBOutlet NSArrayController *launchableArrayController;
     
-	IBOutlet NSButton *showGestureButton, *assignGestureButton, *deleteGestureButton;
+	IBOutlet NSButton *assignGestureButton, *showGestureButton, *clearGestureButton;
     
-	IBOutlet NSTextField *successfulRecognitionScoreTextField, *readingDelayTextField;
+	IBOutlet NSTextField *minimumRecognitionScoreField, *readingDelayTimeField;
 	IBOutlet NSTextField *multitouchRecognitionLabel;
-	IBOutlet NSButton *multitouchCheckbox, *fullscreenCheckbox;
-	IBOutlet NSButton *hideDockIconCheckbox, *startAtLaunchCheckbox;
+	IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField;
+	IBOutlet NSButton *hiddenIconOptionField, *loginStartOptionField;
 }
 @property (retain) GestureSetupModel *setupModel;
 @property (retain) AppController *appController;
@@ -54,15 +54,10 @@
 #pragma mark -
 
 #pragma mark -
-#pragma mark Launchable Management
-- (Launchable *)launchableWithId:(NSString *)identity;
+#pragma mark Tableview Management
 - (NSMutableArray *)currentLaunchableArray;
 - (NSTableView *)currentLaunchableTableView;
 - (IBAction)launchableTypeChanged:(id)sender;
-#pragma mark -
-
-#pragma mark -
-#pragma mark Tableview Control
 - (void)tableViewFocus:(BOOL)lost;
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
@@ -72,7 +67,7 @@
 #pragma mark -
 #pragma mark Interface Control
 - (void)updateSetupControls;
-- (void)showDrawNowText:(BOOL)show;
+- (void)showDrawNotification:(BOOL)show;
 #pragma mark -
 
 #pragma mark -
@@ -96,12 +91,12 @@
 
 #pragma mark -
 #pragma mark Recognition Options
-- (IBAction)successfulRecognitionScoreSelected:(id)sender;
-- (IBAction)readingDelayNumberSelected:(id)sender;
-- (IBAction)multitouchRecognitionSelected:(id)sender;
-- (IBAction)fullscreenRecognitionSelected:(id)sender;
-- (IBAction)hideDockIconSelected:(id)sender;
-- (IBAction)startAtLaunchSelected:(id)sender;
+- (IBAction)minimumRecognitionScoreChanged:(id)sender;
+- (IBAction)readingDelayTimeChanged:(id)sender;
+- (IBAction)multitouchOptionChanged:(id)sender;
+- (IBAction)fullscreenOptionChanged:(id)sender;
+- (IBAction)hiddenIconOptionChanged:(id)sender;
+- (IBAction)loginStartOptionChanged:(id)sender;
 #pragma mark -
 
 @end

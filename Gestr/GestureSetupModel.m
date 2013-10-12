@@ -3,8 +3,8 @@
 @implementation GestureSetupModel
 
 @synthesize normalAppArray, utilitiesAppArray, systemAppArray;
-@synthesize readingDelayNumber, successfulRecognitionScore;
-@synthesize multitouchRecognition, fullscreenRecognition, hideDockIcon, startAtLaunch;
+@synthesize readingDelayTime, minimumRecognitionScore;
+@synthesize multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
 
 - (id)init {
 	self = [super init];
@@ -15,15 +15,40 @@
     [self fetchUtilitiesAppArray];
     [self fetchSystemAppArray];
     
-	[self fetchSuccessfulRecognitionScore];
-	[self fetchReadingDelayNumber];
-	[self fetchMultitouchRecognition];
-	[self fetchFullscreenRecognition];
-	[self saveHideDockIcon:[self fetchHideDockIcon]];
-	[self saveStartAtLaunch:[self fetchStartAtLaunch]];
+	[self fetchMinimumRecognitionScore];
+	[self fetchReadingDelayTime];
+	[self fetchMultitouchOption];
+	[self fetchFullscreenOption];
+	[self saveHiddenIconOption:[self fetchHiddenIconOption]];
+	[self saveLoginStartOption:[self fetchLoginStartOption]];
     
 	return self;
 }
+
+#pragma mark -
+#pragma mark Launchable Management
+- (Launchable *)findLaunchableWithId:(NSString *)identity {
+    for (Launchable *launch in normalAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
+		}
+	}
+    
+	for (Launchable *launch in utilitiesAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
+		}
+	}
+    
+	for (Launchable *launch in systemAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
+		}
+	}
+    
+	return nil;
+}
+#pragma mark -
 
 #pragma mark -
 #pragma mark Applications Arrays
@@ -81,92 +106,92 @@
 
 #pragma mark -
 #pragma mark Recognition Options
-- (int)fetchSuccessfulRecognitionScore {
-	id storedSuccessfulRecognitionScore;
-	if ((storedSuccessfulRecognitionScore = [userDefaults objectForKey:@"successfulRecognitionScore"])) {
-		successfulRecognitionScore = [storedSuccessfulRecognitionScore intValue];
+- (int)fetchMinimumRecognitionScore {
+	id storedMinimumRecognitionScore;
+	if ((storedMinimumRecognitionScore = [userDefaults objectForKey:@"minimumRecognitionScore"])) {
+		minimumRecognitionScore = [storedMinimumRecognitionScore intValue];
 	}
 	else {
-		[self saveSuccessfulRecognitionScore:80];
+		[self saveMinimumRecognitionScore:80];
 	}
     
-	return successfulRecognitionScore;
+	return minimumRecognitionScore;
 }
 
-- (void)saveSuccessfulRecognitionScore:(int)newScore {
-	[userDefaults setInteger:(successfulRecognitionScore = newScore) forKey:@"successfulRecognitionScore"];
+- (void)saveMinimumRecognitionScore:(int)newScore {
+	[userDefaults setInteger:(minimumRecognitionScore = newScore) forKey:@"minimumRecognitionScore"];
 	[userDefaults synchronize];
 }
 
-- (int)fetchReadingDelayNumber {
-	id storedReadingDelayNumber;
-	if ((storedReadingDelayNumber = [userDefaults objectForKey:@"readingDelayNumber"])) {
-		readingDelayNumber = [storedReadingDelayNumber intValue];
+- (int)fetchReadingDelayTime {
+	id storedReadingDelayTime;
+	if ((storedReadingDelayTime = [userDefaults objectForKey:@"readingDelayTime"])) {
+		readingDelayTime = [storedReadingDelayTime intValue];
 	}
 	else {
-		[self saveReadingDelayNumber:5];
+		[self saveReadingDelayTime:5];
 	}
     
-	return readingDelayNumber;
+	return readingDelayTime;
 }
 
-- (void)saveReadingDelayNumber:(int)newNum {
-	[userDefaults setInteger:(readingDelayNumber = newNum) forKey:@"readingDelayNumber"];
+- (void)saveReadingDelayTime:(int)newTime {
+	[userDefaults setInteger:(readingDelayTime = newTime) forKey:@"readingDelayTime"];
 	[userDefaults synchronize];
 }
 
-- (BOOL)fetchMultitouchRecognition {
+- (BOOL)fetchMultitouchOption {
 	id storedMultitouchRecognition;
-	if ((storedMultitouchRecognition = [userDefaults objectForKey:@"multitouchRecognition"])) {
-		multitouchRecognition = [storedMultitouchRecognition boolValue];
+	if ((storedMultitouchRecognition = [userDefaults objectForKey:@"multitouchOption"])) {
+		multitouchOption = [storedMultitouchRecognition boolValue];
 	}
 	else {
-		[self saveMultitouchRecognition:[MultitouchManager systemIsMultitouchCapable]];
+		[self saveMultitouchOption:[MultitouchManager systemIsMultitouchCapable]];
 	}
     
-	return multitouchRecognition;
+	return multitouchOption;
 }
 
-- (void)saveMultitouchRecognition:(BOOL)newValue {
-	[userDefaults setBool:(multitouchRecognition = newValue) forKey:@"multitouchRecognition"];
+- (void)saveMultitouchOption:(BOOL)newChoice {
+	[userDefaults setBool:(multitouchOption = newChoice) forKey:@"multitouchOption"];
 	[userDefaults synchronize];
 }
 
-- (BOOL)fetchFullscreenRecognition {
+- (BOOL)fetchFullscreenOption {
 	id storedFullscreenRecognition;
-	if ((storedFullscreenRecognition = [userDefaults objectForKey:@"fullscreenRecognition"])) {
-		fullscreenRecognition = [storedFullscreenRecognition boolValue];
+	if ((storedFullscreenRecognition = [userDefaults objectForKey:@"fullscreenOption"])) {
+		fullscreenOption = [storedFullscreenRecognition boolValue];
 	}
 	else {
-		[self saveFullscreenRecognition:NO];
+		[self saveFullscreenOption:NO];
 	}
     
-	return fullscreenRecognition;
+	return fullscreenOption;
 }
 
-- (void)saveFullscreenRecognition:(BOOL)newValue {
-	[userDefaults setBool:(fullscreenRecognition = newValue) forKey:@"fullscreenRecognition"];
+- (void)saveFullscreenOption:(BOOL)newChoice {
+	[userDefaults setBool:(fullscreenOption = newChoice) forKey:@"fullscreenOption"];
 	[userDefaults synchronize];
 }
 
-- (BOOL)fetchHideDockIcon {
+- (BOOL)fetchHiddenIconOption {
 	id storedHideDockIcon;
-	if ((storedHideDockIcon = [userDefaults objectForKey:@"hideDockIcon"])) {
-		hideDockIcon = [storedHideDockIcon boolValue];
+	if ((storedHideDockIcon = [userDefaults objectForKey:@"hiddenIconOption"])) {
+		hiddenIconOption = [storedHideDockIcon boolValue];
 	}
 	else {
-		[self saveHideDockIcon:NO];
+		[self saveHiddenIconOption:NO];
 	}
     
-	return hideDockIcon;
+	return hiddenIconOption;
 }
 
-- (void)saveHideDockIcon:(BOOL)newValue {
-	[userDefaults setBool:(hideDockIcon = newValue) forKey:@"hideDockIcon"];
+- (void)saveHiddenIconOption:(BOOL)newChoice {
+	[userDefaults setBool:(hiddenIconOption = newChoice) forKey:@"hiddenIconOption"];
 	[userDefaults synchronize];
     
 	ProcessSerialNumber psn = { 0, kCurrentProcess };
-	if (hideDockIcon) {
+	if (hiddenIconOption) {
 		TransformProcessType(&psn, kProcessTransformToUIElementApplication);
 		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.005];
 		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.01];
@@ -179,7 +204,7 @@
 	}
 }
 
-- (BOOL)fetchStartAtLaunch {
+- (BOOL)fetchLoginStartOption {
 	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
 	Boolean foundIt = false;
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
@@ -202,11 +227,11 @@
 		CFRelease(loginItems);
 	}
     
-	return (startAtLaunch = foundIt);
+	return (loginStartOption = foundIt);
 }
 
-- (void)saveStartAtLaunch:(BOOL)newValue {
-	startAtLaunch = newValue;
+- (void)saveLoginStartOption:(BOOL)newChoice {
+	loginStartOption = newChoice;
     
 	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
 	LSSharedFileListItemRef existingItem = NULL;
@@ -228,10 +253,10 @@
 				}
 			}
 		}
-		if (startAtLaunch && (existingItem == NULL)) {
+		if (loginStartOption && (existingItem == NULL)) {
 			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (CFURLRef)itemURL, NULL, NULL);
 		}
-		else if (!startAtLaunch && (existingItem != NULL)) {
+		else if (!loginStartOption && (existingItem != NULL)) {
 			LSSharedFileListItemRemove(loginItems, existingItem);
 		}
 		CFRelease(loginItems);

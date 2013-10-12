@@ -17,7 +17,7 @@
 
 #define GUGoldenRatioAngleLeniency 30.0f
 
-#define GUStartAngleLeniency 30.0f
+#define GUStartAngleLeniency 40.0f
 
 #define GUGoldenRatioDegreeConstant 2.0f
 

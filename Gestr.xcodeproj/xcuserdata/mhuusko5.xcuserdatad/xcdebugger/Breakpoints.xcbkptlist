@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Gestr/GestureSetupController.m"
-         timestampString = "403239722.673579"
+         timestampString = "403293917.273536"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
+         startingLineNumber = "101"
+         endingLineNumber = "101"
          landmarkName = "-numberOfRowsInTableView:"
          landmarkType = "5">
       </FileBreakpoint>
