@@ -74,14 +74,14 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:point forKey:@"point"];
-	[coder encodeObject:[NSNumber numberWithInt:strokeId] forKey:@"stroke"];
+	[coder encodeObject:[NSNumber numberWithInt:strokeId] forKey:@"strokeId"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
     
 	point = [coder decodeObjectForKey:@"point"];
-	strokeId = [[coder decodeObjectForKey:@"stroke"] intValue];
+	strokeId = [[coder decodeObjectForKey:@"strokeId"] intValue];
     
 	return self;
 }

@@ -175,7 +175,7 @@
 				D001B43516D7441F00F8E413 /* AppController.m */,
 				D001B48016D7448100F8E413 /* Gesture Setup */,
 				D001B48216D744D800F8E413 /* Gesture Recognition */,
-				D0516E1417EFCFC500C48BD8 /* MultitouchSupport */,
+				D0516E1417EFCFC500C48BD8 /* Multitouch Support */,
 				D001B48116D7449300F8E413 /* Gesture Detection */,
 				D001B47F16D7446000F8E413 /* Supporting Files */,
 			);
@@ -249,7 +249,7 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		D0516E1417EFCFC500C48BD8 /* MultitouchSupport */ = {
+		D0516E1417EFCFC500C48BD8 /* Multitouch Support */ = {
 			isa = PBXGroup;
 			children = (
 				D0140F8F17EFD75E004C19F3 /* MultitouchSupport.h */,
@@ -262,7 +262,7 @@
 				D0140F8917EFD6EE004C19F3 /* MultitouchTouch.h */,
 				D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */,
 			);
-			name = MultitouchSupport;
+			name = "Multitouch Support";
 			sourceTree = "<group>";
 		};
 		D07340E1152578F400FC7910 = {
