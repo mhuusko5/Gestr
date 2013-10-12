@@ -2,68 +2,206 @@
 
 @implementation GestureRecognitionController
 
-@synthesize gesturesLoaded, recognitionView, recognitionWindow, appController, gestureDetector, updatedGestureDictionary, currentApp, recognitionBackground;
+@synthesize recognitionModel, appController, recognitionWindow, recognitionView;
 
-- (id)init {
-	self = [super init];
-    
-	BOOL freshData = ![self fetchUpdatedGestureDictionary];
-    
-	float newDataVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
-    
-	float currentDataVersion;
-	if (freshData) {
-		currentDataVersion = newDataVersion;
+#pragma mark -
+#pragma mark Initialization
+- (void)awakeFromNib {
+	if (!awakedFromNib) {
+		awakedFromNib = YES;
+        
+		recognitionView.recognitionController = self;
+        
+		[self hideRecognitionWindow];
+        
+		recognitionModel = [[GestureRecognitionModel alloc] init];
+        
+		recentRightClickDate = [NSDate date];
+		recentFourFingerTouches = [NSMutableArray array];
 	}
-	else {
-		id storedLastVersion;
-		if ((storedLastVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentDataVersion"])) {
-			currentDataVersion = [storedLastVersion floatValue];
-		}
-		else {
-			currentDataVersion = 1.21;
-		}
-	}
-    
-	[[NSUserDefaults standardUserDefaults] setFloat:newDataVersion forKey:@"currentDataVersion"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-	[self loadGesturesFromStoredData];
-    
-	lastRightClick = [NSDate date];
-    
-	fourFingerTouches = [NSMutableArray array];
-    
-	return self;
 }
 
-- (void)loadGesturesFromStoredData {
-	gestureDetector = [[GestureRecognizer alloc] init];
+- (void)applicationDidFinishLaunching {
+	CFMachPortRef eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleEvent, self);
+	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
+	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
+	CGEventTapEnable(eventTap, YES);
     
-	@try {
-		if (!updatedGestureDictionary) {
-			@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
+	[[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
+    
+	[self layoutRecognitionWindow];
+	[self hideRecognitionWindow];
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Recognition Utilities
+- (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
+	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
+	int rating;
+	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.successfulRecognitionScore) {
+		Launchable *appToShow = [appController.gestureSetupController launchableWithId:result.gestureIdentity];
+		if (appToShow != nil) {
+            partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating];
+            partialIconAlert.image = appToShow.icon;
 		}
-        
-		for (id plistGestureKey in updatedGestureDictionary) {
-			Gesture *plistGesture = [updatedGestureDictionary objectForKey:plistGestureKey];
-			if (!plistGesture || !plistGesture.name || !plistGesture.strokes || plistGesture.strokes.count < 1) {
-				@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
-			}
-			else {
-				[gestureDetector addGesture:plistGesture];
-			}
+		else {
+			[recognitionModel deleteGestureWithName:result.gestureIdentity];
 		}
 	}
-	@catch (NSException *exception)
-	{
-		updatedGestureDictionary = [NSMutableDictionary dictionary];
-		[self saveUpdatedGestureDictionary];
+	else {
+        partialDescriptionAlert.stringValue = @"";
+        partialIconAlert.image = nil;
+	}
+}
+
+- (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
+	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
+	int rating;
+	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.successfulRecognitionScore) {
+		Launchable *appToLaunch = [appController.gestureSetupController launchableWithId:result.gestureIdentity];
+		if (appToLaunch != nil) {
+			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating];
+            partialIconAlert.image = appToLaunch.icon;
+            
+            appDescriptionAlert.stringValue = appToLaunch.displayName;
+            appIconAlert.image = appToLaunch.icon;
+            
+			[appToLaunch launchWithNewThread:YES];
+		}
+		else {
+			[recognitionModel deleteGestureWithName:result.gestureIdentity];
+		}
         
-		gestureDetector = [[GestureRecognizer alloc] init];
+		[self toggleOutRecognitionWindow:YES];
+	}
+	else {
+		[self toggleOutRecognitionWindow:NO];
+	}
+}
+
+- (void)shouldStartDetectingGesture {
+	if (recognitionWindow.alphaValue <= 0) {
+		if ([self.appController.gestureSetupController.setupWindow alphaValue] > 0) {
+			[self.appController.gestureSetupController toggleSetupWindow:nil];
+		}
+        
+        appDescriptionAlert.stringValue = @"";
+        appIconAlert.image = nil;
+		
+        partialDescriptionAlert.stringValue = @"";
+        partialIconAlert.image = nil;
+        
+		[self toggleInRecognitionWindow];
+        
+		[recognitionWindow makeFirstResponder:recognitionView];
+		[recognitionView setNeedsDisplay:YES];
+		[recognitionView startDetectingGesture];
+	}
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Activation Event Handling
+- (void)handleMultitouchEvent:(MultitouchEvent *)event {
+	if (recognitionWindow.alphaValue > 0) {
+		return;
 	}
     
-	gesturesLoaded = YES;
+	if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == MultitouchTouchStateActive) {
+		[recentFourFingerTouches addObject:event];
+	}
+	else if (recentFourFingerTouches.count > 0) {
+		int totalCount = 0;
+		float totalVelocity = 0.0f;
+		for (MultitouchEvent *fourFingerEvent in recentFourFingerTouches) {
+			for (MultitouchTouch *touch in fourFingerEvent.touches) {
+				totalCount++;
+				totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+			}
+		}
+        
+		[recentFourFingerTouches removeAllObjects];
+        
+		if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
+			[self shouldStartDetectingGesture];
+		}
+	}
+}
+
+- (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type {
+	if (appController.gestureSetupController.setupModel.multitouchRecognition && recognitionView.detectingInput) {
+		if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
+			[recognitionView finishDetectingGesture:YES];
+			return event;
+		}
+		else {
+			return NULL;
+		}
+	}
+    
+	if (recognitionWindow.alphaValue > 0) {
+		return event;
+	}
+    
+	if (type == kCGEventRightMouseDown) {
+		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 380) {
+			[self shouldStartDetectingGesture];
+            
+			recentRightClickDate = [NSDate date];
+		}
+		else {
+			recentRightClickDate = [NSDate date];
+		}
+	}
+    
+	return event;
+}
+
+CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
+	return [(GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Window Methods
+- (void)fadeOutRecognitionWindow {
+	[NSAnimationContext beginGrouping];
+	[[NSAnimationContext currentContext] setDuration:0.18];
+	[[NSAnimationContext currentContext] setCompletionHandler: ^{
+	    [self toggleOutRecognitionWindow:NO];
+	}];
+	[[recognitionWindow animator] setAlphaValue:0.0];
+	[NSAnimationContext endGrouping];
+}
+
+- (void)toggleOutRecognitionWindow:(BOOL)fadeOut {
+	if (fadeOut) {
+		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.34];
+	}
+	else {
+		[self hideRecognitionWindow];
+        
+		[[NSApplication sharedApplication] hide:self];
+	}
+}
+
+- (void)toggleInRecognitionWindow {
+    recognitionWindow.alphaValue = 1.0;
+	[self layoutRecognitionWindow];
+    
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+	[recognitionWindow makeKeyAndOrderFront:self];
+}
+
+- (void)hideRecognitionWindow {
+	recognitionWindow.alphaValue = 0.0;
+	[recognitionWindow orderOut:self];
+	[[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
+	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
 }
 
 - (void)layoutRecognitionWindow {
@@ -76,7 +214,7 @@
 	[recognitionWindow setFrame:screenRect display:NO];
     
 	NSRect recognitionRect = NSMakeRect(0, 0, screenRect.size.width, screenRect.size.height);
-	if (appController.gestureSetupController.fullscreenRecognition) {
+	if (appController.gestureSetupController.setupModel.fullscreenRecognition) {
 		NSRect alertDescriptionRect = NSMakeRect(recognitionRect.origin.x + (recognitionRect.size.height / 40), recognitionRect.size.height / 3, recognitionRect.size.width - 2 * (recognitionRect.size.height / 40), recognitionRect.size.height / 22);
 		[appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 52]];
 		[appDescriptionAlert setFrame:alertDescriptionRect];
@@ -87,7 +225,7 @@
         
 		[recognitionView setFrame:recognitionRect];
 		[recognitionBackground setFrame:recognitionRect];
-		[recognitionBackground setAlphaValue:0.88];
+		recognitionBackground.alphaValue = 0.88;
 		((RepeatedImageView *)recognitionBackground).roundRadius = 0;
         
 		NSSize partialIconSize = NSMakeSize(recognitionRect.size.width / 10, recognitionRect.size.width / 10);
@@ -116,7 +254,7 @@
 		recognitionRect.size.height -= recognitionOffsetY;
 		[recognitionView setFrame:recognitionRect];
 		[recognitionBackground setFrame:recognitionRect];
-		[recognitionBackground setAlphaValue:0.93];
+		recognitionBackground.alphaValue = 0.93;
 		((RepeatedImageView *)recognitionBackground).roundRadius = recognitionRect.size.height / 46;
         
 		NSSize partialIconSize = NSMakeSize(recognitionRect.size.width / 7, recognitionRect.size.width / 7);
@@ -129,238 +267,6 @@
 	}
 }
 
-- (void)awakeFromNib {
-	[recognitionView setRecognitionController:self];
-    
-	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-    
-	[self setupActivationHanding];
-}
-
-- (BOOL)fetchUpdatedGestureDictionary {
-	BOOL success = NO;
-    
-	NSMutableDictionary *gestures;
-	@try {
-		NSData *gestureData;
-		if ((gestureData = [[NSUserDefaults standardUserDefaults] objectForKey:@"Gestures"])) {
-			gestures = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:gestureData]];
-			success = YES;
-		}
-		else {
-			gestures = [NSMutableDictionary dictionary];
-		}
-	}
-	@catch (NSException *exception)
-	{
-		gestures = [NSMutableDictionary dictionary];
-	}
-    
-	updatedGestureDictionary = gestures;
-    
-	[self saveUpdatedGestureDictionary];
-    
-	return success;
-}
-
-- (void)saveUpdatedGestureDictionary {
-	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:updatedGestureDictionary] forKey:@"Gestures"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-CFMachPortRef eventTap;
-- (void)setupActivationHanding {
-	eventTap = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleAllEvents, self);
-	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
-	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
-	CGEventTapEnable(eventTap, YES);
-    
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationBecameActive:) name:NSWorkspaceDidActivateApplicationNotification object:nil];
-    
-	[[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
-}
-
-- (void)checkFourFingerTouches {
-	int totalCount = 0;
-	float totalVelocity = 0.0f;
-	for (MultitouchEvent *fourFingerEvent in fourFingerTouches) {
-		for (MultitouchTouch *touch in fourFingerEvent.touches) {
-			totalCount++;
-			totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
-		}
-	}
-    
-	[fourFingerTouches removeAllObjects];
-    
-	if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
-		[self shouldStartDetectingGesture];
-	}
-}
-
-static int multitouchTouchActive = 4;
-- (void)handleMultitouchEvent:(MultitouchEvent *)event {
-	if ([[self recognitionWindow] alphaValue] > 0) {
-		return;
-	}
-    
-	if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == multitouchTouchActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == multitouchTouchActive) {
-		[fourFingerTouches addObject:event];
-	}
-	else if (fourFingerTouches.count > 0) {
-		[self checkFourFingerTouches];
-	}
-}
-
-- (void)applicationBecameActive:(NSNotification *)notification {
-	NSRunningApplication *newApp = ((NSRunningApplication *)[[notification userInfo] objectForKey:NSWorkspaceApplicationKey]);
-	if (![newApp.bundleIdentifier isEqualToString:[NSRunningApplication currentApplication].bundleIdentifier]) {
-		currentApp = newApp;
-	}
-}
-
-NSDate *lastRightClick;
-
-- (void)handleEvent:(CGEventRef)event withType:(int)type {
-	if ([[self recognitionWindow] alphaValue] > 0) {
-		return;
-	}
-    
-	if (type == kCGEventRightMouseDown) {
-		if ([[NSDate date] timeIntervalSinceDate:lastRightClick] * 1000 < 380) {
-			[self shouldStartDetectingGesture];
-			lastRightClick = [NSDate date];
-			return;
-		}
-		else {
-			lastRightClick = [NSDate date];
-		}
-	}
-}
-
-CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
-	GestureRecognitionController *recognitionController = (GestureRecognitionController *)refcon;
-    
-	if (recognitionController.appController.gestureSetupController.multitouchRecognition && recognitionController.recognitionView.detectingInput) {
-		if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
-			[recognitionController.recognitionView finishDetectingGesture:YES];
-			return eventRef;
-		}
-		else {
-			return NULL;
-		}
-	}
-    
-	[(GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];
-    
-	return eventRef;
-}
-
-- (void)shouldStartDetectingGesture {
-	if (gesturesLoaded && [[self recognitionWindow] alphaValue] <= 0) {
-		if ([self.appController.gestureSetupController.setupWindow alphaValue] > 0) {
-			[self.appController.gestureSetupController toggleGestureSetupWindow:nil];
-		}
-        
-		[appDescriptionAlert setStringValue:@""];
-		[appIconAlert setImage:NULL];
-        
-		[partialDescriptionAlert setStringValue:@""];
-		[partialIconAlert setImage:NULL];
-        
-        
-		[self showGestureRecognitionWindow];
-        
-		[recognitionWindow makeFirstResponder:recognitionView];
-		[recognitionView setNeedsDisplay:YES];
-		[recognitionView startDetectingGesture];
-	}
-}
-
-- (void)launchAppWithBundleId:(NSString *)bundle {
-	@try {
-		[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundle options:NSWorkspaceLaunchAsync additionalEventParamDescriptor:nil launchIdentifier:nil];
-	}
-	@catch (NSException *exception)
-	{
-		return;
-	}
-}
-
-- (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
-	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
-	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToShow = [appController.gestureSetupController appWithBundleName:result.gestureName];
-		if (appToShow != nil) {
-			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToShow.displayName, rating]];
-			[partialIconAlert setImage:appToShow.icon];
-		}
-		else {
-			[appController.gestureSetupController deleteGestureWithName:result.gestureName];
-		}
-	}
-	else {
-		[partialDescriptionAlert setStringValue:@""];
-		[partialIconAlert setImage:NULL];
-	}
-}
-
-- (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
-	GestureResult *result = [gestureDetector recognizeGestureWithStrokes:strokes];
-	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.successfulRecognitionScore) {
-		App *appToLaunch = [appController.gestureSetupController appWithBundleName:result.gestureName];
-		if (appToLaunch != nil) {
-			[partialDescriptionAlert setStringValue:[NSString stringWithFormat:@"%@ - %i%%", appToLaunch.displayName, rating]];
-			[partialIconAlert setImage:appToLaunch.icon];
-            
-			[appDescriptionAlert setStringValue:appToLaunch.displayName];
-			[appIconAlert setImage:appToLaunch.icon];
-            
-			[self launchAppWithBundleId:appToLaunch.bundleId];
-		}
-		else {
-			[appController.gestureSetupController deleteGestureWithName:result.gestureName];
-		}
-        
-		[self hideGestureRecognitionWindow:YES];
-	}
-	else {
-		[self hideGestureRecognitionWindow:NO];
-	}
-}
-
-- (void)fadeOutGestureRecognitionWindow {
-	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:0.18];
-	[[NSAnimationContext currentContext] setCompletionHandler: ^{
-	    [self hideGestureRecognitionWindow:NO];
-	}];
-	[[recognitionWindow animator] setAlphaValue:0.0];
-	[NSAnimationContext endGrouping];
-}
-
-- (void)hideGestureRecognitionWindow:(BOOL)fade {
-	if (fade) {
-		[self performSelector:@selector(fadeOutGestureRecognitionWindow) withObject:nil afterDelay:0.34];
-	}
-	else {
-		[recognitionWindow setAlphaValue:0.0];
-		[recognitionWindow orderOut:self];
-		[[recognitionWindow parentWindow] removeChildWindow:recognitionWindow];
-        
-		[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-        
-		[[NSApplication sharedApplication] hide:self];
-	}
-}
-
-- (void)showGestureRecognitionWindow {
-	[recognitionWindow setAlphaValue:1.0];
-	[self layoutRecognitionWindow];
-    
-	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-	[recognitionWindow makeKeyAndOrderFront:self];
-}
+#pragma mark -
 
 @end

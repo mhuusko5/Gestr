@@ -60,9 +60,11 @@
 }
 
 - (void)removeMultitouchListersWithTarget:(id)target andCallback:(SEL)callback {
-	for (MultitouchListener *multitouchListerToRemove in multitouchListeners) {
-		if ([multitouchListerToRemove.target isEqual:target] && (!callback || multitouchListerToRemove.callback == callback)) {
-			[multitouchListeners removeObject:multitouchListerToRemove];
+	int multitouchListenerCount = (int)multitouchListeners.count;
+	while (multitouchListenerCount-- > 0) {
+		MultitouchListener *multitouchListenerToRemove = [multitouchListeners objectAtIndex:multitouchListenerCount];
+		if ([multitouchListenerToRemove.target isEqual:target] && (!callback || multitouchListenerToRemove.callback == callback)) {
+			[multitouchListeners removeObject:multitouchListenerToRemove];
 		}
 	}
 }
@@ -82,7 +84,7 @@ static int mtEventHandler(int mtEventDeviceId, MTTouch *mtEventTouches, int mtEv
 		[multitouchTouches addObject:multitouchTouch];
 	}
     
-	[multitouchEvent setTouches:[NSArray arrayWithArray:multitouchTouches]];
+	multitouchEvent.touches = [NSArray arrayWithArray:multitouchTouches];
     
 	[[MultitouchManager sharedMultitouchManager] handleMultitouchEvent:multitouchEvent];
     

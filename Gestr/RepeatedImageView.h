@@ -2,7 +2,7 @@
 
 @interface RepeatedImageView : NSImageView {
 	NSColor *backgroundColor;
-    float roundRadius;
+	float roundRadius;
 }
 @property float roundRadius;
 - (void)drawRect:(NSRect)dirtyRect;

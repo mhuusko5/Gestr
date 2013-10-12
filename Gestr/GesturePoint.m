@@ -2,9 +2,9 @@
 
 @implementation GesturePoint
 
-@synthesize stroke;
+@synthesize strokeId;
 
-- (id)initWithX:(float)_x andY:(float)_y andStroke:(int)_strokeId {
+- (id)initWithX:(float)_x andY:(float)_y andStrokeId:(int)_strokeId {
 	self = [super init];
     
 #if (TARGET_OS_IPHONE || TARGET_OS_IPAD || TARGET_IPHONE_SIMULATOR)
@@ -13,29 +13,29 @@
 	point = [NSValue valueWithPoint:NSMakePoint(_x, _y)];
 #endif
     
-	stroke = _strokeId;
+	strokeId = _strokeId;
     
 	return self;
 }
 
 #if (TARGET_OS_IPHONE || TARGET_OS_IPAD || TARGET_IPHONE_SIMULATOR)
-- (id)initWithPoint:(CGPoint)_point andStroke:(int)_strokeId {
-	return [self initWithX:_point.x andY:_point.y andStroke:_strokeId];
+- (id)initWithPoint:(CGPoint)_point andStrokeId:(int)_strokeId {
+	return [self initWithX:_point.x andY:_point.y andStrokeId:_strokeId];
 }
 
 #else
-- (id)initWithPoint:(NSPoint)_point andStroke:(int)_strokeId {
-	return [self initWithX:_point.x andY:_point.y andStroke:_strokeId];
+- (id)initWithPoint:(NSPoint)_point andStrokeId:(int)_strokeId {
+	return [self initWithX:_point.x andY:_point.y andStrokeId:_strokeId];
 }
 
 #endif
 
 
-- (id)initWithValue:(NSValue *)_value andStroke:(int)_strokeId {
+- (id)initWithValue:(NSValue *)_value andStrokeId:(int)_strokeId {
 	self = [super init];
     
 	point = _value;
-	stroke = _strokeId;
+	strokeId = _strokeId;
     
 	return self;
 }
@@ -74,26 +74,26 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:point forKey:@"point"];
-	[coder encodeObject:[NSNumber numberWithInt:stroke] forKey:@"stroke"];
+	[coder encodeObject:[NSNumber numberWithInt:strokeId] forKey:@"stroke"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
     
 	point = [coder decodeObjectForKey:@"point"];
-	stroke = [[coder decodeObjectForKey:@"stroke"] intValue];
+	strokeId = [[coder decodeObjectForKey:@"stroke"] intValue];
     
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	GesturePoint *copy = [[GesturePoint allocWithZone:zone] initWithValue:[point copy] andStroke:stroke];
+	GesturePoint *copy = [[GesturePoint allocWithZone:zone] initWithValue:[point copy] andStrokeId:strokeId];
     
 	return copy;
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"X: %f Y: %f Stroke: %i", [self getX], [self getY], stroke];
+	return [NSString stringWithFormat:@"X: %f Y: %f Stroke: %i", [self getX], [self getY], strokeId];
 }
 
 @end

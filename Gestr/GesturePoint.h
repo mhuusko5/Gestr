@@ -2,17 +2,17 @@
 
 @interface GesturePoint : NSObject <NSCopying, NSCoding> {
 	NSValue *point;
-	int stroke;
+	int strokeId;
 }
-@property int stroke;
+@property int strokeId;
 
-- (id)initWithX:(float)_x andY:(float)_y andStroke:(int)_strokeId;
+- (id)initWithX:(float)_x andY:(float)_y andStrokeId:(int)_strokeId;
 #if (TARGET_OS_IPHONE || TARGET_OS_IPAD || TARGET_IPHONE_SIMULATOR)
-- (id)initWithPoint:(CGPoint)_point andStroke:(int)_strokeId;
+- (id)initWithPoint:(CGPoint)_point andStrokeId:(int)_strokeId;
 #else
-- (id)initWithPoint:(NSPoint)_point andStroke:(int)_strokeId;
+- (id)initWithPoint:(NSPoint)_point andStrokeId:(int)_strokeId;
 #endif
-- (id)initWithValue:(NSValue *)_value andStroke:(int)_strokeId;
+- (id)initWithValue:(NSValue *)_value andStrokeId:(int)_strokeId;
 - (void)setX:(float)_x;
 - (void)setY:(float)_y;
 - (float)getX;

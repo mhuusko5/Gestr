@@ -17,8 +17,8 @@
 }
 
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType {
-	if (!setupController.multitouchRecognition && detectingInput) {
-		[setupController.drawNowText setAlphaValue:0.0];
+	if (!setupController.setupModel.multitouchRecognition && detectingInput) {
+		[setupController showDrawNowText:NO];
         
 		if (noInputTimer) {
 			[noInputTimer invalidate];
@@ -43,7 +43,7 @@
 			[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
 		}
         
-		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / self.frame.size.height) * GUBoundingBoxSize andStroke:[identity intValue]];
+		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / self.frame.size.height) * GUBoundingBoxSize andStrokeId:[identity intValue]];
         
 		[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
         
@@ -62,7 +62,7 @@
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
 			if (!shouldDetectTimer) {
-				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
             
 			NSBezierPath *tempPath = [touchPaths objectForKey:identity];
@@ -86,8 +86,8 @@
 }
 
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event {
-	if (setupController.multitouchRecognition && detectingInput) {
-		[setupController.drawNowText setAlphaValue:0.0];
+	if (setupController.setupModel.multitouchRecognition && detectingInput) {
+		[setupController showDrawNowText:NO];
         
 		if (!initialMultitouchDeviceId) {
 			initialMultitouchDeviceId = event.deviceIdentifier;
@@ -105,7 +105,7 @@
 			}
             
 			if (!shouldDetectTimer && event.touches.count == 0) {
-				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayNumber) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
 				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 10);
@@ -122,7 +122,7 @@
 							[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
 						}
                         
-						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStroke:[identity intValue]];
+						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStrokeId:[identity intValue]];
                         
 						[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
                         
@@ -226,24 +226,26 @@
 }
 
 - (void)startDetectingGesture {
-	[self resetAll];
-    
-	mouseStrokeIndex = 0;
-    
-	initialMultitouchDeviceId = nil;
-    
-	[setupController.drawNowText setAlphaValue:1.0];
-    
-	noInputTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
-    
-	if (setupController.multitouchRecognition) {
-		[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
-		CGAssociateMouseAndMouseCursorPosition(NO);
-	}
-    
-	[self becomeFirstResponder];
-    
-	detectingInput = YES;
+	if (!detectingInput) {
+        [self resetAll];
+        
+        mouseStrokeIndex = 0;
+        
+        initialMultitouchDeviceId = nil;
+        
+        [setupController showDrawNowText:YES];
+        
+        noInputTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+        
+        if (setupController.setupModel.multitouchRecognition) {
+            [self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
+            CGAssociateMouseAndMouseCursorPosition(NO);
+        }
+        
+        [self becomeFirstResponder];
+        
+        detectingInput = YES;
+    }
 }
 
 - (void)checkNoInput {
@@ -257,28 +259,34 @@
 }
 
 - (void)finishDetectingGesture:(BOOL)ignore {
-	[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
-	CGAssociateMouseAndMouseCursorPosition(YES);
-    
-	detectingInput = NO;
-    
-	[setupController.drawNowText setAlphaValue:0.0];
-    
-	if (!ignore) {
-		NSMutableArray *orderedStrokes = [NSMutableArray array];
-		for (int i = 0; i < [orderedStrokeIds count]; i++) {
-			[orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
-		}
+	if (detectingInput) {
+        [[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+        CGAssociateMouseAndMouseCursorPosition(YES);
         
-		[setupController saveGestureWithStrokes:orderedStrokes];
-	}
+        if (!ignore) {
+            NSMutableArray *orderedStrokes = [NSMutableArray array];
+            for (int i = 0; i < orderedStrokeIds.count; i++) {
+                [orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
+            }
+            
+            [setupController saveGestureWithStrokes:orderedStrokes];
+        }
+        
+        [self resetAll];
+        
+        detectingInput = NO;
+    }
+}
+
+- (BOOL)resignFirstResponder {
+    [self finishDetectingGesture:YES];
     
-	[setupController updateSetupControls];
-    
-	[self resetAll];
+    return YES;
 }
 
 - (void)resetAll {
+    [setupController showDrawNowText:NO];
+    
 	if (shouldDetectTimer) {
 		[shouldDetectTimer invalidate];
 		shouldDetectTimer = nil;

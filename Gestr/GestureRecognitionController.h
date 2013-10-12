@@ -1,64 +1,71 @@
 #import <ApplicationServices/ApplicationServices.h>
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>
+#import "GestureRecognitionModel.h"
 #import "AppController.h"
 #import "GestureRecognitionWindow.h"
 #import "GestureRecognitionView.h"
 #import "GestureRecognizer.h"
-#import "App.h"
+#import "Launchable.h"
 #import "MultitouchManager.h"
 #import "RepeatedImageView.h"
 
 @class GestureRecognitionView, GestureRecognizer, AppController;
 
 @interface GestureRecognitionController : NSObject {
+	BOOL awakedFromNib;
+    
+	GestureRecognitionModel *recognitionModel;
+    
+	AppController *appController;
+    
 	IBOutlet GestureRecognitionWindow *recognitionWindow;
-	IBOutlet NSImageView *recognitionBackground;
 	IBOutlet GestureRecognitionView *recognitionView;
+    
+	IBOutlet NSImageView *recognitionBackground;
+    
 	IBOutlet NSImageView *appIconAlert;
 	IBOutlet NSTextField *appDescriptionAlert;
     
 	IBOutlet NSImageView *partialIconAlert;
 	IBOutlet NSTextField *partialDescriptionAlert;
     
-	NSRunningApplication *currentApp;
-    
-	AppController *appController;
-	GestureRecognizer *gestureDetector;
-    
-	NSMutableDictionary *updatedGestureDictionary;
-    
-	BOOL gesturesLoaded;
-    
-	NSMutableArray *fourFingerTouches;
+	NSDate *recentRightClickDate;
+	NSMutableArray *recentFourFingerTouches;
 }
-@property BOOL gesturesLoaded;
+@property (retain) GestureRecognitionModel *recognitionModel;
+@property (retain) AppController *appController;
 @property (retain) GestureRecognitionWindow *recognitionWindow;
 @property (retain) GestureRecognitionView *recognitionView;
-@property (retain) AppController *appController;
-@property (retain) NSMutableDictionary *updatedGestureDictionary;
-@property (retain) GestureRecognizer *gestureDetector;
-@property (retain) NSRunningApplication *currentApp;
-@property (retain) NSImageView *recognitionBackground;
 
-- (id)init;
-- (void)loadGesturesFromStoredData;
-- (void)layoutRecognitionWindow;
+#pragma mark -
+#pragma mark Initialization
 - (void)awakeFromNib;
-- (BOOL)fetchUpdatedGestureDictionary;
-- (void)saveUpdatedGestureDictionary;
-- (void)setupActivationHanding;
-- (void)handleEvent:(CGEventRef)event withType:(int)type;
-CGEventRef handleAllEvents(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon);
+- (void)applicationDidFinishLaunching;
+#pragma mark -
 
-- (void)handleMultitouchEvent:(MultitouchEvent *)event;
-- (void)applicationBecameActive:(NSNotification *)notification;
-- (void)shouldStartDetectingGesture;
-- (void)launchAppWithBundleId:(NSString *)bundle;
+#pragma mark -
+#pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes;
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes;
-- (void)fadeOutGestureRecognitionWindow;
-- (void)hideGestureRecognitionWindow:(BOOL)fade;
-- (void)showGestureRecognitionWindow;
+- (void)shouldStartDetectingGesture;
+#pragma mark -
+
+#pragma mark -
+#pragma mark Activation Event Handling
+- (void)handleMultitouchEvent:(MultitouchEvent *)event;
+- (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type;
+CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon);
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Window Methods
+- (void)fadeOutRecognitionWindow;
+- (void)toggleOutRecognitionWindow:(BOOL)fadeOut;
+- (void)toggleInRecognitionWindow;
+- (void)hideRecognitionWindow;
+- (void)layoutRecognitionWindow;
+#pragma mark -
 
 @end

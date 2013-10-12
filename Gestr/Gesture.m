@@ -2,12 +2,12 @@
 
 @implementation Gesture
 
-@synthesize name, strokes, templates;
+@synthesize identity, strokes, templates;
 
-- (id)initWithName:(NSString *)_name andStrokes:(NSMutableArray *)_strokes {
+- (id)initWithIdentity:(NSString *)_identity andStrokes:(NSMutableArray *)_strokes {
 	self = [super init];
     
-	name = _name;
+	identity = _identity;
 	strokes = _strokes;
     
 	return self;
@@ -24,33 +24,33 @@
 	}
     
 	NSMutableArray *order = [NSMutableArray array];
-	for (int i = 0; i < [strokes count]; i++) {
+	for (int i = 0; i < strokes.count; i++) {
 		[order insertObject:[NSNumber numberWithInt:i] atIndex:i];
 	}
     
-	NSMutableArray *unistrokes = GUMakeUnistrokes(strokes, GUHeapPermute((int)[strokes count], order, [NSMutableArray array]));
+	NSMutableArray *unistrokes = GUMakeUnistrokes(strokes, GUHeapPermute((int)strokes.count, order, [NSMutableArray array]));
     
-	for (int j = 0; j < [unistrokes count]; j++) {
+	for (int j = 0; j < unistrokes.count; j++) {
 		[templates addObject:[[GestureTemplate alloc] initWithPoints:[unistrokes objectAtIndex:j]]];
 	}
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
 	[coder encodeObject:strokes forKey:@"strokes"];
-	[coder encodeObject:name forKey:@"name"];
+	[coder encodeObject:identity forKey:@"identity"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
     
 	strokes = [coder decodeObjectForKey:@"strokes"];
-	name = [coder decodeObjectForKey:@"name"];
+	identity = [coder decodeObjectForKey:@"identity"];
     
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	Gesture *copy = [[Gesture allocWithZone:zone] initWithName:[name copy] andStrokes:[strokes copy]];
+	Gesture *copy = [[Gesture allocWithZone:zone] initWithIdentity:[identity copy] andStrokes:[strokes copy]];
     
 	return copy;
 }

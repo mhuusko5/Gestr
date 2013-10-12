@@ -36,6 +36,7 @@
 - (void)checkNoInput;
 - (void)finishDetectingGesture;
 - (void)finishDetectingGesture:(BOOL)ignore;
+- (BOOL)resignFirstResponder;
 - (void)resetAll;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;

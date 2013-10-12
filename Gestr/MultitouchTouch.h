@@ -2,6 +2,8 @@
 #import "MultitouchSupport.h"
 @class MultitouchEvent;
 
+static int MultitouchTouchStateActive = 4;
+
 @interface MultitouchTouch : NSObject {
 	MultitouchEvent *event;
 	NSNumber *identifier;

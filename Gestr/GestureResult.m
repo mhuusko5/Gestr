@@ -2,6 +2,6 @@
 
 @implementation GestureResult
 
-@synthesize gestureName, score;
+@synthesize gestureIdentity, score;
 
 @end

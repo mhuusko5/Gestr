@@ -5,13 +5,13 @@
 @interface Gesture : NSObject <NSCopying, NSCoding> {
 	NSMutableArray *strokes;
 	NSMutableArray *templates;
-	NSString *name;
+	NSString *identity;
 }
-@property NSString *name;
+@property NSString *identity;
 @property NSMutableArray *strokes;
 @property NSMutableArray *templates;
 
-- (id)initWithName:(NSString *)_name andStrokes:(NSMutableArray *)_strokes;
+- (id)initWithIdentity:(NSString *)_identity andStrokes:(NSMutableArray *)_strokes;
 - (void)generateTemplates;
 - (void)encodeWithCoder:(NSCoder *)coder;
 - (id)initWithCoder:(NSCoder *)coder;

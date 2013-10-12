@@ -6,6 +6,8 @@
 @class GestureSetupController, GestureRecognitionController;
 
 @interface AppController : NSObject <NSApplicationDelegate> {
+	BOOL awakedFromNib;
+    
 	IBOutlet GestureSetupController *gestureSetupController;
 	IBOutlet GestureRecognitionController *gestureRecognitionController;
 }
@@ -13,8 +15,10 @@
 @property (retain) GestureRecognitionController *gestureRecognitionController;
 
 - (void)awakeFromNib;
-- (IBAction)closeAndQuit:(id)outlet;
-- (void)applicationDidResignActive:(NSNotification *)notification;
+- (IBAction)closeAndQuit:(id)sender;
+- (void)applicationDidResignActive:(NSNotification *)aNotification;
 - (void)applicationDidBecomeActive:(NSNotification *)notification;
+- (void)applicationDidFinishLaunching:(NSNotification *)notification;
+- (void)checkForApplicationUpdate;
 
 @end

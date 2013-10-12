@@ -20,16 +20,16 @@
 	return self;
 }
 
-- (void)addPoint:(GesturePoint *)_point {
-	[points addObject:_point];
+- (void)addPoint:(GesturePoint *)point {
+	[points addObject:point];
 }
 
 - (int)pointCount {
 	return (int)points.count;
 }
 
-- (void)insertPoint:(GesturePoint *)_point AtIndex:(int)index {
-	[points insertObject:_point atIndex:index];
+- (void)insertPoint:(GesturePoint *)point AtIndex:(int)index {
+	[points insertObject:point atIndex:index];
 }
 
 - (GesturePoint *)pointAtIndex:(int)i {

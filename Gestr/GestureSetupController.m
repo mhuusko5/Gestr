@@ -2,517 +2,107 @@
 
 @implementation GestureSetupController
 
-@synthesize drawNowText, multitouchRecognition, fullscreenRecognition, successfulRecognitionScore, readingDelayNumber, setupView, setupWindow, appController;
+@synthesize appController, setupModel, setupWindow, setupView;
 
-- (id)init {
-	self = [super init];
-    
-	id storedSuccessfulRecognitionScore;
-	if ((storedSuccessfulRecognitionScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"successfulRecognitionScore"])) {
-		successfulRecognitionScore = [storedSuccessfulRecognitionScore intValue];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setInteger:(successfulRecognitionScore = 80) forKey:@"successfulRecognitionScore"];
-	}
-    
-	id storedReadingDelayNumber;
-	if ((storedReadingDelayNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"readingDelayNumber"])) {
-		readingDelayNumber = [storedReadingDelayNumber intValue];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setInteger:(readingDelayNumber = 5) forKey:@"readingDelayNumber"];
-	}
-    
-	id storedMultitouchRecognition;
-	if ((storedMultitouchRecognition = [[NSUserDefaults standardUserDefaults] objectForKey:@"multitouchRecognition"])) {
-		multitouchRecognition = [storedMultitouchRecognition boolValue];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setBool:(multitouchRecognition = [MultitouchManager systemIsMultitouchCapable]) forKey:@"multitouchRecognition"];
-	}
-    
-	id storedFullscreenRecognition;
-	if ((storedFullscreenRecognition = [[NSUserDefaults standardUserDefaults] objectForKey:@"fullscreenRecognition"])) {
-		fullscreenRecognition = [storedFullscreenRecognition boolValue];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setBool:(fullscreenRecognition = NO) forKey:@"fullscreenRecognition"];
-	}
-    
-	id storedHideDockIcon;
-	if ((storedHideDockIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"hideDockIcon"])) {
-		hideDockIcon = [storedHideDockIcon boolValue];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setBool:(hideDockIcon = NO) forKey:@"hideDockIcon"];
-	}
-    
-	startAtLaunch = [self willStartAtLaunch];
-    
-	[self updateHideDockIcon];
-	[self updateStartAtLaunch];
-    
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-	[self loadApps];
-    
-	return self;
-}
-
-- (void)loadApps {
-	appArray = [NSMutableArray array];
-	[self addAppsAtPath:@"/Applications" toArray:appArray levels:1];
-	appArray = [NSMutableArray arrayWithArray:[appArray sortedArrayUsingComparator: ^NSComparisonResult (App *a, App *b) {
-	    NSComparisonResult *result = [b.lastUsed compare:a.lastUsed];
-	    if (result == NSOrderedSame) {
-	        return [[NSNumber numberWithInt:b.useCount] compare:[NSNumber numberWithInt:a.useCount]];
-		}
-        
-	    return result;
-	}
-                                               
-                                               ]];
-    
-	utilitiesArray = [NSMutableArray array];
-	[self addAppsAtPath:@"/Applications/Utilities" toArray:utilitiesArray levels:1];
-	utilitiesArray = [NSMutableArray arrayWithArray:[utilitiesArray sortedArrayUsingComparator: ^NSComparisonResult (App *a, App *b) {
-	    NSComparisonResult *result = [b.lastUsed compare:a.lastUsed];
-	    if (result == NSOrderedSame) {
-	        return [[NSNumber numberWithInt:b.useCount] compare:[NSNumber numberWithInt:a.useCount]];
-		}
-        
-	    return result;
-	}
-                                                     
-                                                     ]];
-    
-	systemArray = [NSMutableArray array];
-	[self addAppsAtPath:@"/System/Library/CoreServices" toArray:systemArray levels:0];
-	systemArray = [NSMutableArray arrayWithArray:[systemArray sortedArrayUsingComparator: ^NSComparisonResult (App *a, App *b) {
-	    NSComparisonResult *result = [b.lastUsed compare:a.lastUsed];
-	    if ([a.bundleName isEqualToString:@"Finder"]) {
-	        result = NSOrderedAscending;
-		}
-	    else if ([b.bundleName isEqualToString:@"Finder"]) {
-	        result = NSOrderedDescending;
-		}
-        
-	    if (result == NSOrderedSame) {
-	        return [[NSNumber numberWithInt:b.useCount] compare:[NSNumber numberWithInt:a.useCount]];
-		}
-        
-	    return result;
-	}
-                                                  
-                                                  ]];
-}
-
-- (void)addAppsAtPath:(NSString *)path toArray:(NSMutableArray *)arr levels:(int)l {
-	NSURL *url;
-	if (!(url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]])) {
-		return;
-	}
-    
-	NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:url includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-    
-	NSURL *fileUrl;
-	while (fileUrl = [directoryEnumerator nextObject]) {
-		NSString *filePath = [fileUrl path];
-        
-		BOOL isDir;
-		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
-			if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
-				NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
-                
-				NSString *bundleName = [dict objectForKey:@"CFBundleName"];
-                if (!bundleName || [bundleName isEqualToString:@"(null)"]) {
-                    bundleName = [dict objectForKey:@"CFBundleExecutable"];
-                }
-                
-				if (![bundleName isEqualToString:@"Gestr"]) {
-					NSDate *lastUsed = nil;
-					int useCount = 0;
-					@try {
-						MDItemRef item = MDItemCreate(kCFAllocatorDefault, (CFStringRef)filePath);
-						CFArrayRef attributeNames = MDItemCopyAttributeNames(item);
-						NSArray *array = (NSArray *)attributeNames;
-						NSEnumerator *e = [array objectEnumerator];
-						id arrayObject;
-						while ((arrayObject = [e nextObject])) {
-							CFTypeRef ref = MDItemCopyAttribute(item, (CFStringRef)[arrayObject description]);
-							NSObject *tempObject = (NSObject *)ref;
-                            
-							if ([arrayObject isEqualToString:@"kMDItemLastUsedDate"]) {
-								lastUsed = [tempObject copy];
-							}
-							else if ([arrayObject isEqualToString:@"kMDItemUseCount"]) {
-								useCount = (int)tempObject;
-							}
-							if (ref != NULL) {
-								CFRelease(ref);
-							}
-						}
-                        
-						if (attributeNames != NULL) {
-							CFRelease(attributeNames);
-						}
-					}
-					@catch (NSException *exception)
-					{
-						lastUsed = nil;
-						useCount = 0;
-					}
-                    
-					NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
-					NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
-					NSString *bundleId = [dict objectForKey:@"CFBundleIdentifier"];
-                    
-					[arr addObject:[[App alloc] initWithDisplayName:displayName bundleName:bundleName bundleId:bundleId icon:icon lastUsed:lastUsed andUseCount:useCount]];
-				}
-			}
-			else if (isDir && l > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {
-				[self addAppsAtPath:filePath toArray:arr levels:l - 1];
-			}
-		}
-	}
-}
-
-BOOL awakenedFromNib = NO;
+#pragma mark -
+#pragma mark Initialization
 - (void)awakeFromNib {
-	if (!awakenedFromNib) {
-		awakenedFromNib = YES;
+	if (!awakedFromNib) {
+		awakedFromNib = YES;
         
-		[setupView setSetupController:self];
+		setupView.setupController = self;
         
-		[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+		[self hideSetupWindow];
         
-		statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		[statusBarItem setTitle:@""];
-		[statusBarView setAlphaValue:1.0];
-		[statusBarItem setView:statusBarView];
+		setupModel = [[GestureSetupModel alloc] init];
         
-		[appTypePicker setSelectedSegment:0];
+        successfulRecognitionScoreTextField.stringValue = [NSString stringWithFormat:@"%i", setupModel.successfulRecognitionScore];
+        readingDelayTextField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayNumber];
+        multitouchCheckbox.state = setupModel.multitouchRecognition;
+        fullscreenCheckbox.state = setupModel.fullscreenRecognition;
+        hideDockIconCheckbox.state = setupModel.hideDockIcon;
+        startAtLaunchCheckbox.state = setupModel.startAtLaunch;
         
-		[successfulRecognitionScoreTextField setStringValue:[NSString stringWithFormat:@"%i", successfulRecognitionScore]];
-		[readingDelayTextField setStringValue:[NSString stringWithFormat:@"%i", readingDelayNumber]];
-		[multitouchCheckbox setState:multitouchRecognition];
-		[fullscreenCheckbox setState:fullscreenRecognition];
-		[hideDockIconCheckbox setState:hideDockIcon];
-		[startAtLaunchCheckbox setState:startAtLaunch];
-        
-		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
+        statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+        statusBarItem.title = @"";
+        statusBarView.alphaValue = 0.0;
+        statusBarItem.view = statusBarView;
 	}
 }
 
-- (void)showUpdateAlert:(NSString *)version {
-	NSAlert *infoAlert = [[NSAlert alloc] init];
-	[infoAlert addButtonWithTitle:@"Will do!"];
-	[infoAlert setMessageText:[NSString stringWithFormat:@"Head over to mhuusko5.com for version %@ of Gestr!", version]];
-	[infoAlert setAlertStyle:NSInformationalAlertStyle];
-	[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-}
-
-- (void)checkForUpdate:(BOOL)async {
-	if (!checkedForUpdate) {
-		if (async) {
-			[NSThread detachNewThreadSelector:@selector(checkForUpdate:) toTarget:self withObject:NO];
-			return;
-		}
-		else {
-			checkedForUpdate = YES;
-            
-			@try {
-				NSString *updatedVersionString = [NSString stringWithContentsOfURL:[[NSURL alloc] initWithString:@"http://mhuusko5.com/gestrVersion"] encoding:NSUTF8StringEncoding error:nil];
-				float updatedVersion = [updatedVersionString floatValue];
-				float thisVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
-				if (updatedVersion > thisVersion) {
-					if ([setupWindow alphaValue] <= 0) {
-						[self performSelectorOnMainThread:@selector(toggleGestureSetupWindow:) withObject:nil waitUntilDone:YES];
-					}
-					[self performSelectorOnMainThread:@selector(showUpdateAlert:) withObject:[NSString stringWithFormat:@"%g", updatedVersion] waitUntilDone:NO];
-				}
-			}
-			@catch (NSException *exception)
-			{
-			}
-		}
-	}
-}
-
-- (void)delayedAwake {
-	if (self.appController.gestureRecognitionController.gesturesLoaded) {
-		if (self.appController.gestureRecognitionController.gestureDetector.loadedGestures.count < 1) {
-			[self toggleGestureSetupWindow:nil];
-		}
-        
-		[appController.gestureRecognitionController layoutRecognitionWindow];
-		[appController.gestureRecognitionController.recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-	}
-	else {
-		[self performSelector:@selector(delayedAwake) withObject:nil afterDelay:0.5];
+- (void)applicationDidFinishLaunching {
+    [[statusBarView animator] setAlphaValue:1.0];
+    
+	if (appController.gestureRecognitionController.recognitionModel.gestureDetector.loadedGestures.count < 1) {
+		[self toggleSetupWindow:nil];
 	}
     
 	[self updateSetupControls];
+    
+    [launchableTypePicker setSelectedSegment:0];
+    launchableArrayController.content = setupModel.normalAppArray;
 }
 
-- (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
-	for (GestureStroke *stroke in gestureStrokes) {
-		if ([stroke.points count] < GUMinimumPointCount) {
-			NSAlert *infoAlert = [[NSAlert alloc] init];
-			[infoAlert addButtonWithTitle:@"Ok, then"];
-			[infoAlert setMessageText:@"Please make your gesture strokes a tad longer..."];
-			[infoAlert setAlertStyle:NSInformationalAlertStyle];
-			[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-			return;
+#pragma mark -
+
+#pragma mark -
+#pragma mark Launchable Management
+- (Launchable *)launchableWithId:(NSString *)identity {
+	for (Launchable *launch in setupModel.normalAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
 		}
 	}
     
-	App *gestureToSaveApp = [[self currentAppArray] objectAtIndex:[[self currentTableView] selectedRow]];
-	Gesture *gestureToSave = [[Gesture alloc] initWithName:gestureToSaveApp.bundleName andStrokes:gestureStrokes];
-    
-	[appController.gestureRecognitionController.updatedGestureDictionary setObject:gestureToSave forKey:gestureToSaveApp.bundleName];
-    
-	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
-    
-	[[[appController gestureRecognitionController] gestureDetector] addGesture:gestureToSave];
-    
-	[self updateSetupControls];
-}
-
-- (void)deleteGestureWithName:(NSString *)bundleName {
-	[appController.gestureRecognitionController.updatedGestureDictionary removeObjectForKey:bundleName];
-    
-	[appController.gestureRecognitionController saveUpdatedGestureDictionary];
-    
-	[[[appController gestureRecognitionController] gestureDetector] removeGestureWithName:bundleName];
-}
-
-- (App *)appWithBundleName:(NSString *)bundleName {
-	for (App *app in appArray) {
-		if ([app.bundleName isEqualTo:bundleName]) {
-			return app;
+	for (Launchable *launch in setupModel.utilitiesAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
 		}
 	}
     
-	for (App *app in utilitiesArray) {
-		if ([app.bundleName isEqualTo:bundleName]) {
-			return app;
-		}
-	}
-    
-	for (App *app in systemArray) {
-		if ([app.bundleName isEqualTo:bundleName]) {
-			return app;
+	for (Launchable *launch in setupModel.systemAppArray) {
+		if ([launch.launchId isEqualTo:identity]) {
+			return launch;
 		}
 	}
     
 	return nil;
 }
 
-- (NSMutableArray *)currentAppArray {
-	switch ([appTypePicker selectedSegment]) {
+- (NSMutableArray *)currentLaunchableArray {
+	return (NSMutableArray *)launchableArrayController.content;
+}
+
+- (NSTableView *)currentLaunchableTableView {
+	return launchableTableView;
+}
+
+- (IBAction)launchableTypeChanged:(id)sender {
+	switch (launchableTypePicker.selectedSegment) {
 		case 0:
-			return appArray;
+            launchableArrayController.content = setupModel.normalAppArray;
 			break;
             
 		case 1:
-			return utilitiesArray;
+            launchableArrayController.content = setupModel.utilitiesAppArray;
 			break;
             
 		case 2:
-			return systemArray;
+			launchableArrayController.content = setupModel.systemAppArray;
 			break;
             
 		default:
-			return appArray;
 			break;
 	}
-}
-
-- (NSTableView *)currentTableView {
-	return appTableView;
-}
-
-- (IBAction)successfulRecognitionScoreChanged:(id)sender {
-	int newScore = [successfulRecognitionScoreTextField intValue];
-	if (!(newScore >= 70 && newScore <= 100)) {
-		newScore = successfulRecognitionScore;
-        
-		NSAlert *infoAlert = [[NSAlert alloc] init];
-		[infoAlert addButtonWithTitle:@"Sure"];
-		[infoAlert setMessageText:@"It's better to set a score between 70 and 100..."];
-		[infoAlert setAlertStyle:NSInformationalAlertStyle];
-		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-	}
     
-	[[NSUserDefaults standardUserDefaults] setInteger:(successfulRecognitionScore = newScore) forKey:@"successfulRecognitionScore"];
-	[successfulRecognitionScoreTextField setStringValue:[NSString stringWithFormat:@"%i", successfulRecognitionScore]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[showGestureButton setEnabled:NO];
+	[assignGestureButton setEnabled:NO];
+	[deleteGestureButton setEnabled:NO];
 }
+#pragma mark -
 
-- (IBAction)useMultitouchOptionChanged:(id)sender {
-	BOOL newMultitouchOption = (BOOL)[multitouchCheckbox state];
-    
-	[[NSUserDefaults standardUserDefaults] setBool:(multitouchRecognition = newMultitouchOption) forKey:@"multitouchRecognition"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (IBAction)fullscreenOptionChanged:(id)sender {
-	BOOL newFullscreenOption = (BOOL)[fullscreenCheckbox state];
-    
-	[[NSUserDefaults standardUserDefaults] setBool:(fullscreenRecognition = newFullscreenOption) forKey:@"fullscreenRecognition"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)updateHideDockIcon {
-	ProcessSerialNumber psn = { 0, kCurrentProcess };
-	if (hideDockIcon) {
-		TransformProcessType(&psn, kProcessTransformToUIElementApplication);
-	}
-	else {
-		TransformProcessType(&psn, kProcessTransformToForegroundApplication);
-	}
-}
-
-- (void)updateStartAtLaunch {
-	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
-    
-	OSStatus status;
-	LSSharedFileListItemRef existingItem = NULL;
-    
-	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-	if (loginItems) {
-		UInt32 seed = 0U;
-		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
-		for (id itemObject in currentLoginItems) {
-			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
-            
-			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
-			CFURLRef URL = NULL;
-			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
-			if (err == noErr) {
-				Boolean foundIt = CFEqual(URL, itemURL);
-				CFRelease(URL);
-                
-				if (foundIt) {
-					existingItem = item;
-					break;
-				}
-			}
-		}
-        
-		if (startAtLaunch && (existingItem == NULL)) {
-			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (CFURLRef)itemURL, NULL, NULL);
-		}
-		else if (!startAtLaunch && (existingItem != NULL)) {
-			LSSharedFileListItemRemove(loginItems, existingItem);
-		}
-        
-		CFRelease(loginItems);
-	}
-}
-
-- (BOOL)willStartAtLaunch {
-	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
-    
-	Boolean foundIt = false;
-	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-	if (loginItems) {
-		UInt32 seed = 0U;
-		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
-		for (id itemObject in currentLoginItems) {
-			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
-            
-			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
-			CFURLRef URL = NULL;
-			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
-			if (err == noErr) {
-				foundIt = CFEqual(URL, itemURL);
-				CFRelease(URL);
-                
-				if (foundIt)
-					break;
-			}
-		}
-		CFRelease(loginItems);
-	}
-	return (BOOL)foundIt;
-}
-
-- (IBAction)hideIconOptionChanged:(id)sender {
-	BOOL newHideDockIconOption = (BOOL)[hideDockIconCheckbox state];
-    
-	[[NSUserDefaults standardUserDefaults] setBool:(hideDockIcon = newHideDockIconOption) forKey:@"hideDockIcon"];
-	[hideDockIconCheckbox setState:hideDockIcon];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-	[self updateHideDockIcon];
-    
-	if (hideDockIcon) {
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.005];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.01];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.1];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.25];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.5];
-	}
-}
-
-- (IBAction)loginStartOptionChanged:(id)sender {
-	startAtLaunch = (BOOL)[startAtLaunchCheckbox state];
-    
-	[self updateStartAtLaunch];
-    
-	[startAtLaunchCheckbox setState:startAtLaunch];
-}
-
-- (IBAction)readingDelayNumberChanged:(id)sender {
-	int newNum = [readingDelayTextField intValue];
-	if (!(newNum >= 1 && newNum <= 1000)) {
-		newNum = readingDelayNumber;
-		NSAlert *infoAlert = [[NSAlert alloc] init];
-		[infoAlert addButtonWithTitle:@"Okay"];
-		[infoAlert setMessageText:@"Somewhere between 1 and 1000 milliseconds is more reasonable..."];
-		[infoAlert setAlertStyle:NSInformationalAlertStyle];
-		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-	}
-    
-	[[NSUserDefaults standardUserDefaults] setInteger:(readingDelayNumber = newNum) forKey:@"readingDelayNumber"];
-	[readingDelayTextField setStringValue:[NSString stringWithFormat:@"%i", readingDelayNumber]];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (IBAction)deleteSelectedGesture:(id)sender {
-	if (selectedIndex >= 0) {
-		[self deleteGestureWithName:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]];
-	}
-    
-	[self updateSetupControls];
-}
-
-- (IBAction)showSelectedGesture:(id)sender {
-	if (showGestureThread) {
-		[showGestureThread cancel];
-		showGestureThread = nil;
-	}
-    
-	if (selectedIndex >= 0) {
-		@try {
-			Gesture *gestureToShow = [appController.gestureRecognitionController.updatedGestureDictionary objectForKey:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]];
-			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
-			[showGestureThread start];
-		}
-		@catch (NSException *exception)
-		{
-		}
-	}
-}
-
-- (IBAction)assignSelectedGesture:(id)sender {
-	[setupWindow makeKeyAndOrderFront:self];
-	[setupWindow makeFirstResponder:setupWindow];
-	[setupView startDetectingGesture];
-}
-
+#pragma mark -
+#pragma mark Tableview Control
 - (void)tableViewFocus:(BOOL)lost {
 	if (lost) {
 		[showGestureButton setEnabled:NO];
@@ -524,40 +114,39 @@ BOOL awakenedFromNib = NO;
 	}
 }
 
-- (IBAction)appTypeChanged:(id)sender {
-	switch ([appTypePicker selectedSegment]) {
-		case 0:
-			[appArrayController setContent:appArray];
-			break;
-            
-		case 1:
-			[appArrayController setContent:utilitiesArray];
-			break;
-            
-		case 2:
-			[appArrayController setContent:systemArray];
-			break;
-            
-		default:
-			break;
-	}
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+    [setupView finishDetectingGesture:YES];
     
-	[showGestureButton setEnabled:NO];
-	[assignGestureButton setEnabled:NO];
-	[deleteGestureButton setEnabled:NO];
+	[self updateSetupControls];
 }
 
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+	return [self currentLaunchableArray].count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+	Launchable *app = [[self currentLaunchableArray] objectAtIndex:row];
+	result.imageView.image = app.icon;
+	result.textField.stringValue = app.displayName;
+    
+	return result;
+}
+#pragma mark -
+
+#pragma mark -
+#pragma mark Interface Control
 - (void)updateSetupControls {
 	[setupView resetAll];
     
-	[setupWindow makeFirstResponder:[self currentTableView]];
+	[setupWindow makeFirstResponder:[self currentLaunchableTableView]];
     
-	selectedIndex = (int)([[self currentTableView] selectedRow]);
+	launchableSelectedIndex = (int)([[self currentLaunchableTableView] selectedRow]);
     
-	if (selectedIndex >= 0) {
+	if (launchableSelectedIndex >= 0) {
 		BOOL gestureExistsForSelectedApp = NO;
         
-		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.updatedGestureDictionary objectForKey:[[[self currentAppArray] objectAtIndex:selectedIndex] bundleName]] != nil);
+		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId] != nil);
         
 		if ([[NSApplication sharedApplication] isActive]) {
 			if (gestureExistsForSelectedApp) {
@@ -579,79 +168,199 @@ BOOL awakenedFromNib = NO;
 	}
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
-		[multitouchCheckbox setAlphaValue:0.5];
+        multitouchCheckbox.alphaValue = 0.5;
 		[multitouchCheckbox setEnabled:NO];
-		[multitouchRecognitionLabel setAlphaValue:0.5];
+		multitouchRecognitionLabel.alphaValue = 0.5;
         
 		[multitouchCheckbox setState:NO];
-		[self useMultitouchOptionChanged:nil];
+		[self multitouchRecognitionSelected:nil];
 	}
 	else {
-		[multitouchCheckbox setAlphaValue:1.0];
+		multitouchCheckbox.alphaValue = 1.0;
 		[multitouchCheckbox setEnabled:YES];
-		[multitouchRecognitionLabel setAlphaValue:1.0];
+		multitouchRecognitionLabel.alphaValue = 1.0;
 	}
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+- (void)showDrawNowText:(BOOL)show {
+	if (show) {
+		drawNowText.alphaValue = 1.0;
+	}
+	else {
+		drawNowText.alphaValue = 0.0;
+	}
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Setup Utilities
+- (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
+	int inputPointCount = 0;
+	for (GestureStroke *stroke in gestureStrokes) {
+		inputPointCount += [stroke pointCount];
+	}
+	if (inputPointCount < GUMinimumPointCount) {
+		NSAlert *infoAlert = [[NSAlert alloc] init];
+		[infoAlert addButtonWithTitle:@"Ok, then"];
+		[infoAlert setMessageText:@"Please make your gesture strokes a tad longer..."];
+		[infoAlert setAlertStyle:NSInformationalAlertStyle];
+		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+		return;
+	}
+    
+	Launchable *gestureToSaveApp = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
+    
+	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveApp.launchId];
+    
 	[self updateSetupControls];
 }
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return [[self currentAppArray] count];
+#pragma mark -
+
+#pragma mark -
+#pragma mark Setup Actions
+- (IBAction)assignSelectedGesture:(id)sender {
+	[setupWindow makeFirstResponder:setupView];
+	[setupView startDetectingGesture];
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-	App *app = [[self currentAppArray] objectAtIndex:row];
-	result.imageView.image = app.icon;
-	result.textField.stringValue = app.displayName;
+- (IBAction)showSelectedGesture:(id)sender {
+	if (showGestureThread) {
+		[showGestureThread cancel];
+		showGestureThread = nil;
+	}
     
-	return result;
+	if (launchableSelectedIndex >= 0) {
+		@try {
+			Gesture *gestureToShow = [appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId];
+			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
+			[showGestureThread start];
+		}
+		@catch (NSException *exception)
+		{
+		}
+	}
 }
 
-- (IBAction)toggleGestureSetupWindow:(id)sender {
-	if (self.appController.gestureRecognitionController.gesturesLoaded) {
-		NSRect menuBarFrame = [[[statusBarItem view] window] frame];
-		NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
+- (IBAction)clearSelectedGesture:(id)sender {
+	if (launchableSelectedIndex >= 0) {
+		[appController.gestureRecognitionController.recognitionModel deleteGestureWithName:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId];
+	}
+    
+	[self updateSetupControls];
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Window Methods
+- (void)showUpdateAlert:(NSString *)version {
+	if (setupWindow.alphaValue <= 0) {
+		[self toggleSetupWindow:nil];
+	}
+    
+	NSAlert *infoAlert = [[NSAlert alloc] init];
+	[infoAlert addButtonWithTitle:@"Will do!"];
+	[infoAlert setMessageText:[NSString stringWithFormat:@"Head over to mhuusko5.com for version %@ of Gestr!", version]];
+	[infoAlert setAlertStyle:NSInformationalAlertStyle];
+	[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+
+- (IBAction)toggleSetupWindow:(id)sender {
+	NSRect menuBarFrame = [[[statusBarItem view] window] frame];
+	NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
+    
+	pt.y -= menuBarFrame.size.height / 2;
+	pt.x -= (setupWindow.frame.size.width) / 2;
+    
+	NSRect frame = [setupWindow frame];
+	if ([setupWindow alphaValue] <= 0) {
+		frame.origin.y = pt.y;
+		frame.origin.x = pt.x;
+		[setupWindow setFrame:frame display:YES];
         
-		pt.y -= menuBarFrame.size.height / 2;
-		pt.x -= (setupWindow.frame.size.width) / 2;
+		frame.origin.y -= frame.size.height;
+        setupWindow.alphaValue = 1.0;
+		[setupWindow makeKeyAndOrderFront:self];
+		[setupWindow setFrame:frame display:YES animate:YES];
         
-		NSRect frame = [setupWindow frame];
-		if ([setupWindow alphaValue] <= 0) {
-			frame.origin.y = pt.y;
-			frame.origin.x = pt.x;
-			[setupWindow setFrame:frame display:YES];
-            
-			frame.origin.y -= frame.size.height;
-			[setupWindow setAlphaValue:1.0];
-			[setupWindow makeKeyAndOrderFront:self];
-			[setupWindow setFrame:frame display:YES animate:YES];
-            
-			[setupWindow setIgnoresMouseEvents:NO];
+		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+	}
+	else {
+		if ([[NSApplication sharedApplication] isHidden]) {
 			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 		}
 		else {
-			if ([[NSApplication sharedApplication] isHidden]) {
-				[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-			}
-			else {
-				frame.origin.x = pt.x;
-				frame.origin.y = pt.y;
-				[setupWindow setFrame:frame display:YES animate:YES];
-                
-				[setupWindow setIgnoresMouseEvents:YES];
-				[setupWindow setAlphaValue:0.0];
-                
-				[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-                
-				[[NSApplication sharedApplication] hide:self];
-			}
+			frame.origin.x = pt.x;
+			frame.origin.y = pt.y;
+			[setupWindow setFrame:frame display:YES animate:YES];
+            
+			[self hideSetupWindow];
+            
+			[[NSApplication sharedApplication] hide:self];
 		}
-        
-		[self updateSetupControls];
+	}
+    
+	[self updateSetupControls];
+}
+
+- (void)hideSetupWindow {
+	setupWindow.alphaValue = 0.0;
+	[setupWindow orderOut:self];
+	[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Recognition Options
+- (IBAction)successfulRecognitionScoreSelected:(id)sender {
+	int newScore = [successfulRecognitionScoreTextField intValue];
+	if (newScore >= 70 && newScore <= 100) {
+		[setupModel saveSuccessfulRecognitionScore:newScore];
+	}
+	else {
+		NSAlert *infoAlert = [[NSAlert alloc] init];
+		[infoAlert addButtonWithTitle:@"Sure"];
+		[infoAlert setMessageText:@"It's better to set a score between 70 and 100..."];
+		[infoAlert setAlertStyle:NSInformationalAlertStyle];
+		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
 }
+
+- (IBAction)readingDelayNumberSelected:(id)sender {
+	int newNum = [readingDelayTextField intValue];
+	if (newNum >= 1 && newNum <= 1000) {
+		[setupModel saveReadingDelayNumber:newNum];
+	}
+	else {
+		NSAlert *infoAlert = [[NSAlert alloc] init];
+		[infoAlert addButtonWithTitle:@"Okay"];
+		[infoAlert setMessageText:@"Somewhere between 1 and 1000 milliseconds is more reasonable..."];
+		[infoAlert setAlertStyle:NSInformationalAlertStyle];
+		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+	}
+}
+
+- (IBAction)multitouchRecognitionSelected:(id)sender {
+	[setupModel saveMultitouchRecognition:multitouchCheckbox.state];
+}
+
+- (IBAction)fullscreenRecognitionSelected:(id)sender {
+	[setupModel saveFullscreenRecognition:fullscreenCheckbox.state];
+}
+
+- (IBAction)hideDockIconSelected:(id)sender {
+	[setupModel saveHideDockIcon:hideDockIconCheckbox.state];
+}
+
+- (IBAction)startAtLaunchSelected:(id)sender {
+	[setupModel saveStartAtLaunch:startAtLaunchCheckbox.state];
+    
+    startAtLaunchCheckbox.state = [setupModel fetchStartAtLaunch];
+}
+
+#pragma mark -
 
 @end
