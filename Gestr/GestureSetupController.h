@@ -18,7 +18,7 @@
 	AppController *appController;
     
 	NSStatusItem *statusBarItem;
-    IBOutlet NSView *statusBarView;
+	IBOutlet NSView *statusBarView;
     
 	BOOL checkedForUpdate;
 	NSThread *showGestureThread;
@@ -28,7 +28,7 @@
     
 	IBOutlet NSTextField *drawNotificationText;
     
-    int launchableSelectedIndex;
+	int launchableSelectedIndex;
 	IBOutlet NSSegmentedControl *launchableTypePicker;
 	IBOutlet NSView *launchableParentView;
 	IBOutlet NSView *launchableView;

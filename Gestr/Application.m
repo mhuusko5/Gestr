@@ -3,7 +3,7 @@
 @implementation Application
 
 - (void)launch {
-    [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:launchId options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil]; 
+	[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:launchId options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
 }
 
 @end

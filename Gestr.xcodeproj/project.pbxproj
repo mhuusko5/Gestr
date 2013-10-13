@@ -136,7 +136,6 @@
 		D073F55C15C358FF00843B5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trackpadBackground.png; sourceTree = "<group>"; };
 		D09FCFC81809D9FD00EBCFF7 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chrome.h; sourceTree = "<group>"; };
-		D09FCFC91809D9FD00EBCFF7 /* Safari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Safari.h; sourceTree = "<group>"; };
 		D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromePage.h; sourceTree = "<group>"; };
 		D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromePage.m; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				D09FCFC81809D9FD00EBCFF7 /* Chrome.h */,
-				D09FCFC91809D9FD00EBCFF7 /* Safari.h */,
 				D0B502FA16FBE05F0018781C /* Categories */,
 				D0516E1317EFCF9500C48BD8 /* Images */,
 				D001B45516D7441F00F8E413 /* main.m */,

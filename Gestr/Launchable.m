@@ -15,16 +15,19 @@
 }
 
 - (void)launchWithNewThread:(BOOL)newThread {
-    if (newThread) {
-        [NSThread detachNewThreadSelector:@selector(launchWithNewThread:) toTarget:self withObject:NO];
-    } else {
-        @try {
-            if ([self respondsToSelector:@selector(launch)]) {
-                [self performSelector:@selector(launch)];
-            }
-        }
-        @catch (NSException *exception) {}
-    }
+	if (newThread) {
+		[NSThread detachNewThreadSelector:@selector(launchWithNewThread:) toTarget:self withObject:NO];
+	}
+	else {
+		@try {
+			if ([self respondsToSelector:@selector(launch)]) {
+				[self performSelector:@selector(launch)];
+			}
+		}
+		@catch (NSException *exception)
+		{
+		}
+	}
 }
 
 @end

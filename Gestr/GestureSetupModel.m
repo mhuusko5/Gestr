@@ -2,6 +2,7 @@
 
 @implementation GestureSetupModel
 
+@synthesize chromePageArray;
 @synthesize normalAppArray, utilitiesAppArray, systemAppArray;
 @synthesize readingDelayTime, minimumRecognitionScore;
 @synthesize multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
@@ -11,9 +12,11 @@
     
 	userDefaults = [NSUserDefaults standardUserDefaults];
     
-    [self fetchNormalAppArray];
-    [self fetchUtilitiesAppArray];
-    [self fetchSystemAppArray];
+    [self fetchChromePageArray];
+    
+	[self fetchNormalAppArray];
+	[self fetchUtilitiesAppArray];
+	[self fetchSystemAppArray];
     
 	[self fetchMinimumRecognitionScore];
 	[self fetchReadingDelayTime];
@@ -28,7 +31,13 @@
 #pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
-    for (Application *app in normalAppArray) {
+    for (ChromePage *page in chromePageArray) {
+		if ([page.launchId isEqualTo:identity]) {
+			return page;
+		}
+	}
+    
+	for (Application *app in normalAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
@@ -48,32 +57,59 @@
     
 	return nil;
 }
+
 #pragma mark -
 
 #pragma mark -
-#pragma mark Applications Arrays
+#pragma mark Chrome Page Management
+- (NSMutableArray *)fetchChromePageArray {
+    chromePageArray = [NSMutableArray array];
+    
+    @try {
+        NSImage *chromeIcon;
+        if ((chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:@"/Applications/Google Chrome.app"]) || (chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:[@"~/Applications/Google Chrome.app" stringByExpandingTildeInPath]])) {
+            NSDictionary *chromeBookmarksJson = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[@"~/Library/Application Support/Google/Chrome/Default/Bookmarks" stringByExpandingTildeInPath]] options:NSJSONReadingMutableContainers error:nil];
+            
+            NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
+            for (NSDictionary *bookmark in bookmarksBar) {
+                if ([[bookmark valueForKey:@"type"] isEqualToString:@"url"]) {
+                    [chromePageArray addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] launchId:[bookmark valueForKey:@"url"] icon:chromeIcon]];
+                }
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        chromePageArray = [NSMutableArray array];
+    }
+    
+    return chromePageArray;
+}
+#pragma mark -
+
+#pragma mark -
+#pragma mark Applications Management
 - (NSMutableArray *)fetchNormalAppArray {
-    return (normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
+	return (normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchUtilitiesAppArray {
-    return (utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
+	return (utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchSystemAppArray {
-    systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
-    for (Application *maybeFinder in systemAppArray) {
-        if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
-            [systemAppArray removeObject:maybeFinder];
-            [systemAppArray insertObject:maybeFinder atIndex:0];
-            break;
-        }
-    }
-    return systemAppArray;
+	systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
+	for (Application *maybeFinder in systemAppArray) {
+		if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
+			[systemAppArray removeObject:maybeFinder];
+			[systemAppArray insertObject:maybeFinder atIndex:0];
+			break;
+		}
+	}
+	return systemAppArray;
 }
 
 - (NSMutableArray *)addApplicationsAtPath:(NSString *)path toArray:(NSMutableArray *)arr depth:(int)depth {
-    NSURL *url;
+	NSURL *url;
 	if (!(url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]])) {
 		return nil;
 	}
@@ -86,7 +122,7 @@
 			if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
 				NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
                 
-                NSString *bundleId = [dict objectForKey:@"CFBundleIdentifier"];
+				NSString *bundleId = [dict objectForKey:@"CFBundleIdentifier"];
 				NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                 
@@ -100,8 +136,9 @@
 		}
 	}
     
-    return arr;
+	return arr;
 }
+
 #pragma mark -
 
 #pragma mark -

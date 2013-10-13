@@ -43,16 +43,16 @@
 	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
 		Launchable *launchableToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToShow != nil) {
-            partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
-            partialIconAlert.image = launchableToShow.icon;
+			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
+			partialIconAlert.image = launchableToShow.icon;
 		}
 		else {
 			[recognitionModel deleteGestureWithName:result.gestureIdentity];
 		}
 	}
 	else {
-        partialDescriptionAlert.stringValue = @"";
-        partialIconAlert.image = nil;
+		partialDescriptionAlert.stringValue = @"";
+		partialIconAlert.image = nil;
 	}
 }
 
@@ -63,10 +63,10 @@
 		Launchable *launchableToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToLaunch != nil) {
 			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToLaunch.displayName, rating];
-            partialIconAlert.image = launchableToLaunch.icon;
+			partialIconAlert.image = launchableToLaunch.icon;
             
-            appDescriptionAlert.stringValue = launchableToLaunch.displayName;
-            appIconAlert.image = launchableToLaunch.icon;
+			appDescriptionAlert.stringValue = launchableToLaunch.displayName;
+			appIconAlert.image = launchableToLaunch.icon;
             
 			[launchableToLaunch launchWithNewThread:YES];
 		}
@@ -87,16 +87,14 @@
 			[self.appController.gestureSetupController toggleSetupWindow:nil];
 		}
         
-        appDescriptionAlert.stringValue = @"";
-        appIconAlert.image = nil;
-		
-        partialDescriptionAlert.stringValue = @"";
-        partialIconAlert.image = nil;
+		appDescriptionAlert.stringValue = @"";
+		appIconAlert.image = nil;
+        
+		partialDescriptionAlert.stringValue = @"";
+		partialIconAlert.image = nil;
         
 		[self toggleInRecognitionWindow];
         
-		[recognitionWindow makeFirstResponder:recognitionView];
-		[recognitionView setNeedsDisplay:YES];
 		[recognitionView startDetectingGesture];
 	}
 }
@@ -190,7 +188,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 }
 
 - (void)toggleInRecognitionWindow {
-    recognitionWindow.alphaValue = 1.0;
+	recognitionWindow.alphaValue = 1.0;
 	[self layoutRecognitionWindow];
     
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];

@@ -1,16 +1,18 @@
 #import <Foundation/Foundation.h>
 #import "MultitouchManager.h"
-#import "Launchable.h"
 #import "Application.h"
+#import "ChromePage.h"
 
 @interface GestureSetupModel : NSObject {
 	NSUserDefaults *userDefaults;
     
-    NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
+    NSMutableArray *chromePageArray;
+	NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
     
 	int readingDelayTime, minimumRecognitionScore;
 	BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
 }
+@property NSMutableArray *chromePageArray;
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
 @property int readingDelayTime, minimumRecognitionScore;
 @property BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
@@ -21,7 +23,12 @@
 #pragma mark -
 
 #pragma mark -
-#pragma mark Applications Arrays
+#pragma mark Chrome Page Management
+- (NSMutableArray *)fetchChromePageArray;
+#pragma mark -
+
+#pragma mark -
+#pragma mark Applications Management
 - (NSMutableArray *)fetchNormalAppArray;
 - (NSMutableArray *)fetchUtilitiesAppArray;
 - (NSMutableArray *)fetchSystemAppArray;

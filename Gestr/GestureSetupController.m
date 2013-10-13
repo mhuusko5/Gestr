@@ -16,20 +16,18 @@
         
 		setupModel = [[GestureSetupModel alloc] init];
         
-        [self updateSetupControls];
-        
-        statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-        statusBarItem.title = @"";
-        statusBarView.alphaValue = 0.0;
-        statusBarItem.view = statusBarView;
+		statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		statusBarItem.title = @"";
+		statusBarView.alphaValue = 0.0;
+		statusBarItem.view = statusBarView;
 	}
 }
 
 - (void)applicationDidFinishLaunching {
-    [[statusBarView animator] setAlphaValue:1.0];
+	[[statusBarView animator] setAlphaValue:1.0];
     
-    [launchableTypePicker setSelectedSegment:0];
-    launchableArrayController.content = setupModel.normalAppArray;
+	[launchableTypePicker setSelectedSegment:0];
+	launchableArrayController.content = setupModel.normalAppArray;
     
 	if (appController.gestureRecognitionController.recognitionModel.gestureDetector.loadedGestures.count < 1) {
 		[self toggleSetupWindow:nil];
@@ -53,18 +51,23 @@
 - (IBAction)launchableTypeChanged:(id)sender {
 	switch (launchableTypePicker.selectedSegment) {
 		case 0:
-            [setupModel fetchNormalAppArray];
-            launchableArrayController.content = setupModel.normalAppArray;
+			[setupModel fetchNormalAppArray];
+			launchableArrayController.content = setupModel.normalAppArray;
 			break;
             
 		case 1:
-            [setupModel fetchUtilitiesAppArray];
-            launchableArrayController.content = setupModel.utilitiesAppArray;
+			[setupModel fetchChromePageArray];
+			launchableArrayController.content = setupModel.chromePageArray;
 			break;
             
 		case 2:
-            [setupModel fetchSystemAppArray];
+			[setupModel fetchSystemAppArray];
 			launchableArrayController.content = setupModel.systemAppArray;
+			break;
+            
+        case 3:
+			[setupModel fetchUtilitiesAppArray];
+			launchableArrayController.content = setupModel.utilitiesAppArray;
 			break;
             
 		default:
@@ -88,7 +91,7 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	[self updateSetupControls];
 }
@@ -105,6 +108,7 @@
     
 	return result;
 }
+
 #pragma mark -
 
 #pragma mark -
@@ -140,14 +144,17 @@
 		}
 	}
     
+    [setupModel fetchChromePageArray];
+    [launchableTypePicker setEnabled:(setupModel.chromePageArray.count > 0) forSegment:1];
+    
 	if (![MultitouchManager systemIsMultitouchCapable]) {
-        multitouchOptionField.alphaValue = 0.5;
+		multitouchOptionField.alphaValue = 0.5;
 		[multitouchOptionField setEnabled:NO];
 		multitouchRecognitionLabel.alphaValue = 0.5;
         
-        if (setupModel.multitouchOption) {
-            [setupModel saveMultitouchOption:NO];
-        }
+		if (setupModel.multitouchOption) {
+			[setupModel saveMultitouchOption:NO];
+		}
 	}
 	else {
 		multitouchOptionField.alphaValue = 1.0;
@@ -155,20 +162,21 @@
 		multitouchRecognitionLabel.alphaValue = 1.0;
 	}
     
-    minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
-    readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
-    multitouchOptionField.state = setupModel.multitouchOption;
-    fullscreenOptionField.state = setupModel.fullscreenOption;
-    hiddenIconOptionField.state = setupModel.hiddenIconOption;
-    loginStartOptionField.state = setupModel.loginStartOption;
+	minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
+	readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
+	multitouchOptionField.state = setupModel.multitouchOption;
+	fullscreenOptionField.state = setupModel.fullscreenOption;
+	hiddenIconOptionField.state = setupModel.hiddenIconOption;
+	loginStartOptionField.state = setupModel.loginStartOption;
 }
 
 - (void)showDrawNotification:(BOOL)show {
-    if (setupModel.multitouchOption) {
-        drawNotificationText.stringValue = @"Draw now!";
-    } else {
-        drawNotificationText.stringValue = @"Draw here!";
-    }
+	if (setupModel.multitouchOption) {
+		drawNotificationText.stringValue = @"Draw now!";
+	}
+	else {
+		drawNotificationText.stringValue = @"Draw here!";
+	}
     
 	if (show) {
 		drawNotificationText.alphaValue = 1.0;
@@ -208,7 +216,6 @@
 #pragma mark -
 #pragma mark Setup Actions
 - (IBAction)assignSelectedGesture:(id)sender {
-	[setupWindow makeFirstResponder:setupView];
 	[setupView startDetectingGesture];
 }
 
@@ -268,7 +275,7 @@
 		[setupWindow setFrame:frame display:YES];
         
 		frame.origin.y -= frame.size.height;
-        setupWindow.alphaValue = 1.0;
+		setupWindow.alphaValue = 1.0;
 		[setupWindow makeKeyAndOrderFront:self];
 		[setupWindow setFrame:frame display:YES animate:YES];
         
@@ -303,7 +310,7 @@
 #pragma mark -
 #pragma mark Recognition Options
 - (IBAction)minimumRecognitionScoreChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	int newScore = [minimumRecognitionScoreField intValue];
 	if (newScore >= 70 && newScore <= 100) {
@@ -317,11 +324,11 @@
 		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 - (IBAction)readingDelayTimeChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	int newTime = [readingDelayTimeField intValue];
 	if (newTime >= 1 && newTime <= 1000) {
@@ -335,41 +342,41 @@
 		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 - (IBAction)multitouchOptionChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	[setupModel saveMultitouchOption:multitouchOptionField.state];
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 - (IBAction)fullscreenOptionChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	[setupModel saveFullscreenOption:fullscreenOptionField.state];
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 - (IBAction)hiddenIconOptionChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	[setupModel saveHiddenIconOption:hiddenIconOptionField.state];
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 - (IBAction)loginStartOptionChanged:(id)sender {
-    [setupView finishDetectingGesture:YES];
+	[setupView finishDetectingGesture:YES];
     
 	[setupModel saveLoginStartOption:loginStartOptionField.state];
     
-    loginStartOptionField.state = [setupModel fetchLoginStartOption];
+	loginStartOptionField.state = [setupModel fetchLoginStartOption];
     
-    [self updateSetupControls];
+	[self updateSetupControls];
 }
 
 #pragma mark -

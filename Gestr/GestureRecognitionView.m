@@ -59,14 +59,15 @@
 			[tempPath lineToPoint:drawPoint];
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
-            if (mouseStrokeIndex < 3) {
-                if (!shouldDetectTimer) {
-                    shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
-                }
-            } else {
-                [self finishDetectingGesture];
-                return;
-            }
+			if (mouseStrokeIndex < 3) {
+				if (!shouldDetectTimer) {
+					shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+				}
+			}
+			else {
+				[self finishDetectingGesture];
+				return;
+			}
             
 			NSBezierPath *tempPath = [touchPaths objectForKey:identity];
 			[tempPath lineToPoint:drawPoint];
@@ -120,12 +121,13 @@
 						NSNumber *identity = touch.identifier;
                         
 						if (![gestureStrokes objectForKey:identity]) {
-                            if (orderedStrokeIds.count < 3) {
-                                [orderedStrokeIds addObject:identity];
-                                [gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
-                            } else {
-                                continue;
-                            }
+							if (orderedStrokeIds.count < 3) {
+								[orderedStrokeIds addObject:identity];
+								[gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+							}
+							else {
+								continue;
+							}
 						}
                         
 						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStrokeId:[identity intValue]];
@@ -168,25 +170,25 @@
 
 - (void)startDetectingGesture {
 	if (!detectingInput) {
-        [self resetAll];
+		[self resetAll];
         
-        mouseStrokeIndex = 0;
+		mouseStrokeIndex = 0;
         
-        initialMultitouchDeviceId = nil;
+		initialMultitouchDeviceId = nil;
         
-        checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
+		checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
         
-        noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
+		noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
         
-        if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
-            [self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
-            CGAssociateMouseAndMouseCursorPosition(NO);
-        }
+		if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
+			[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
+			CGAssociateMouseAndMouseCursorPosition(NO);
+		}
         
-        [self becomeFirstResponder];
+		[self becomeFirstResponder];
         
-        detectingInput = YES;
-    }
+		detectingInput = YES;
+	}
 }
 
 - (void)checkNoInput {
@@ -215,22 +217,22 @@
 
 - (void)finishDetectingGesture:(BOOL)ignore {
 	if (detectingInput) {
-        [[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
-        CGAssociateMouseAndMouseCursorPosition(YES);
+		[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+		CGAssociateMouseAndMouseCursorPosition(YES);
         
-        NSMutableArray *orderedStrokes = [NSMutableArray array];
-        if (!ignore) {
-            for (int i = 0; i < orderedStrokeIds.count; i++) {
-                [orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
-            }
-        }
+		NSMutableArray *orderedStrokes = [NSMutableArray array];
+		if (!ignore) {
+			for (int i = 0; i < orderedStrokeIds.count; i++) {
+				[orderedStrokes addObject:[gestureStrokes objectForKey:[orderedStrokeIds objectAtIndex:i]]];
+			}
+		}
         
-        [self resetAll];
+		[self resetAll];
         
-        [recognitionController recognizeGestureWithStrokes:orderedStrokes];
+		[recognitionController recognizeGestureWithStrokes:orderedStrokes];
         
-        detectingInput = NO;
-    }
+		detectingInput = NO;
+	}
 }
 
 - (void)resetAll {
