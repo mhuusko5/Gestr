@@ -61,13 +61,13 @@
 			break;
             
 		case 2:
-			[setupModel fetchSystemAppArray];
-			launchableArrayController.content = setupModel.systemAppArray;
+            [setupModel fetchUtilitiesAppArray];
+			launchableArrayController.content = setupModel.utilitiesAppArray;
 			break;
             
         case 3:
-			[setupModel fetchUtilitiesAppArray];
-			launchableArrayController.content = setupModel.utilitiesAppArray;
+			[setupModel fetchSystemAppArray];
+			launchableArrayController.content = setupModel.systemAppArray;
 			break;
             
 		default:
