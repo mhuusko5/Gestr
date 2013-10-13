@@ -4,6 +4,7 @@
 
 @interface ChromePage : Launchable
 
+- (NSString *)stripUrl:(NSString *)url;
 - (void)launch;
 
 @end
