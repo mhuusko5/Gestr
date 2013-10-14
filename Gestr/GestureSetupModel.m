@@ -2,7 +2,7 @@
 
 @implementation GestureSetupModel
 
-@synthesize chromePageArray;
+@synthesize webPageArray;
 @synthesize normalAppArray, utilitiesAppArray, systemAppArray;
 @synthesize readingDelayTime, minimumRecognitionScore;
 @synthesize multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
@@ -12,7 +12,7 @@
     
 	userDefaults = [NSUserDefaults standardUserDefaults];
     
-    [self fetchChromePageArray];
+    [self fetchWebPageArray];
     
 	[self fetchNormalAppArray];
 	[self fetchUtilitiesAppArray];
@@ -31,7 +31,7 @@
 #pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
-    for (ChromePage *page in chromePageArray) {
+    for (ChromePage *page in webPageArray) {
 		if ([page.launchId isEqualTo:identity]) {
 			return page;
 		}
@@ -61,28 +61,78 @@
 #pragma mark -
 
 #pragma mark -
-#pragma mark Chrome Page Management
-- (NSMutableArray *)fetchChromePageArray {
-    chromePageArray = [NSMutableArray array];
+#pragma mark Web Page Management
+- (NSMutableArray *)fetchWebPageArray {
+    webPageArray = [NSMutableArray array];
+    
+    [webPageArray addObjectsFromArray:[self fetchChromePages]];
+    [webPageArray addObjectsFromArray:[self fetchSafariPages]];
+    
+    webPageArray = [NSMutableArray arrayWithArray:[webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
+	    return [a.displayName compare:b.displayName];
+	}]];
+    
+    return webPageArray;
+}
+
+- (NSMutableArray *)fetchChromePages {
+    NSMutableArray *chromePages = [NSMutableArray array];
     
     @try {
         NSImage *chromeIcon;
         if ((chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:@"/Applications/Google Chrome.app"]) || (chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:[@"~/Applications/Google Chrome.app" stringByExpandingTildeInPath]])) {
-            NSDictionary *chromeBookmarksJson = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[@"~/Library/Application Support/Google/Chrome/Default/Bookmarks" stringByExpandingTildeInPath]] options:NSJSONReadingMutableContainers error:nil];
+            NSData *chromeBooksmarksData = [NSData dataWithContentsOfFile:[@"~/Library/Application Support/Google/Chrome/Default/Bookmarks" stringByExpandingTildeInPath]];
+            NSDictionary *chromeBookmarksJson = [NSJSONSerialization JSONObjectWithData:chromeBooksmarksData options:NSJSONReadingMutableContainers error:nil];
             
             NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
             for (NSDictionary *bookmark in bookmarksBar) {
                 if ([[bookmark valueForKey:@"type"] isEqualToString:@"url"]) {
-                    [chromePageArray addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] icon:chromeIcon url:[bookmark valueForKey:@"url"]]];
+                    [chromePages addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] icon:chromeIcon url:[bookmark valueForKey:@"url"]]];
                 }
             }
         }
     }
     @catch (NSException *exception) {
-        chromePageArray = [NSMutableArray array];
+        chromePages = [NSMutableArray array];
     }
     
-    return chromePageArray;
+    return chromePages;
+}
+
+- (NSMutableArray *)fetchSafariPages {
+    NSMutableArray *safariPages = [NSMutableArray array];
+    
+    @try {
+        NSImage *safariIcon;
+        if ((safariIcon = [[NSWorkspace sharedWorkspace] iconForFile:@"/Applications/Safari.app"]) || (safariIcon = [[NSWorkspace sharedWorkspace] iconForFile:[@"~/Applications/Safari.app" stringByExpandingTildeInPath]])) {
+            NSData *safariBooksmarksData = [NSData dataWithContentsOfFile:[@"~/Library/Safari/Bookmarks.plist" stringByExpandingTildeInPath]];
+            NSDictionary *safariBookmarksPlist = [NSPropertyListSerialization propertyListWithData:safariBooksmarksData options:NSPropertyListImmutable format:nil error:nil];
+            
+            NSArray *bookmarksBar = nil;
+            
+            NSArray *bookmarkSections = [safariBookmarksPlist valueForKey:@"Children"];
+            for (NSDictionary *bookmarkSection in bookmarkSections) {
+                if ([[bookmarkSection valueForKey:@"Title"] isEqualToString:@"BookmarksBar"]) {
+                    bookmarksBar = [bookmarkSection valueForKey:@"Children"];
+                    break;
+                }
+            }
+            
+            if (bookmarksBar) {
+                for (NSDictionary *bookmark in bookmarksBar) {
+                    @try {
+                        [safariPages addObject:[[SafariPage alloc] initWithDisplayName:[[bookmark valueForKey:@"URIDictionary"] valueForKey:@"title"] icon:safariIcon url:[bookmark valueForKey:@"URLString"]]];
+                    }
+                    @catch (NSException *exception) {}
+                }
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        safariPages = [NSMutableArray array];
+    }
+    
+    return safariPages;
 }
 #pragma mark -
 

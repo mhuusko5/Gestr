@@ -56,8 +56,8 @@
 			break;
             
 		case 1:
-			[setupModel fetchChromePageArray];
-			launchableArrayController.content = setupModel.chromePageArray;
+			[setupModel fetchWebPageArray];
+			launchableArrayController.content = setupModel.webPageArray;
 			break;
             
 		case 2:
@@ -143,9 +143,6 @@
 			[clearGestureButton setEnabled:NO];
 		}
 	}
-    
-    [setupModel fetchChromePageArray];
-    [launchableTypePicker setEnabled:(setupModel.chromePageArray.count > 0) forSegment:1];
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
 		multitouchOptionField.alphaValue = 0.5;

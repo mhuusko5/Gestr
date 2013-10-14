@@ -1,6 +1,6 @@
-#import "Website.h"
+#import "WebPage.h"
 
-@implementation Website
+@implementation WebPage
 
 @synthesize url;
 @synthesize targetBrowserId;

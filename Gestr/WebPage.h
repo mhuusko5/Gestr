@@ -1,6 +1,6 @@
 #import "Launchable.h"
 
-@interface Website : Launchable {
+@interface WebPage : Launchable {
     NSString *url;
     NSString *targetBrowserId;
 }
