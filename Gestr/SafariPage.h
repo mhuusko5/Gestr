@@ -1,4 +1,5 @@
 #import <ScriptingBridge/ScriptingBridge.h>
+#import "Safari.h"
 #import "WebPage.h"
 
 @interface SafariPage : WebPage

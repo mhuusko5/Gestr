@@ -61,11 +61,11 @@
 			break;
             
 		case 2:
-            [setupModel fetchUtilitiesAppArray];
+			[setupModel fetchUtilitiesAppArray];
 			launchableArrayController.content = setupModel.utilitiesAppArray;
 			break;
             
-        case 3:
+		case 3:
 			[setupModel fetchSystemAppArray];
 			launchableArrayController.content = setupModel.systemAppArray;
 			break;
@@ -277,6 +277,8 @@
 		[setupWindow setFrame:frame display:YES animate:YES];
         
 		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+        
+		[self launchableTypeChanged:nil];
 	}
 	else {
 		if ([[NSApplication sharedApplication] isHidden]) {

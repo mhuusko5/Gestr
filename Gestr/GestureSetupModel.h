@@ -7,7 +7,7 @@
 @interface GestureSetupModel : NSObject {
 	NSUserDefaults *userDefaults;
     
-    NSMutableArray *webPageArray;
+	NSMutableArray *webPageArray;
 	NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
     
 	int readingDelayTime, minimumRecognitionScore;

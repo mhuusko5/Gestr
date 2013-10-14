@@ -115,6 +115,7 @@
 		D04BF23B180C8A59007467CC /* WebPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebPage.m; sourceTree = "<group>"; };
 		D04BF23D180C92B8007467CC /* SafariPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariPage.h; sourceTree = "<group>"; };
 		D04BF23E180C92B8007467CC /* SafariPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafariPage.m; sourceTree = "<group>"; };
+		D04BF240180C9E9B007467CC /* Safari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Safari.h; sourceTree = "<group>"; };
 		D0516E1517EFCFDE00C48BD8 /* Gesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gesture.h; sourceTree = "<group>"; };
 		D0516E1617EFCFDE00C48BD8 /* Gesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gesture.m; sourceTree = "<group>"; };
 		D0516E1717EFCFDE00C48BD8 /* GesturePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GesturePoint.h; sourceTree = "<group>"; };
@@ -202,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				D09FCFC81809D9FD00EBCFF7 /* Chrome.h */,
+				D04BF240180C9E9B007467CC /* Safari.h */,
 				D0B502FA16FBE05F0018781C /* Categories */,
 				D0516E1317EFCF9500C48BD8 /* Images */,
 				D001B45516D7441F00F8E413 /* main.m */,

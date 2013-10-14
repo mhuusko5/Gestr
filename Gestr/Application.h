@@ -1,7 +1,7 @@
 #import "Launchable.h"
 
 @interface Application : Launchable {
-    NSString *bundleId;
+	NSString *bundleId;
 }
 @property NSString *bundleId;
 

@@ -6,14 +6,14 @@
 @synthesize targetBrowserId;
 
 - (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url targetBrowserId:(NSString *)_targetBrowserId {
-    NSString *_launchId = [NSString stringWithFormat:@"%@:%@", _targetBrowserId, _url];
+	NSString *_launchId = [NSString stringWithFormat:@"%@:%@", _targetBrowserId, _url];
     
-    self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
+	self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
     
-    url = _url;
-    targetBrowserId = _targetBrowserId;
+	url = _url;
+	targetBrowserId = _targetBrowserId;
     
-    return self;
+	return self;
 }
 
 + (NSString *)stripUrl:(NSString *)url {

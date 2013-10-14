@@ -5,13 +5,13 @@
 @synthesize bundleId;
 
 - (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon bundleId:(NSString *)_bundleId {
-    NSString *_launchId = _bundleId;
+	NSString *_launchId = _bundleId;
     
-    self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
+	self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
     
-    bundleId = _bundleId;
+	bundleId = _bundleId;
     
-    return self;
+	return self;
 }
 
 - (void)launch {
