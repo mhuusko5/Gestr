@@ -2,15 +2,10 @@
 
 @implementation ChromePage
 
-- (NSString *)stripUrl:(NSString *)url {
-	NSUInteger prefix = [url rangeOfString:@"://"].location;
-	if (prefix != NSNotFound) {
-		url = [url substringFromIndex:prefix + 3];
-	}
-	if ([url characterAtIndex:url.length - 1] == '/') {
-		url = [url substringToIndex:url.length - 1];
-	}
-	return url;
+- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url {
+    self = [super initWithDisplayName:_displayName icon:_icon url:_url targetBrowserId:@"com.google.Chrome"];
+    
+    return self;
 }
 
 - (void)launch {
@@ -19,7 +14,7 @@
     
 	if (chrome.windows.count == 0) {
 		[chrome.windows addObject:[[[chrome classForScriptingClass:@"window"] alloc] initWithProperties:nil]];
-        ((ChromeWindow *)[chrome.windows objectAtIndex:0]).activeTab.URL = launchId;
+        ((ChromeWindow *)[chrome.windows objectAtIndex:0]).activeTab.URL = url;
 	} else {
         BOOL tabExists = NO;
         int tabIndex = -1;
@@ -27,7 +22,7 @@
         for (window in chrome.windows) {
             for (int i = 0; i < window.tabs.count; i++) {
                 ChromeTab *tab = [window.tabs objectAtIndex:i];
-                if ([[self stripUrl:tab.URL] isEqualToString:[self stripUrl:launchId]]) {
+                if ([[[self class] stripUrl:tab.URL] isEqualToString:[[self class] stripUrl:url]]) {
                     tabIndex = i;
                     tabExists = YES;
                     break;
@@ -46,7 +41,7 @@
             ChromeTab *newTab = [[[chrome classForScriptingClass:@"tab"] alloc] initWithProperties:nil];
             window = [chrome.windows objectAtIndex:0];
             [window.tabs addObject:newTab];
-            newTab.URL = launchId;
+            newTab.URL = url;
             window.index = 1;
         }
     }

@@ -73,7 +73,7 @@
             NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
             for (NSDictionary *bookmark in bookmarksBar) {
                 if ([[bookmark valueForKey:@"type"] isEqualToString:@"url"]) {
-                    [chromePageArray addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] launchId:[bookmark valueForKey:@"url"] icon:chromeIcon]];
+                    [chromePageArray addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] icon:chromeIcon url:[bookmark valueForKey:@"url"]]];
                 }
             }
         }
@@ -127,7 +127,7 @@
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                 
 				if (![displayName isEqualToString:@"Gestr"]) {
-					[arr addObject:[[Application alloc] initWithDisplayName:displayName launchId:bundleId icon:icon]];
+					[arr addObject:[[Application alloc] initWithDisplayName:displayName icon:icon bundleId:bundleId]];
 				}
 			}
 			else if (isDir && depth > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {

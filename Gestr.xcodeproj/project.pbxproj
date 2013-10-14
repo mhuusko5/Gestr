@@ -27,6 +27,7 @@
 		D0140F8E17EFD6EE004C19F3 /* MultitouchTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = D0140F8A17EFD6EE004C19F3 /* MultitouchTouch.m */; };
 		D016016516FFB03B007A197E /* AppTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D016016416FFB03A007A197E /* AppTextFieldCell.m */; };
 		D02D55E71809D97C001F0AC3 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = D02D55E61809D97C001F0AC3 /* Application.m */; };
+		D04BF23C180C8A59007467CC /* Website.m in Sources */ = {isa = PBXBuildFile; fileRef = D04BF23B180C8A59007467CC /* Website.m */; };
 		D0516E2317EFCFDE00C48BD8 /* Gesture.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1617EFCFDE00C48BD8 /* Gesture.m */; };
 		D0516E2417EFCFDE00C48BD8 /* GesturePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1817EFCFDE00C48BD8 /* GesturePoint.m */; };
 		D0516E2517EFCFDE00C48BD8 /* GestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E1A17EFCFDE00C48BD8 /* GestureRecognizer.m */; };
@@ -109,6 +110,8 @@
 		D016016416FFB03A007A197E /* AppTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTextFieldCell.m; sourceTree = "<group>"; };
 		D02D55E51809D97C001F0AC3 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		D02D55E61809D97C001F0AC3 /* Application.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
+		D04BF23A180C8A59007467CC /* Website.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Website.h; sourceTree = "<group>"; };
+		D04BF23B180C8A59007467CC /* Website.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Website.m; sourceTree = "<group>"; };
 		D0516E1517EFCFDE00C48BD8 /* Gesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gesture.h; sourceTree = "<group>"; };
 		D0516E1617EFCFDE00C48BD8 /* Gesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gesture.m; sourceTree = "<group>"; };
 		D0516E1717EFCFDE00C48BD8 /* GesturePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GesturePoint.h; sourceTree = "<group>"; };
@@ -372,6 +375,8 @@
 				D001B43316D7441F00F8E413 /* Launchable.m */,
 				D02D55E51809D97C001F0AC3 /* Application.h */,
 				D02D55E61809D97C001F0AC3 /* Application.m */,
+				D04BF23A180C8A59007467CC /* Website.h */,
+				D04BF23B180C8A59007467CC /* Website.m */,
 				D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */,
 				D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */,
 			);
@@ -511,6 +516,7 @@
 				D071FF99180888E300CDC8FF /* GestureRecognitionModel.m in Sources */,
 				D02D55E71809D97C001F0AC3 /* Application.m in Sources */,
 				D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */,
+				D04BF23C180C8A59007467CC /* Website.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

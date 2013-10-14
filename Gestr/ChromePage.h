@@ -1,10 +1,11 @@
 #import "Launchable.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 #import "Chrome.h"
+#import "Website.h"
 
-@interface ChromePage : Launchable
+@interface ChromePage : Website 
 
-- (NSString *)stripUrl:(NSString *)url;
+- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url;
 - (void)launch;
 
 @end
