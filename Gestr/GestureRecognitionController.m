@@ -62,8 +62,8 @@
 	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
 		Launchable *launchableToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToLaunch != nil) {
-			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToLaunch.displayName, rating];
-			partialIconAlert.image = launchableToLaunch.icon;
+			partialDescriptionAlert.stringValue = @"";
+            partialIconAlert.image = nil;
             
 			appDescriptionAlert.stringValue = launchableToLaunch.displayName;
 			appIconAlert.image = launchableToLaunch.icon;
