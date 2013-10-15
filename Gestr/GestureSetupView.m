@@ -325,15 +325,13 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
 	if (detectingInput || showingStoredGesture) {
-		[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.35] setStroke];
 		for (NSBezierPath *path in[touchPaths allValues]) {
-			NSBezierPath *whitePath = [path copy];
-			[whitePath setLineWidth:[path lineWidth] * 1.4];
-			[whitePath stroke];
-		}
-        
-		[myGreenColor setStroke];
-		for (NSBezierPath *path in[touchPaths allValues]) {
+            [[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
+            path.lineWidth *= 1.5;
+			[path stroke];
+            
+            [myGreenColor setStroke];
+            path.lineWidth /= 1.5;
 			[path stroke];
 		}
 	}
