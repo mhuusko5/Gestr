@@ -49,7 +49,7 @@
 	[gestureRecognitionController applicationDidFinishLaunching];
 	[gestureSetupController applicationDidFinishLaunching];
     
-	[NSThread detachNewThreadSelector:@selector(checkForApplicationUpdate) toTarget:self withObject:nil];
+    [self performSelectorInBackground:@selector(checkForApplicationUpdate) withObject:nil];
 }
 
 - (void)checkForApplicationUpdate {

@@ -38,8 +38,8 @@
 #pragma mark -
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
-	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
-	int rating;
+    GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
+    int rating;
 	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
 		Launchable *launchableToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToShow != nil) {

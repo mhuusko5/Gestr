@@ -31,6 +31,7 @@
 - (void)startDealingWithMultitouchEvents;
 - (void)startDetectingGesture;
 - (void)checkNoInput;
+- (void)checkPartialGestureOnNewThread;
 - (void)checkPartialGesture;
 - (void)finishDetectingGesture;
 - (void)finishDetectingGesture:(BOOL)ignore;
