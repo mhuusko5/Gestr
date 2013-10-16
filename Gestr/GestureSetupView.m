@@ -114,7 +114,7 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 10);
+				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 8);
                 
 				for (MultitouchTouch *touch in event.touches) {
 					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);

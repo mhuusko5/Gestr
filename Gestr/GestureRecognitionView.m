@@ -110,7 +110,7 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				int shouldDrawLimit = recognitionController.appController.gestureSetupController.setupModel.fullscreenOption ? 18 : 10;
+				int shouldDrawLimit = recognitionController.appController.gestureSetupController.setupModel.fullscreenOption ? 18 : 8;
 				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > shouldDrawLimit);
                 
 				for (MultitouchTouch *touch in event.touches) {
@@ -176,8 +176,7 @@
         
 		initialMultitouchDeviceId = nil;
         
-		checkPartialGestureTimer = [NSTimer timerWithTimeInterval:0.25 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSRunLoopCommonModes];
+		checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.333 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
         
 		noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
         
