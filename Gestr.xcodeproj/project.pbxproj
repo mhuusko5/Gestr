@@ -39,13 +39,13 @@
 		D054A8DF15C3596000EA4E4D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07340F0152578F400FC7910 /* Cocoa.framework */; };
 		D05E69CE18086F7800BD4646 /* GestureSetupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D05E69CD18086F7800BD4646 /* GestureSetupModel.m */; };
 		D066470017EFD66A00A59967 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06646FF17EFD66A00A59967 /* MultitouchSupport.framework */; };
+		D071F8BD1810E2C4002B3DD0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D071F8BB1810E2B2002B3DD0 /* Sparkle.framework */; };
+		D071F8BE1810E321002B3DD0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D071F8BB1810E2B2002B3DD0 /* Sparkle.framework */; };
 		D071FF99180888E300CDC8FF /* GestureRecognitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D071FF98180888E300CDC8FF /* GestureRecognitionModel.m */; };
 		D073F55D15C358FF00843B5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D073F55C15C358FF00843B5D /* QuartzCore.framework */; };
 		D09EF01316FE4EC2009DEE99 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */; };
 		D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */; };
 		D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */; };
-		D0A1ED191810B7070034FC34 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A1ED181810B7070034FC34 /* Sparkle.framework */; };
-		D0A1ED1B1810B7180034FC34 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0A1ED181810B7070034FC34 /* Sparkle.framework */; };
 		D0B502EA16FBC87C0018781C /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B502E916FBC87C0018781C /* background2.png */; };
 		D0B502ED16FBC9850018781C /* RepeatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502EC16FBC9850018781C /* RepeatedImageView.m */; };
 		D0B502F516FBCDD10018781C /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502F116FBCDD00018781C /* AppButtonCell.m */; };
@@ -68,7 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D0A1ED1B1810B7180034FC34 /* Sparkle.framework in CopyFiles */,
+				D071F8BD1810E2C4002B3DD0 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +136,7 @@
 		D05E69CC18086F7800BD4646 /* GestureSetupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureSetupModel.h; sourceTree = "<group>"; };
 		D05E69CD18086F7800BD4646 /* GestureSetupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GestureSetupModel.m; sourceTree = "<group>"; };
 		D06646FF17EFD66A00A59967 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
+		D071F8BB1810E2B2002B3DD0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Gestr/Sparkle.framework; sourceTree = "<group>"; };
 		D071FF97180888E300CDC8FF /* GestureRecognitionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureRecognitionModel.h; sourceTree = "<group>"; };
 		D071FF98180888E300CDC8FF /* GestureRecognitionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GestureRecognitionModel.m; sourceTree = "<group>"; };
 		D07340EC152578F400FC7910 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,7 +150,6 @@
 		D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromePage.h; sourceTree = "<group>"; };
 		D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromePage.m; sourceTree = "<group>"; };
-		D0A1ED181810B7070034FC34 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		D0B502E916FBC87C0018781C /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
 		D0B502EB16FBC9850018781C /* RepeatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatedImageView.h; sourceTree = "<group>"; };
 		D0B502EC16FBC9850018781C /* RepeatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RepeatedImageView.m; sourceTree = "<group>"; };
@@ -176,13 +176,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D071F8BE1810E321002B3DD0 /* Sparkle.framework in Frameworks */,
 				D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */,
 				D066470017EFD66A00A59967 /* MultitouchSupport.framework in Frameworks */,
 				D0F2DEA317000E8D009A19B9 /* CoreServices.framework in Frameworks */,
 				D0CB917416DD419100BE0E9A /* Carbon.framework in Frameworks */,
 				D073F55D15C358FF00843B5D /* QuartzCore.framework in Frameworks */,
 				D054A8DF15C3596000EA4E4D /* Cocoa.framework in Frameworks */,
-				D0A1ED191810B7070034FC34 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +310,7 @@
 		D07340EF152578F400FC7910 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0A1ED181810B7070034FC34 /* Sparkle.framework */,
+				D071F8BB1810E2B2002B3DD0 /* Sparkle.framework */,
 				D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */,
 				D06646FF17EFD66A00A59967 /* MultitouchSupport.framework */,
 				D0F2DEA217000E8D009A19B9 /* CoreServices.framework */,
@@ -605,6 +605,7 @@
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Gestr\"",
 				);
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -636,6 +637,7 @@
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Gestr\"",
 				);
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = s;
