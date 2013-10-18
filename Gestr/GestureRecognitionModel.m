@@ -72,12 +72,18 @@
 #pragma mark -
 #pragma mark Setup Utilities
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes andIdentity:(NSString *)identity {
-	Gesture *gestureToSave = [[Gesture alloc] initWithIdentity:identity andStrokes:gestureStrokes];
-    
-	[gestureDictionary setObject:gestureToSave forKey:identity];
-	[self saveGestureDictionary];
-    
-	[gestureDetector addGesture:gestureToSave];
+    int inputPointCount = 0;
+	for (GestureStroke *stroke in gestureStrokes) {
+		inputPointCount += [stroke pointCount];
+	}
+	if (inputPointCount > GUMinimumPointCount) {
+		Gesture *gestureToSave = [[Gesture alloc] initWithIdentity:identity andStrokes:gestureStrokes];
+        
+        [gestureDictionary setObject:gestureToSave forKey:identity];
+        [self saveGestureDictionary];
+        
+        [gestureDetector addGesture:gestureToSave];
+	}
 }
 
 - (Gesture *)getGestureWithIdentity:(NSString *)identity {

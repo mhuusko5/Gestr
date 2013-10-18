@@ -182,22 +182,9 @@
 #pragma mark -
 #pragma mark Setup Utilities
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
-	int inputPointCount = 0;
-	for (GestureStroke *stroke in gestureStrokes) {
-		inputPointCount += [stroke pointCount];
-	}
-	if (inputPointCount < GUMinimumPointCount) {
-		NSAlert *infoAlert = [[NSAlert alloc] init];
-		[infoAlert addButtonWithTitle:@"Ok, then"];
-		[infoAlert setMessageText:@"Please make your gesture strokes a tad longer..."];
-		[infoAlert setAlertStyle:NSInformationalAlertStyle];
-		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-		return;
-	}
-    
 	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
     
-	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
+    [appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
     
 	[self updateSetupControls];
 }
@@ -313,13 +300,6 @@
 	if (newScore >= 70 && newScore <= 100) {
 		[setupModel saveMinimumRecognitionScore:newScore];
 	}
-	else {
-		NSAlert *infoAlert = [[NSAlert alloc] init];
-		[infoAlert addButtonWithTitle:@"Sure"];
-		[infoAlert setMessageText:@"It's better to set a score between 70 and 100..."];
-		[infoAlert setAlertStyle:NSInformationalAlertStyle];
-		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-	}
     
 	[self updateSetupControls];
 }
@@ -330,13 +310,6 @@
 	int newTime = [readingDelayTimeField intValue];
 	if (newTime >= 1 && newTime <= 1000) {
 		[setupModel saveReadingDelayTime:newTime];
-	}
-	else {
-		NSAlert *infoAlert = [[NSAlert alloc] init];
-		[infoAlert addButtonWithTitle:@"Okay"];
-		[infoAlert setMessageText:@"Somewhere between 1 and 1000 milliseconds is more reasonable..."];
-		[infoAlert setAlertStyle:NSInformationalAlertStyle];
-		[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 	}
     
 	[self updateSetupControls];
