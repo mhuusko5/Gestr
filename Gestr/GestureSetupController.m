@@ -33,6 +33,8 @@
 		[self toggleSetupWindow:nil];
 	}
     
+	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(repositionSetupWindow) userInfo:nil repeats:YES];
+    
 	[self updateSetupControls];
 }
 
@@ -125,23 +127,16 @@
         
 		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId] != nil);
         
-		if ([[NSApplication sharedApplication] isActive]) {
-			if (gestureExistsForSelectedApp) {
-				[showGestureButton setEnabled:YES];
-				[assignGestureButton setEnabled:YES];
-				[clearGestureButton setEnabled:YES];
-			}
-			else {
-				[showGestureButton setEnabled:NO];
-				[assignGestureButton setEnabled:YES];
-				[clearGestureButton setEnabled:NO];
-			}
-		}
-		else {
-			[showGestureButton setEnabled:NO];
-			[assignGestureButton setEnabled:NO];
-			[clearGestureButton setEnabled:NO];
-		}
+		if (gestureExistsForSelectedApp) {
+            [showGestureButton setEnabled:YES];
+            [assignGestureButton setEnabled:YES];
+            [clearGestureButton setEnabled:YES];
+        }
+        else {
+            [showGestureButton setEnabled:NO];
+            [assignGestureButton setEnabled:YES];
+            [clearGestureButton setEnabled:NO];
+        }
 	}
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
@@ -163,7 +158,6 @@
 	readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
 	multitouchOptionField.state = setupModel.multitouchOption;
 	fullscreenOptionField.state = setupModel.fullscreenOption;
-	hiddenIconOptionField.state = setupModel.hiddenIconOption;
 	loginStartOptionField.state = setupModel.loginStartOption;
 }
 
@@ -246,41 +240,41 @@
 
 #pragma mark -
 #pragma mark Window Methods
-- (IBAction)toggleSetupWindow:(id)sender {
+- (void)positionSetupWindow {
 	NSRect menuBarFrame = [[[statusBarItem view] window] frame];
 	NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
     
 	pt.y -= menuBarFrame.size.height / 2;
-	pt.x -= (setupWindow.frame.size.width) / 2;
+	pt.y -= setupWindow.frame.size.height;
+	pt.x -= setupWindow.frame.size.width / 2;
     
-	NSRect frame = [setupWindow frame];
+	[setupWindow setFrameOrigin:pt];
+}
+
+- (IBAction)toggleSetupWindow:(id)sender {
+	[self positionSetupWindow];
+    
 	if ([setupWindow alphaValue] <= 0) {
-		frame.origin.y = pt.y;
-		frame.origin.x = pt.x;
-		[setupWindow setFrame:frame display:YES];
-        
-		frame.origin.y -= frame.size.height;
-		setupWindow.alphaValue = 1.0;
-		[setupWindow makeKeyAndOrderFront:self];
-		[setupWindow setFrame:frame display:YES animate:YES];
-        
-		[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-        
 		[self launchableTypeChanged:nil];
+        
+		[setupWindow orderFrontRegardless];
+        
+		[NSAnimationContext beginGrouping];
+		[[NSAnimationContext currentContext] setDuration:0.16];
+		[[NSAnimationContext currentContext] setCompletionHandler: ^{
+		    [setupWindow makeKeyWindow];
+		}];
+		[setupWindow.animator setAlphaValue:1.0];
+		[NSAnimationContext endGrouping];
 	}
 	else {
-		if ([[NSApplication sharedApplication] isHidden]) {
-			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-		}
-		else {
-			frame.origin.x = pt.x;
-			frame.origin.y = pt.y;
-			[setupWindow setFrame:frame display:YES animate:YES];
-            
-			[self hideSetupWindow];
-            
-			[[NSApplication sharedApplication] hide:self];
-		}
+		[NSAnimationContext beginGrouping];
+		[[NSAnimationContext currentContext] setDuration:0.16];
+		[[NSAnimationContext currentContext] setCompletionHandler: ^{
+		    [self hideSetupWindow];
+		}];
+		[setupWindow.animator setAlphaValue:0.0];
+		[NSAnimationContext endGrouping];
 	}
     
 	[self updateSetupControls];
@@ -290,6 +284,22 @@
 	setupWindow.alphaValue = 0.0;
 	[setupWindow orderOut:self];
 	[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification {
+	if (setupWindow.alphaValue > 0) {
+		if (setupView.detectingInput) {
+			[setupView finishDetectingGesture:YES];
+		}
+        
+		[self toggleSetupWindow:nil];
+	}
+}
+
+- (void)repositionSetupWindow {
+	if (setupWindow.alphaValue > 0) {
+		[self positionSetupWindow];
+	}
 }
 
 #pragma mark -
@@ -344,14 +354,6 @@
 	[setupView finishDetectingGesture:YES];
     
 	[setupModel saveFullscreenOption:fullscreenOptionField.state];
-    
-	[self updateSetupControls];
-}
-
-- (IBAction)hiddenIconOptionChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
-    
-	[setupModel saveHiddenIconOption:hiddenIconOptionField.state];
     
 	[self updateSetupControls];
 }

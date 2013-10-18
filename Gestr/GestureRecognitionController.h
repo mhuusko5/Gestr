@@ -65,6 +65,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 - (void)toggleOutRecognitionWindow:(BOOL)fadeOut;
 - (void)toggleInRecognitionWindow;
 - (void)hideRecognitionWindow;
+- (void)windowDidResignKey:(NSNotification *)notification;
 - (void)layoutRecognitionWindow;
 #pragma mark -
 

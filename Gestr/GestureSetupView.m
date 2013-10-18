@@ -250,6 +250,7 @@
         
 		if (setupController.setupModel.multitouchOption) {
 			[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
+			[NSApp activateIgnoringOtherApps:YES];
 			CGAssociateMouseAndMouseCursorPosition(NO);
 		}
         
@@ -271,8 +272,10 @@
 
 - (void)finishDetectingGesture:(BOOL)ignore {
 	if (detectingInput) {
-		[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
-		CGAssociateMouseAndMouseCursorPosition(YES);
+		if (setupController.setupModel.multitouchOption) {
+			[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+			CGAssociateMouseAndMouseCursorPosition(YES);
+		}
         
 		if (!ignore) {
 			NSMutableArray *orderedStrokes = [NSMutableArray array];
@@ -326,12 +329,12 @@
 - (void)drawRect:(NSRect)dirtyRect {
 	if (detectingInput || showingStoredGesture) {
 		for (NSBezierPath *path in[touchPaths allValues]) {
-            [[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
-            path.lineWidth *= 1.5;
+			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
+			path.lineWidth *= 1.5;
 			[path stroke];
             
-            [myGreenColor setStroke];
-            path.lineWidth /= 1.5;
+			[myGreenColor setStroke];
+			path.lineWidth /= 1.5;
 			[path stroke];
 		}
 	}

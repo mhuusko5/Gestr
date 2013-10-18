@@ -11,12 +11,12 @@
 	NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
     
 	int readingDelayTime, minimumRecognitionScore;
-	BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
+	BOOL multitouchOption, fullscreenOption, loginStartOption;
 }
 @property NSMutableArray *webPageArray;
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
 @property int readingDelayTime, minimumRecognitionScore;
-@property BOOL multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
+@property BOOL multitouchOption, fullscreenOption, loginStartOption;
 
 #pragma mark -
 #pragma mark Launchable Management
@@ -48,8 +48,6 @@
 - (void)saveMultitouchOption:(BOOL)newChoice;
 - (BOOL)fetchFullscreenOption;
 - (void)saveFullscreenOption:(BOOL)newChoice;
-- (BOOL)fetchHiddenIconOption;
-- (void)saveHiddenIconOption:(BOOL)newChoice;
 - (BOOL)fetchLoginStartOption;
 - (void)saveLoginStartOption:(BOOL)newChoice;
 #pragma mark -

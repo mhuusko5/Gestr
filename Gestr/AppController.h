@@ -16,8 +16,6 @@
 
 - (void)awakeFromNib;
 - (IBAction)closeAndQuit:(id)sender;
-- (void)applicationDidResignActive:(NSNotification *)aNotification;
-- (void)applicationDidBecomeActive:(NSNotification *)notification;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
 
 @end

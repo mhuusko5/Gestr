@@ -182,6 +182,7 @@
         
 		if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
 			[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
+			[NSApp activateIgnoringOtherApps:YES];
 			CGAssociateMouseAndMouseCursorPosition(NO);
 		}
         
@@ -198,20 +199,20 @@
 }
 
 - (void)checkPartialGestureOnNewThread {
-    NSMutableArray *partialOrderedStrokeIds = [orderedStrokeIds copy];
-    NSMutableDictionary *partialGestureStrokes = [gestureStrokes copy];
+	NSMutableArray *partialOrderedStrokeIds = [orderedStrokeIds copy];
+	NSMutableDictionary *partialGestureStrokes = [gestureStrokes copy];
     
-    NSMutableArray *partialOrderedStrokes = [NSMutableArray array];
-    for (int i = 0; i < partialOrderedStrokeIds.count; i++) {
-        [partialOrderedStrokes addObject:[partialGestureStrokes objectForKey:[partialOrderedStrokeIds objectAtIndex:i]]];
-    }
+	NSMutableArray *partialOrderedStrokes = [NSMutableArray array];
+	for (int i = 0; i < partialOrderedStrokeIds.count; i++) {
+		[partialOrderedStrokes addObject:[partialGestureStrokes objectForKey:[partialOrderedStrokeIds objectAtIndex:i]]];
+	}
     
-    [recognitionController checkPartialGestureWithStrokes:partialOrderedStrokes];
+	[recognitionController checkPartialGestureWithStrokes:partialOrderedStrokes];
 }
 
 - (void)checkPartialGesture {
 	if (orderedStrokeIds.count > 0) {
-        [self performSelectorInBackground:@selector(checkPartialGestureOnNewThread) withObject:nil];
+		[self performSelectorInBackground:@selector(checkPartialGestureOnNewThread) withObject:nil];
 	}
 }
 
@@ -221,8 +222,10 @@
 
 - (void)finishDetectingGesture:(BOOL)ignore {
 	if (detectingInput) {
-		[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
-		CGAssociateMouseAndMouseCursorPosition(YES);
+		if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
+			[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+			CGAssociateMouseAndMouseCursorPosition(YES);
+		}
         
 		NSMutableArray *orderedStrokes = [NSMutableArray array];
 		if (!ignore) {
@@ -273,12 +276,12 @@
 - (void)drawRect:(NSRect)dirtyRect {
 	if (detectingInput) {
 		for (NSBezierPath *path in[touchPaths allValues]) {
-            [[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
-            path.lineWidth *= 1.5;
+			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
+			path.lineWidth *= 1.5;
 			[path stroke];
             
-            [myGreenColor setStroke];
-            path.lineWidth /= 1.5;
+			[myGreenColor setStroke];
+			path.lineWidth /= 1.5;
 			[path stroke];
 		}
 	}

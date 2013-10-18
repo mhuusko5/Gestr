@@ -11,6 +11,7 @@
 	[textShadow setShadowBlurRadius:AppButtonBlackTextShadowBlurRadius];
     
 	[attrString addAttribute:NSShadowAttributeName value:textShadow range:((NSRange) {0, [attrString length] })];
+	[attrString addAttribute:NSForegroundColorAttributeName value:[myWhiteColor darkenColorByValue:0.1] range:((NSRange) {0, [attrString length] })];
     
 	[attrString drawInRect:NSIntegralRect(cellFrame)];
 }

@@ -5,7 +5,7 @@
 @synthesize webPageArray;
 @synthesize normalAppArray, utilitiesAppArray, systemAppArray;
 @synthesize readingDelayTime, minimumRecognitionScore;
-@synthesize multitouchOption, fullscreenOption, hiddenIconOption, loginStartOption;
+@synthesize multitouchOption, fullscreenOption, loginStartOption;
 
 - (id)init {
 	self = [super init];
@@ -22,7 +22,6 @@
 	[self fetchReadingDelayTime];
 	[self fetchMultitouchOption];
 	[self fetchFullscreenOption];
-	[self saveHiddenIconOption:[self fetchHiddenIconOption]];
 	[self saveLoginStartOption:[self fetchLoginStartOption]];
     
 	return self;
@@ -264,36 +263,6 @@
 - (void)saveFullscreenOption:(BOOL)newChoice {
 	[userDefaults setBool:(fullscreenOption = newChoice) forKey:@"fullscreenOption"];
 	[userDefaults synchronize];
-}
-
-- (BOOL)fetchHiddenIconOption {
-	id storedHideDockIcon;
-	if ((storedHideDockIcon = [userDefaults objectForKey:@"hiddenIconOption"])) {
-		hiddenIconOption = [storedHideDockIcon boolValue];
-	}
-	else {
-		[self saveHiddenIconOption:NO];
-	}
-    
-	return hiddenIconOption;
-}
-
-- (void)saveHiddenIconOption:(BOOL)newChoice {
-	[userDefaults setBool:(hiddenIconOption = newChoice) forKey:@"hiddenIconOption"];
-	[userDefaults synchronize];
-    
-	ProcessSerialNumber psn = { 0, kCurrentProcess };
-	if (hiddenIconOption) {
-		TransformProcessType(&psn, kProcessTransformToUIElementApplication);
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.005];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.01];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.1];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.25];
-		[[NSApplication sharedApplication] performSelector:@selector(activateIgnoringOtherApps:) withObject:YES afterDelay:0.5];
-	}
-	else {
-		TransformProcessType(&psn, kProcessTransformToForegroundApplication);
-	}
 }
 
 - (BOOL)fetchLoginStartOption {

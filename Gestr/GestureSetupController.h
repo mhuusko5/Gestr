@@ -38,7 +38,7 @@
 	IBOutlet NSTextField *minimumRecognitionScoreField, *readingDelayTimeField;
 	IBOutlet NSTextField *multitouchRecognitionLabel;
 	IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField;
-	IBOutlet NSButton *hiddenIconOptionField, *loginStartOptionField;
+	IBOutlet NSButton *loginStartOptionField;
 }
 @property (retain) GestureSetupModel *setupModel;
 @property (retain) AppController *appController;
@@ -82,8 +82,11 @@
 
 #pragma mark -
 #pragma mark Window Methods
+- (void)positionSetupWindow;
 - (IBAction)toggleSetupWindow:(id)sender;
 - (void)hideSetupWindow;
+- (void)windowDidResignKey:(NSNotification *)notification;
+- (void)repositionSetupWindow;
 #pragma mark -
 
 #pragma mark -
@@ -92,7 +95,6 @@
 - (IBAction)readingDelayTimeChanged:(id)sender;
 - (IBAction)multitouchOptionChanged:(id)sender;
 - (IBAction)fullscreenOptionChanged:(id)sender;
-- (IBAction)hiddenIconOptionChanged:(id)sender;
 - (IBAction)loginStartOptionChanged:(id)sender;
 #pragma mark -
 

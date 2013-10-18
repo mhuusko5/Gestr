@@ -36,5 +36,7 @@
 	<true/>
 	<key>SUFeedURL</key>
 	<string>http://mhuusko5.com/gestrUpdate</string>
+	<key>LSUIElement</key>
+	<true/>
 </dict>
 </plist>
