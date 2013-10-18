@@ -48,22 +48,6 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
 	[gestureRecognitionController applicationDidFinishLaunching];
 	[gestureSetupController applicationDidFinishLaunching];
-    
-    [self performSelectorInBackground:@selector(checkForApplicationUpdate) withObject:nil];
-}
-
-- (void)checkForApplicationUpdate {
-	@try {
-		NSString *updatedVersionString = [NSString stringWithContentsOfURL:[[NSURL alloc] initWithString:@"http://mhuusko5.com/gestrVersion"] encoding:NSUTF8StringEncoding error:nil];
-		float updatedVersion = [updatedVersionString floatValue];
-		float thisVersion = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] floatValue];
-		if (updatedVersion > thisVersion) {
-			[self performSelectorOnMainThread:@selector(showUpdateAlert:) withObject:[NSString stringWithFormat:@"%g", updatedVersion] waitUntilDone:NO];
-		}
-	}
-	@catch (NSException *exception)
-	{
-	}
 }
 
 @end

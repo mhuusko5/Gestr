@@ -44,6 +44,8 @@
 		D09EF01316FE4EC2009DEE99 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */; };
 		D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */; };
 		D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */; };
+		D0A1ED191810B7070034FC34 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A1ED181810B7070034FC34 /* Sparkle.framework */; };
+		D0A1ED1B1810B7180034FC34 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0A1ED181810B7070034FC34 /* Sparkle.framework */; };
 		D0B502EA16FBC87C0018781C /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B502E916FBC87C0018781C /* background2.png */; };
 		D0B502ED16FBC9850018781C /* RepeatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502EC16FBC9850018781C /* RepeatedImageView.m */; };
 		D0B502F516FBCDD10018781C /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502F116FBCDD00018781C /* AppButtonCell.m */; };
@@ -60,12 +62,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D0E2791416D9974C009C3FB6 /* CopyFiles */ = {
+		D0A1ED1A1810B7110034FC34 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D0A1ED1B1810B7180034FC34 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +149,7 @@
 		D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		D09FCFCC1809DA5E00EBCFF7 /* ChromePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromePage.h; sourceTree = "<group>"; };
 		D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromePage.m; sourceTree = "<group>"; };
+		D0A1ED181810B7070034FC34 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		D0B502E916FBC87C0018781C /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
 		D0B502EB16FBC9850018781C /* RepeatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatedImageView.h; sourceTree = "<group>"; };
 		D0B502EC16FBC9850018781C /* RepeatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RepeatedImageView.m; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 				D0CB917416DD419100BE0E9A /* Carbon.framework in Frameworks */,
 				D073F55D15C358FF00843B5D /* QuartzCore.framework in Frameworks */,
 				D054A8DF15C3596000EA4E4D /* Cocoa.framework in Frameworks */,
+				D0A1ED191810B7070034FC34 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +310,7 @@
 		D07340EF152578F400FC7910 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0A1ED181810B7070034FC34 /* Sparkle.framework */,
 				D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */,
 				D06646FF17EFD66A00A59967 /* MultitouchSupport.framework */,
 				D0F2DEA217000E8D009A19B9 /* CoreServices.framework */,
@@ -429,7 +435,7 @@
 				D07340E8152578F400FC7910 /* Sources */,
 				D07340E9152578F400FC7910 /* Frameworks */,
 				D07340EA152578F400FC7910 /* Resources */,
-				D0E2791416D9974C009C3FB6 /* CopyFiles */,
+				D0A1ED1A1810B7110034FC34 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -591,13 +597,14 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Mathew Huusko V (KG7LGVJ8EA)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -607,8 +614,9 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Gestr/Gestr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Gestr;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx10.7;
 				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = app;
@@ -620,13 +628,14 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Mathew Huusko V (KG7LGVJ8EA)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -638,6 +647,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Gestr;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx10.7;
 				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = app;

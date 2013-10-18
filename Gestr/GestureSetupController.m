@@ -246,18 +246,6 @@
 
 #pragma mark -
 #pragma mark Window Methods
-- (void)showUpdateAlert:(NSString *)version {
-	if (setupWindow.alphaValue <= 0) {
-		[self toggleSetupWindow:nil];
-	}
-    
-	NSAlert *infoAlert = [[NSAlert alloc] init];
-	[infoAlert addButtonWithTitle:@"Will do!"];
-	[infoAlert setMessageText:[NSString stringWithFormat:@"Head over to mhuusko5.com for version %@ of Gestr!", version]];
-	[infoAlert setAlertStyle:NSInformationalAlertStyle];
-	[infoAlert beginSheetModalForWindow:setupWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-}
-
 - (IBAction)toggleSetupWindow:(id)sender {
 	NSRect menuBarFrame = [[[statusBarItem view] window] frame];
 	NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));

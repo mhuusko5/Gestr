@@ -19,6 +19,5 @@
 - (void)applicationDidResignActive:(NSNotification *)aNotification;
 - (void)applicationDidBecomeActive:(NSNotification *)notification;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
-- (void)checkForApplicationUpdate;
 
 @end

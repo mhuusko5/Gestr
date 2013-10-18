@@ -30,8 +30,6 @@
     
 	int launchableSelectedIndex;
 	IBOutlet NSSegmentedControl *launchableTypePicker;
-	IBOutlet NSView *launchableParentView;
-	IBOutlet NSView *launchableView;
 	IBOutlet NSTableView *launchableTableView;
 	IBOutlet NSArrayController *launchableArrayController;
     
@@ -84,7 +82,6 @@
 
 #pragma mark -
 #pragma mark Window Methods
-- (void)showUpdateAlert:(NSString *)version;
 - (IBAction)toggleSetupWindow:(id)sender;
 - (void)hideSetupWindow;
 #pragma mark -
