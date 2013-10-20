@@ -36,6 +36,8 @@
 	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(repositionSetupWindow) userInfo:nil repeats:YES];
     
 	[self updateSetupControls];
+    
+    [self hideSetupWindow];
 }
 
 #pragma mark -

@@ -30,6 +30,7 @@
 	[[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(handleMultitouchEvent:) andThread:nil];
     
 	[self layoutRecognitionWindow];
+    
 	[self hideRecognitionWindow];
 }
 
@@ -208,7 +209,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 	recognitionWindow.alphaValue = 0.0;
 	[recognitionWindow orderOut:self];
 	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
-	[NSApp hide:YES];
+	[NSApp hide:self];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
