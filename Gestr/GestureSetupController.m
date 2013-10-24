@@ -244,17 +244,19 @@
 	[self positionSetupWindow];
     
 	if ([setupWindow alphaValue] <= 0) {
-		[self launchableTypeChanged:nil];
-        
-		[setupWindow orderFrontRegardless];
-        
-		[NSAnimationContext beginGrouping];
-		[[NSAnimationContext currentContext] setDuration:0.16];
-		[[NSAnimationContext currentContext] setCompletionHandler: ^{
-		    [setupWindow makeKeyWindow];
-		}];
-		[setupWindow.animator setAlphaValue:1.0];
-		[NSAnimationContext endGrouping];
+        if (!appController.gestureRecognitionController.recognitionView.detectingInput) {
+            [self launchableTypeChanged:nil];
+            
+            [setupWindow orderFrontRegardless];
+            
+            [NSAnimationContext beginGrouping];
+            [[NSAnimationContext currentContext] setDuration:0.16];
+            [[NSAnimationContext currentContext] setCompletionHandler: ^{
+                [setupWindow makeKeyWindow];
+            }];
+            [setupWindow.animator setAlphaValue:1.0];
+            [NSAnimationContext endGrouping];
+        }
 	}
 	else {
 		[NSAnimationContext beginGrouping];

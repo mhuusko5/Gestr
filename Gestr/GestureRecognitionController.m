@@ -84,10 +84,6 @@
 
 - (void)shouldStartDetectingGesture {
 	if (recognitionWindow.alphaValue <= 0) {
-		if (self.appController.gestureSetupController.setupWindow.alphaValue > 0) {
-			[self.appController.gestureSetupController toggleSetupWindow:nil];
-		}
-        
 		appDescriptionAlert.stringValue = @"";
 		appIconAlert.image = nil;
         
