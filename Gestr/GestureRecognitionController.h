@@ -22,7 +22,7 @@
 	IBOutlet GestureRecognitionWindow *recognitionWindow;
 	IBOutlet GestureRecognitionView *recognitionView;
     
-	IBOutlet NSImageView *recognitionBackground;
+	IBOutlet RepeatedImageView *recognitionBackground;
     
 	IBOutlet NSImageView *appIconAlert;
 	IBOutlet NSTextField *appDescriptionAlert;

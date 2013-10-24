@@ -329,7 +329,7 @@
 - (void)drawRect:(NSRect)dirtyRect {
 	if (detectingInput || showingStoredGesture) {
 		for (NSBezierPath *path in[touchPaths allValues]) {
-			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
+			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.36] setStroke];
 			path.lineWidth *= 1.5;
 			[path stroke];
             

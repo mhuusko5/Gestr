@@ -110,7 +110,7 @@
 				shouldDetectTimer = [NSTimer scheduledTimerWithTimeInterval:((float)recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				int shouldDrawLimit = recognitionController.appController.gestureSetupController.setupModel.fullscreenOption ? 18 : 8;
+				int shouldDrawLimit = recognitionController.appController.gestureSetupController.setupModel.fullscreenOption ? 16 : 8;
 				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > shouldDrawLimit);
                 
 				for (MultitouchTouch *touch in event.touches) {
@@ -276,7 +276,7 @@
 - (void)drawRect:(NSRect)dirtyRect {
 	if (detectingInput) {
 		for (NSBezierPath *path in[touchPaths allValues]) {
-			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.38] setStroke];
+			[[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.36] setStroke];
 			path.lineWidth *= 1.5;
 			[path stroke];
             
