@@ -227,7 +227,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
     NSRect windowRect = NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height);
     
 	if (appController.gestureSetupController.setupModel.fullscreenOption) {
-		recognitionBackground.alphaValue = 0.92;
+		recognitionBackground.alphaValue = 0.91;
 		recognitionBackground.roundRadius = 0;
 	}
 	else {
@@ -248,33 +248,29 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
     [recognitionView setFrame:recognitionRect];
     [recognitionBackground setFrame:recognitionRect];
     
-    NSSize alertIconSize = NSMakeSize(recognitionRect.size.width / 3,
-                                      recognitionRect.size.width / 3);
-    NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - alertIconSize.width) / 2,
-                                      recognitionRect.size.height / 3.6,
-                                      alertIconSize.width,
-                                      alertIconSize.height);
+    NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - (recognitionRect.size.height / 2)) / 2,
+                                      recognitionRect.size.height / 3.4,
+                                      recognitionRect.size.height / 2,
+                                      recognitionRect.size.height / 2);
     [appIconAlert setFrame:alertIconRect];
     
     NSRect alertDescriptionRect = NSMakeRect(0,
-                                             recognitionRect.size.height / 5.6,
+                                             recognitionRect.size.height / 5.5,
                                              recognitionRect.size.width,
                                              recognitionRect.size.height / 12);
     [appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 26]];
     [appDescriptionAlert setFrame:alertDescriptionRect];
     
-    NSSize partialIconSize = NSMakeSize(recognitionRect.size.width / 6.4,
-                                        recognitionRect.size.width / 6.4);
     NSRect partialIconRect = NSMakeRect(recognitionRect.size.width / 40,
                                         recognitionRect.size.width / 50,
-                                        partialIconSize.width,
-                                        partialIconSize.height);
+                                        recognitionRect.size.width / 6.4,
+                                        recognitionRect.size.width / 6.4);
     [partialIconAlert setFrame:partialIconRect];
     
     NSRect partialDescriptionRect = NSMakeRect(recognitionRect.size.width / 5,
-                                               recognitionRect.size.width / 38,
+                                               recognitionRect.size.width / 40,
                                                recognitionRect.size.width,
-                                               recognitionRect.size.height / 18);
+                                               recognitionRect.size.width / 28);
     [partialDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 40]];
     [partialDescriptionAlert setFrame:partialDescriptionRect];
 }
