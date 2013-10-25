@@ -33,7 +33,7 @@
 		[self toggleSetupWindow:nil];
 	}
     
-	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(repositionSetupWindow) userInfo:nil repeats:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repositionSetupWindow:) name:NSWindowDidMoveNotification object:statusBarView.window];
     
 	[self updateSetupControls];
     
@@ -287,7 +287,7 @@
 	}
 }
 
-- (void)repositionSetupWindow {
+- (void)repositionSetupWindow:(NSNotification *)notification {
 	if (setupWindow.alphaValue > 0) {
 		[self positionSetupWindow];
 	}

@@ -86,7 +86,7 @@
 - (IBAction)toggleSetupWindow:(id)sender;
 - (void)hideSetupWindow;
 - (void)windowDidResignKey:(NSNotification *)notification;
-- (void)repositionSetupWindow;
+- (void)repositionSetupWindow:(NSNotification *)notification;
 #pragma mark -
 
 #pragma mark -
