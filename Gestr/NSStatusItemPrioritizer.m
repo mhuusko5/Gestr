@@ -28,8 +28,6 @@ static const int NSStatusItemPriority = 8001;
 			prioritizedStatusItem = [[NSStatusBar systemStatusBar] _statusItemWithLength:0 withPriority:NSStatusItemPriority];
 		}
 		[prioritizedStatusItem setLength:NSVariableStatusItemLength];
-        
-		[[self class] restartSystemUIServer];
 	}
     
 	if (!prioritizedStatusItem) {
