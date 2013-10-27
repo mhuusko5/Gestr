@@ -43,6 +43,7 @@
 		D071F8BE1810E321002B3DD0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D071F8BB1810E2B2002B3DD0 /* Sparkle.framework */; };
 		D071FF99180888E300CDC8FF /* GestureRecognitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D071FF98180888E300CDC8FF /* GestureRecognitionModel.m */; };
 		D073F55D15C358FF00843B5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D073F55C15C358FF00843B5D /* QuartzCore.framework */; };
+		D09D13AC181CD2B500DE2F02 /* NSStatusItemPrioritizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D09D13AB181CD2B500DE2F02 /* NSStatusItemPrioritizer.m */; };
 		D09EF01316FE4EC2009DEE99 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */; };
 		D09FCFCB1809DA1B00EBCFF7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */; };
 		D09FCFCE1809DA5E00EBCFF7 /* ChromePage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09FCFCD1809DA5E00EBCFF7 /* ChromePage.m */; };
@@ -145,6 +146,8 @@
 		D07340F4152578F400FC7910 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D07340F5152578F400FC7910 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D073F55C15C358FF00843B5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D09D13AA181CD2B500DE2F02 /* NSStatusItemPrioritizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStatusItemPrioritizer.h; sourceTree = "<group>"; };
+		D09D13AB181CD2B500DE2F02 /* NSStatusItemPrioritizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStatusItemPrioritizer.m; sourceTree = "<group>"; };
 		D09EF01216FE4EC2009DEE99 /* trackpadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trackpadBackground.png; sourceTree = "<group>"; };
 		D09FCFC81809D9FD00EBCFF7 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chrome.h; sourceTree = "<group>"; };
 		D09FCFCA1809DA1B00EBCFF7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
@@ -348,6 +351,8 @@
 		D0B37C3A18083986007364E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D09D13AA181CD2B500DE2F02 /* NSStatusItemPrioritizer.h */,
+				D09D13AB181CD2B500DE2F02 /* NSStatusItemPrioritizer.m */,
 				D001B44E16D7441F00F8E413 /* GestureSetupWindow.h */,
 				D001B44F16D7441F00F8E413 /* GestureSetupWindow.m */,
 				D001B44C16D7441F00F8E413 /* GestureSetupView.h */,
@@ -501,6 +506,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D09D13AC181CD2B500DE2F02 /* NSStatusItemPrioritizer.m in Sources */,
 				D001B46216D7441F00F8E413 /* Launchable.m in Sources */,
 				D001B46316D7441F00F8E413 /* AppController.m in Sources */,
 				D0516E2917EFCFDE00C48BD8 /* GestureUtils.m in Sources */,

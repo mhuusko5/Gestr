@@ -16,7 +16,7 @@
         
 		setupModel = [[GestureSetupModel alloc] init];
         
-		statusBarItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		statusBarItem = [NSStatusItemPrioritizer prioritizedStatusItem];
 		statusBarItem.title = @"";
 		statusBarView.alphaValue = 0.0;
 		statusBarItem.view = statusBarView;
@@ -33,11 +33,11 @@
 		[self toggleSetupWindow:nil];
 	}
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repositionSetupWindow:) name:NSWindowDidMoveNotification object:statusBarView.window];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repositionSetupWindow:) name:NSWindowDidMoveNotification object:statusBarView.window];
     
 	[self updateSetupControls];
     
-    [self hideSetupWindow];
+	[self hideSetupWindow];
 }
 
 #pragma mark -
@@ -130,15 +130,15 @@
 		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId] != nil);
         
 		if (gestureExistsForSelectedApp) {
-            [showGestureButton setEnabled:YES];
-            [assignGestureButton setEnabled:YES];
-            [clearGestureButton setEnabled:YES];
-        }
-        else {
-            [showGestureButton setEnabled:NO];
-            [assignGestureButton setEnabled:YES];
-            [clearGestureButton setEnabled:NO];
-        }
+			[showGestureButton setEnabled:YES];
+			[assignGestureButton setEnabled:YES];
+			[clearGestureButton setEnabled:YES];
+		}
+		else {
+			[showGestureButton setEnabled:NO];
+			[assignGestureButton setEnabled:YES];
+			[clearGestureButton setEnabled:NO];
+		}
 	}
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
@@ -186,7 +186,7 @@
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
 	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
     
-    [appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
+	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
     
 	[self updateSetupControls];
 }
@@ -244,19 +244,19 @@
 	[self positionSetupWindow];
     
 	if ([setupWindow alphaValue] <= 0) {
-        if (!appController.gestureRecognitionController.recognitionView.detectingInput) {
-            [self launchableTypeChanged:nil];
+		if (!appController.gestureRecognitionController.recognitionView.detectingInput) {
+			[self launchableTypeChanged:nil];
             
-            [setupWindow orderFrontRegardless];
+			[setupWindow orderFrontRegardless];
             
-            [NSAnimationContext beginGrouping];
-            [[NSAnimationContext currentContext] setDuration:0.16];
-            [[NSAnimationContext currentContext] setCompletionHandler: ^{
-                [setupWindow makeKeyWindow];
-            }];
-            [setupWindow.animator setAlphaValue:1.0];
-            [NSAnimationContext endGrouping];
-        }
+			[NSAnimationContext beginGrouping];
+			[[NSAnimationContext currentContext] setDuration:0.16];
+			[[NSAnimationContext currentContext] setCompletionHandler: ^{
+			    [setupWindow makeKeyWindow];
+			}];
+			[setupWindow.animator setAlphaValue:1.0];
+			[NSAnimationContext endGrouping];
+		}
 	}
 	else {
 		[NSAnimationContext beginGrouping];

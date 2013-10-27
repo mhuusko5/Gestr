@@ -7,6 +7,7 @@
 #import "NSColor+ColorExtensions.h"
 #import "Launchable.h"
 #import "MultitouchManager.h"
+#import "NSStatusItemPrioritizer.h"
 
 @class GestureSetupView, AppController;
 
