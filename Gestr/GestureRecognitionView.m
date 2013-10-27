@@ -176,7 +176,8 @@
         
 		initialMultitouchDeviceId = nil;
         
-		checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.333 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
+		checkPartialGestureTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(checkPartialGesture) userInfo:nil repeats:YES];
+		[[NSRunLoop mainRunLoop] addTimer:checkPartialGestureTimer forMode:NSEventTrackingRunLoopMode];
         
 		noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
         

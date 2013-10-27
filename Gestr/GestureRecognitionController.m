@@ -147,7 +147,7 @@
 	}
     
 	if (type == kCGEventRightMouseDown && recognitionWindow.alphaValue <= 0) {
-		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 380) {
+		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 480) {
 			[self shouldStartDetectingGesture];
             
 			recentRightClickDate = [NSDate date];
@@ -194,7 +194,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 }
 
 - (void)toggleInRecognitionWindow {
-    [self layoutRecognitionWindow];
+	[self layoutRecognitionWindow];
     
 	recognitionWindow.alphaValue = 1.0;
 	[recognitionWindow orderFrontRegardless];
@@ -224,7 +224,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 	}
 	NSRect screenRect = [screen frame];
     
-    NSRect windowRect = NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height);
+	NSRect windowRect = NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height);
     
 	if (appController.gestureSetupController.setupModel.fullscreenOption) {
 		recognitionBackground.alphaValue = 0.91;
@@ -238,41 +238,41 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 		windowRect.size.width -= recognitionOffsetX;
 		windowRect.size.height -= recognitionOffsetY;
         
-        recognitionBackground.alphaValue = 0.93;
-        recognitionBackground.roundRadius = windowRect.size.height / 46;
+		recognitionBackground.alphaValue = 0.93;
+		recognitionBackground.roundRadius = windowRect.size.height / 46;
 	}
     
-    [recognitionWindow setFrame:windowRect display:NO];
+	[recognitionWindow setFrame:windowRect display:NO];
     
-    NSRect recognitionRect = NSMakeRect(0, 0, windowRect.size.width, windowRect.size.height);
-    [recognitionView setFrame:recognitionRect];
-    [recognitionBackground setFrame:recognitionRect];
+	NSRect recognitionRect = NSMakeRect(0, 0, windowRect.size.width, windowRect.size.height);
+	[recognitionView setFrame:recognitionRect];
+	[recognitionBackground setFrame:recognitionRect];
     
-    NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - (recognitionRect.size.height / 2)) / 2,
-                                      recognitionRect.size.height / 3.4,
-                                      recognitionRect.size.height / 2,
-                                      recognitionRect.size.height / 2);
-    [appIconAlert setFrame:alertIconRect];
+	NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - (recognitionRect.size.height / 2)) / 2,
+	                                  recognitionRect.size.height / 3.4,
+	                                  recognitionRect.size.height / 2,
+	                                  recognitionRect.size.height / 2);
+	[appIconAlert setFrame:alertIconRect];
     
-    NSRect alertDescriptionRect = NSMakeRect(0,
-                                             recognitionRect.size.height / 5.5,
-                                             recognitionRect.size.width,
-                                             recognitionRect.size.height / 12);
-    [appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 26]];
-    [appDescriptionAlert setFrame:alertDescriptionRect];
+	NSRect alertDescriptionRect = NSMakeRect(0,
+	                                         recognitionRect.size.height / 5.5,
+	                                         recognitionRect.size.width,
+	                                         recognitionRect.size.height / 12);
+	[appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 26]];
+	[appDescriptionAlert setFrame:alertDescriptionRect];
     
-    NSRect partialIconRect = NSMakeRect(recognitionRect.size.width / 40,
-                                        recognitionRect.size.width / 50,
-                                        recognitionRect.size.width / 6.4,
-                                        recognitionRect.size.width / 6.4);
-    [partialIconAlert setFrame:partialIconRect];
+	NSRect partialIconRect = NSMakeRect(recognitionRect.size.width / 40,
+	                                    recognitionRect.size.width / 50,
+	                                    recognitionRect.size.width / 6.4,
+	                                    recognitionRect.size.width / 6.4);
+	[partialIconAlert setFrame:partialIconRect];
     
-    NSRect partialDescriptionRect = NSMakeRect(recognitionRect.size.width / 5,
-                                               recognitionRect.size.width / 40,
-                                               recognitionRect.size.width,
-                                               recognitionRect.size.width / 28);
-    [partialDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 40]];
-    [partialDescriptionAlert setFrame:partialDescriptionRect];
+	NSRect partialDescriptionRect = NSMakeRect(recognitionRect.size.width / 5,
+	                                           recognitionRect.size.width / 40,
+	                                           recognitionRect.size.width,
+	                                           recognitionRect.size.width / 28);
+	[partialDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 40]];
+	[partialDescriptionAlert setFrame:partialDescriptionRect];
 }
 
 #pragma mark -
