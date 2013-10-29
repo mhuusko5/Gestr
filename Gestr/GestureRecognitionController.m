@@ -145,9 +145,8 @@
 			}
 		}
 	}
-    
-	if (type == kCGEventRightMouseDown && recognitionWindow.alphaValue <= 0) {
-		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 480) {
+	else if (type == kCGEventRightMouseDown && recognitionWindow.alphaValue <= 0) {
+		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 420) {
 			[self shouldStartDetectingGesture];
             
 			recentRightClickDate = [NSDate date];

@@ -18,4 +18,10 @@
 	NSRectFill(dirtyRect);
 }
 
+- (void)mouseDown:(NSEvent *)theEvent {
+	if ([self.window isKindOfClass:[GestureSetupWindow class]]) {
+		[((AppController *)[NSApp delegate]).gestureSetupController updateSetupControls];
+	}
+}
+
 @end

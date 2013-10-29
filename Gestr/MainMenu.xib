@@ -87,7 +87,7 @@
                     <imageView id="4097" customClass="RepeatedImageView">
                         <rect key="frame" x="0.0" y="0.0" width="365" height="557"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" controlSize="mini" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="background2" id="4098"/>
+                        <imageCell key="cell" controlSize="mini" alignment="left" imageScaling="axesIndependently" image="background2" id="4098"/>
                     </imageView>
                     <segmentedControl verticalHuggingPriority="750" id="4109">
                         <rect key="frame" x="54" y="272" width="257" height="24"/>
@@ -203,7 +203,7 @@
                             <action selector="showSelectedGesture:" target="3781" id="4075"/>
                         </connections>
                     </button>
-                    <textField toolTip="Activate Gestr with a four-finger tap, touch trackpad/magic-mouse to draw (instead of click-'n-drag)..." verticalHuggingPriority="750" id="4130">
+                    <textField toolTip="Activate with a four-finger tap, then swipe away, instead of double-right-click, then click 'n drag..." verticalHuggingPriority="750" id="4130">
                         <rect key="frame" x="20" y="45" width="133" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multitouch trackpad?" id="4131" customClass="ShadowTextFieldCell">

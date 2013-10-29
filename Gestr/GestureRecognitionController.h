@@ -10,7 +10,7 @@
 #import "MultitouchManager.h"
 #import "RepeatedImageView.h"
 
-@class GestureRecognitionView, GestureRecognizer, AppController;
+@class GestureRecognitionView, GestureRecognizer, AppController, RepeatedImageView;
 
 @interface GestureRecognitionController : NSObject {
 	BOOL awakedFromNib;
