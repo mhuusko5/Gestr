@@ -17,5 +17,6 @@
 - (void)awakeFromNib;
 - (IBAction)closeAndQuit:(id)sender;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
 
 @end

@@ -26,4 +26,9 @@
 	[gestureSetupController applicationDidFinishLaunching];
 }
 
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+    [gestureSetupController toggleSetupWindow:nil];
+    return NO;
+}
+
 @end
