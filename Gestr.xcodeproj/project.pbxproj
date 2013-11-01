@@ -51,7 +51,6 @@
 		D0B502ED16FBC9850018781C /* RepeatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502EC16FBC9850018781C /* RepeatedImageView.m */; };
 		D0B502F516FBCDD10018781C /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502F116FBCDD00018781C /* AppButtonCell.m */; };
 		D0B502F616FBCDD10018781C /* NSColor+ColorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B502F316FBCDD00018781C /* NSColor+ColorExtensions.m */; };
-		D0B5030116FBE4640018781C /* menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B5030016FBE4640018781C /* menuIcon.png */; };
 		D0B5030316FBECB70018781C /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0B5030216FBECB70018781C /* Icon.icns */; };
 		D0CB917416DD419100BE0E9A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB917316DD419100BE0E9A /* Carbon.framework */; };
 		D0CFB9A417089746005EDAB3 /* ShadowTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CFB9A317089746005EDAB3 /* ShadowTextFieldCell.m */; };
@@ -160,7 +159,6 @@
 		D0B502F116FBCDD00018781C /* AppButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppButtonCell.m; sourceTree = "<group>"; };
 		D0B502F216FBCDD00018781C /* NSColor+ColorExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+ColorExtensions.h"; sourceTree = "<group>"; };
 		D0B502F316FBCDD00018781C /* NSColor+ColorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+ColorExtensions.m"; sourceTree = "<group>"; };
-		D0B5030016FBE4640018781C /* menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIcon.png; sourceTree = "<group>"; };
 		D0B5030216FBECB70018781C /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		D0CB917316DD419100BE0E9A /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		D0CFB9A217089746005EDAB3 /* ShadowTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowTextFieldCell.h; sourceTree = "<group>"; };
@@ -267,7 +265,6 @@
 			children = (
 				D001B43A16D7441F00F8E413 /* background.png */,
 				D0B502E916FBC87C0018781C /* background2.png */,
-				D0B5030016FBE4640018781C /* menuIcon.png */,
 				D0F13B9816FFEE1A00EA2B87 /* niceLine.png */,
 				D0F13B9A16FFEF3500EA2B87 /* niceLineFlipped.png */,
 				D001B45B16D7441F00F8E413 /* tableCellBack.png */,
@@ -491,7 +488,6 @@
 				D001B47616D7441F00F8E413 /* MainMenu.xib in Resources */,
 				D001B47B16D7441F00F8E413 /* tableCellBack.png in Resources */,
 				D0B502EA16FBC87C0018781C /* background2.png in Resources */,
-				D0B5030116FBE4640018781C /* menuIcon.png in Resources */,
 				D0B5030316FBECB70018781C /* Icon.icns in Resources */,
 				D09EF01316FE4EC2009DEE99 /* trackpadBackground.png in Resources */,
 				D0F13B9916FFEE1A00EA2B87 /* niceLine.png in Resources */,

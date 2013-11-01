@@ -458,7 +458,7 @@
                 <button id="3860">
                     <rect key="frame" x="5" y="1" width="18" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" image="menuIcon" imagePosition="overlaps" alignment="center" state="on" imageScaling="axesIndependently" inset="2" id="3861">
+                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" image="Icon" imagePosition="overlaps" alignment="center" state="on" imageScaling="axesIndependently" inset="2" id="3861">
                         <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -470,9 +470,9 @@
         </customView>
     </objects>
     <resources>
+        <image name="Icon" width="512" height="512"/>
         <image name="background" width="256" height="256"/>
         <image name="background2" width="50" height="50"/>
-        <image name="menuIcon" width="40" height="40"/>
         <image name="niceLine" width="365" height="4"/>
         <image name="niceLineFlipped" width="365" height="4"/>
         <image name="tableCellBack" width="365" height="37"/>
