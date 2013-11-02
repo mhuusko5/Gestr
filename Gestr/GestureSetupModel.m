@@ -180,7 +180,7 @@
 				NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                 
-				if (![displayName isEqualToString:@"Gestr"]) {
+				if (bundleId && ![displayName isEqualToString:@"Gestr"]) {
 					[arr addObject:[[Application alloc] initWithDisplayName:displayName icon:icon bundleId:bundleId]];
 				}
 			}
