@@ -1,6 +1,3 @@
-#import <ApplicationServices/ApplicationServices.h>
-#import <Foundation/Foundation.h>
-#import <Carbon/Carbon.h>
 #import "GestureRecognitionModel.h"
 #import "AppController.h"
 #import "GestureRecognitionWindow.h"

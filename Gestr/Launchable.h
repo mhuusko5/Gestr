@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 @interface Launchable : NSObject {
 	NSString *displayName;
 	NSString *launchId;

@@ -1,4 +1,3 @@
-#import <Cocoa/Cocoa.h>
 #import "AppButtonCell.h"
 
 @interface AppTextFieldCell : NSTextFieldCell {

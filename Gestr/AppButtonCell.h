@@ -1,4 +1,3 @@
-#import <AppKit/AppKit.h>
 #import "NSColor+ColorExtensions.h"
 
 #define AppButtonBlackGradientBottomColor         [NSColor colorWithDeviceWhite:0.150 alpha:1.000]

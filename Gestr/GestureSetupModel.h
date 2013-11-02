@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "MultitouchManager.h"
 #import "Application.h"
 #import "ChromePage.h"

@@ -1,10 +1,7 @@
-#import <Foundation/Foundation.h>
-#import <Carbon/Carbon.h>
 #import "GestureSetupModel.h"
 #import "AppController.h"
 #import "GestureSetupWindow.h"
 #import "GestureSetupView.h"
-#import "NSColor+ColorExtensions.h"
 #import "Launchable.h"
 #import "MultitouchManager.h"
 #import "NSStatusItemPrioritizer.h"

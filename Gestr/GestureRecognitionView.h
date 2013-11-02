@@ -1,4 +1,3 @@
-#import <Cocoa/Cocoa.h>
 #import "GestureRecognitionController.h"
 #import "MultitouchEvent.h"
 

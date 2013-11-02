@@ -1,4 +1,3 @@
-#import <Cocoa/Cocoa.h>
 #import "GestureSetupController.h"
 
 @interface AppTableView : NSTableView {

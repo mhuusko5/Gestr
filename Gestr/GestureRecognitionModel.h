@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "GestureRecognizer.h"
 
 @interface GestureRecognitionModel : NSObject {

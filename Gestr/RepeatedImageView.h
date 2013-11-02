@@ -1,4 +1,3 @@
-#import <Cocoa/Cocoa.h>
 #import "AppController.h"
 #import "GestureSetupWindow.h"
 
