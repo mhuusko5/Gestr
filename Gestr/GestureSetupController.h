@@ -21,7 +21,6 @@
 	NSStatusItem *statusBarItem;
 	IBOutlet NSView *statusBarView;
     
-	BOOL checkedForUpdate;
 	NSThread *showGestureThread;
     
 	IBOutlet GestureSetupWindow *setupWindow;
