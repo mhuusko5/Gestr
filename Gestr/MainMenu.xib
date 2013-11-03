@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4511" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4511"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
@@ -78,19 +78,19 @@
         </customObject>
         <arrayController objectClassName="" editable="NO" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="3942" userLabel="Launchable Array Controller"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="2804" customClass="GestureSetupWindow">
-            <rect key="contentRect" x="674" y="464" width="365" height="557"/>
+            <rect key="contentRect" x="674" y="464" width="365" height="561"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="2805">
-                <rect key="frame" x="0.0" y="0.0" width="365" height="557"/>
+                <rect key="frame" x="0.0" y="0.0" width="365" height="561"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView id="4097" customClass="RepeatedImageView">
-                        <rect key="frame" x="0.0" y="0.0" width="365" height="557"/>
+                        <rect key="frame" x="0.0" y="0.0" width="365" height="561"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" controlSize="mini" alignment="left" imageScaling="axesIndependently" image="background2" id="4098"/>
                     </imageView>
                     <segmentedControl verticalHuggingPriority="750" id="4109">
-                        <rect key="frame" x="54" y="272" width="257" height="24"/>
+                        <rect key="frame" x="54" y="276" width="257" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="4110" customClass="AppSegmentedCell">
                             <font key="font" metaFont="system"/>
@@ -106,12 +106,12 @@
                         </connections>
                     </segmentedControl>
                     <imageView id="3729">
-                        <rect key="frame" x="8" y="339" width="348" height="211"/>
+                        <rect key="frame" x="8" y="343" width="348" height="211"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" controlSize="mini" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="trackpadBackground" id="3730"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" id="4053">
-                        <rect key="frame" x="38" y="78" width="197" height="18"/>
+                        <rect key="frame" x="38" y="80" width="197" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Only recognize gesture if at least" id="4054" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -120,7 +120,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="4057">
-                        <rect key="frame" x="277" y="78" width="52" height="18"/>
+                        <rect key="frame" x="277" y="80" width="52" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="% match" id="4058" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -129,7 +129,7 @@
                         </textFieldCell>
                     </textField>
                     <textField toolTip="Must be greater than 70, and less than 100" focusRingType="none" verticalHuggingPriority="750" id="4055">
-                        <rect key="frame" x="237" y="75" width="34" height="22"/>
+                        <rect key="frame" x="237" y="78" width="34" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" alignment="center" drawsBackground="YES" id="4056" customClass="AppTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -141,7 +141,7 @@
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" id="4084">
-                        <rect key="frame" x="41" y="111" width="81" height="18"/>
+                        <rect key="frame" x="41" y="113" width="81" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Read gesture" id="4089" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -150,7 +150,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="4085">
-                        <rect key="frame" x="170" y="111" width="159" height="18"/>
+                        <rect key="frame" x="170" y="113" width="159" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ms after finished drawing" id="4088" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -159,7 +159,7 @@
                         </textFieldCell>
                     </textField>
                     <textField toolTip="Must be greater than 1, and less than 1000" focusRingType="none" verticalHuggingPriority="750" id="4086">
-                        <rect key="frame" x="124" y="109" width="40" height="22"/>
+                        <rect key="frame" x="124" y="111" width="40" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" alignment="center" drawsBackground="YES" id="4087" customClass="AppTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -171,7 +171,7 @@
                         </connections>
                     </textField>
                     <button id="4073">
-                        <rect key="frame" x="245" y="307" width="72" height="22"/>
+                        <rect key="frame" x="245" y="311" width="72" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" title="Clear" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4074" customClass="AppButtonCell">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -182,7 +182,7 @@
                         </connections>
                     </button>
                     <button id="4071">
-                        <rect key="frame" x="47" y="307" width="72" height="22"/>
+                        <rect key="frame" x="47" y="311" width="72" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" title="Assign" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4072" customClass="AppButtonCell">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -193,7 +193,7 @@
                         </connections>
                     </button>
                     <button id="4069">
-                        <rect key="frame" x="146" y="307" width="72" height="22"/>
+                        <rect key="frame" x="146" y="311" width="72" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" title="Show" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4070" customClass="AppButtonCell">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -204,7 +204,7 @@
                         </connections>
                     </button>
                     <textField toolTip="Activate with a four-finger tap, then swipe away, instead of double-right-click, then click 'n drag..." verticalHuggingPriority="750" id="4130">
-                        <rect key="frame" x="20" y="45" width="133" height="18"/>
+                        <rect key="frame" x="20" y="47" width="133" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multitouch trackpad?" id="4131" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -213,7 +213,7 @@
                         </textFieldCell>
                     </textField>
                     <textField toolTip="Draw your gestures fullscreen instead of in a window..." verticalHuggingPriority="750" id="4142">
-                        <rect key="frame" x="186" y="45" width="145" height="18"/>
+                        <rect key="frame" x="186" y="47" width="145" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Fullscreen recognition?" id="4143" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -222,7 +222,7 @@
                         </textFieldCell>
                     </textField>
                     <button id="4132">
-                        <rect key="frame" x="150" y="42" width="22" height="22"/>
+                        <rect key="frame" x="150" y="44" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4133" customClass="AppButtonCell">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -233,7 +233,7 @@
                         </connections>
                     </button>
                     <textField toolTip="Launch Gestr on login..." verticalHuggingPriority="750" id="4159">
-                        <rect key="frame" x="172" y="12" width="90" height="18"/>
+                        <rect key="frame" x="172" y="14" width="90" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Start at login?" id="4162" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
@@ -242,7 +242,7 @@
                         </textFieldCell>
                     </textField>
                     <button id="4160">
-                        <rect key="frame" x="260" y="9" width="22" height="22"/>
+                        <rect key="frame" x="260" y="11" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4161" customClass="AppButtonCell">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -253,7 +253,7 @@
                         </connections>
                     </button>
                     <button id="4144">
-                        <rect key="frame" x="328" y="42" width="22" height="22"/>
+                        <rect key="frame" x="328" y="44" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4145" customClass="AppButtonCell">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -264,7 +264,7 @@
                         </connections>
                     </button>
                     <customView id="4216">
-                        <rect key="frame" x="0.0" y="141" width="365" height="136"/>
+                        <rect key="frame" x="0.0" y="145" width="365" height="136"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="3522">
@@ -335,11 +335,11 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.03535218825" green="0.03575853524" blue="0.03575853524" alpha="0.89000000000000001" colorSpace="calibratedRGB"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="3524">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="3524">
                                     <rect key="frame" x="-100" y="-100" width="223" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="3526">
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3526">
                                     <rect key="frame" x="-100" y="-100" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -357,7 +357,7 @@
                         </subviews>
                     </customView>
                     <button id="4222">
-                        <rect key="frame" x="14" y="10" width="143" height="22"/>
+                        <rect key="frame" x="14" y="12" width="143" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" title="Check for Updates" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4223" customClass="AppButtonCell">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -370,7 +370,7 @@
                         </connections>
                     </button>
                     <button id="2Yi-ey-q9B">
-                        <rect key="frame" x="291" y="10" width="60" height="22"/>
+                        <rect key="frame" x="291" y="12" width="60" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" title="Quit" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cnb-ro-RiB" customClass="AppButtonCell">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -381,7 +381,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" alphaValue="0.0" id="4081">
-                        <rect key="frame" x="127" y="432" width="110" height="24"/>
+                        <rect key="frame" x="127" y="436" width="110" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="4082">
                             <font key="font" metaFont="system" size="20"/>
@@ -390,7 +390,7 @@
                         </textFieldCell>
                     </textField>
                     <customView id="3747" customClass="GestureSetupView">
-                        <rect key="frame" x="16" y="347" width="332" height="195"/>
+                        <rect key="frame" x="16" y="351" width="332" height="195"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>

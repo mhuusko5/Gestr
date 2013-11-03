@@ -123,27 +123,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Gestr/GestureRecognitionView.m"
-            timestampString = "405149093.827049"
+            timestampString = "405186204.580082"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "-startDetectingGesture"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Gestr/GestureRecognitionView.m"
-            timestampString = "405148588.326794"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "-dealWithMultitouchEvent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -155,13 +139,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Gestr/GestureRecognitionView.m"
-            timestampString = "405148626.164072"
+            timestampString = "405186204.580082"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "@implementation GestureRecognitionView"
-            landmarkType = "3">
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "-dealWithMultitouchEvent:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

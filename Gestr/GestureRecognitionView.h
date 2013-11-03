@@ -8,9 +8,10 @@
 	NSMutableDictionary *gestureStrokes;
 	NSMutableArray *orderedStrokeIds;
     
-	NSTimer *shouldDetectTimer;
+    NSTimer *startInputTimer;
+    NSTimer *noInputTimer;
+	NSTimer *detectInputTimer;
 	NSTimer *checkPartialGestureTimer;
-	NSTimer *noInputTimer;
     
 	GestureRecognitionController *recognitionController;
     
@@ -25,15 +26,21 @@
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;
+
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
-- (void)startDealingWithMultitouchEvents;
+
+- (void)startMultitouchInput;
 - (void)startDetectingGesture;
-- (void)checkNoInput;
-- (void)checkPartialGestureOnNewThread;
-- (void)checkPartialGesture;
+
 - (void)finishDetectingGesture;
+- (void)finishDetectingGestureIgnore;
 - (void)finishDetectingGesture:(BOOL)ignore;
+
+- (void)checkPartialGesture;
+- (void)checkPartialGestureOnNewThread;
+
+- (void)resetInputTimers;
 - (void)resetAll;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;

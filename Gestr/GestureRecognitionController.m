@@ -175,7 +175,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 #pragma mark Window Methods
 - (void)fadeOutRecognitionWindow {
 	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:0.18];
+	[[NSAnimationContext currentContext] setDuration:0.16];
 	[[NSAnimationContext currentContext] setCompletionHandler: ^{
 	    [self toggleOutRecognitionWindow:NO];
 	}];
@@ -185,7 +185,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 
 - (void)toggleOutRecognitionWindow:(BOOL)fadeOut {
 	if (fadeOut) {
-		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.4];
+		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.38];
 	}
 	else {
 		[self hideRecognitionWindow];

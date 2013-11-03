@@ -10,8 +10,9 @@
 	NSMutableDictionary *gestureStrokes;
 	NSMutableArray *orderedStrokeIds;
     
-	NSTimer *shouldDetectTimer;
-	NSTimer *noInputTimer;
+    NSTimer *startInputTimer;
+    NSTimer *noInputTimer;
+	NSTimer *detectInputTimer;
     
 	GestureSetupController *setupController;
     
@@ -28,15 +29,22 @@
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;
+
 - (void)dealWithMouseEvent:(NSEvent *)event ofType:(NSString *)mouseType;
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
-- (void)startDealingWithMultitouchEvents;
-- (void)showGesture:(Gesture *)gesture;
+
+- (void)startMultitouchInput;
 - (void)startDetectingGesture;
-- (void)checkNoInput;
+
 - (void)finishDetectingGesture;
+- (void)finishDetectingGestureIgnore;
 - (void)finishDetectingGesture:(BOOL)ignore;
+
+- (void)showGesture:(Gesture *)gesture;
+
 - (BOOL)resignFirstResponder;
+
+- (void)resetInputTimers;
 - (void)resetAll;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;
