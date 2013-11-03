@@ -230,15 +230,13 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 		recognitionBackground.roundRadius = 0;
 	}
 	else {
-		float recognitionOffsetX = windowRect.size.width / 1.8;
-		float recognitionOffsetY = windowRect.size.height / 1.8;
-		windowRect.origin.x += recognitionOffsetX / 2;
-		windowRect.origin.y += recognitionOffsetY / 2;
-		windowRect.size.width -= recognitionOffsetX;
-		windowRect.size.height -= recognitionOffsetY;
+        windowRect.size.height /= 2.3;
+        windowRect.size.width = windowRect.size.height * 3 / 2;
+        windowRect.origin.x += (screenRect.size.width - windowRect.size.width) / 2;
+        windowRect.origin.y += (screenRect.size.height - windowRect.size.height) / 2;
         
-		recognitionBackground.alphaValue = 0.93;
-		recognitionBackground.roundRadius = windowRect.size.height / 46;
+		recognitionBackground.alphaValue = 0.94;
+		recognitionBackground.roundRadius = windowRect.size.height / 48;
 	}
     
 	[recognitionWindow setFrame:windowRect display:NO];
