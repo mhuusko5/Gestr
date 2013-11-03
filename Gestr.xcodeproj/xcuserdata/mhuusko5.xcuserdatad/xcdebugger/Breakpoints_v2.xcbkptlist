@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "14"
             endingLineNumber = "14"
-            landmarkName = "-initWithName:andStrokes:"
+            landmarkName = "-initWithIdentity:andStrokes:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

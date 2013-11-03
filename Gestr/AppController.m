@@ -8,6 +8,15 @@
 	if (!awakedFromNib) {
 		awakedFromNib = YES;
         
+        int instancesOfCurrentApplication = 0;
+        for (NSRunningApplication *application in [[NSWorkspace sharedWorkspace] runningApplications]) {
+            if ([application.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
+                if (++instancesOfCurrentApplication > 1) {
+                    [NSApp terminate:self];
+                }
+            }
+        }
+        
 		gestureSetupController.appController = self;
 		gestureRecognitionController.appController = self;
         
