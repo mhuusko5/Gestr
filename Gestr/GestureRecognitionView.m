@@ -182,6 +182,7 @@
 		noInputTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(checkNoInput) userInfo:nil repeats:NO];
         
 		if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
+            [[MultitouchManager sharedMultitouchManager] removeMultitouchListenersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
 			[self performSelector:@selector(startDealingWithMultitouchEvents) withObject:nil afterDelay:0.2];
 			[NSApp activateIgnoringOtherApps:YES];
 			CGAssociateMouseAndMouseCursorPosition(NO);
@@ -224,7 +225,7 @@
 - (void)finishDetectingGesture:(BOOL)ignore {
 	if (detectingInput) {
 		if (recognitionController.appController.gestureSetupController.setupModel.multitouchOption) {
-			[[MultitouchManager sharedMultitouchManager] removeMultitouchListersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
+			[[MultitouchManager sharedMultitouchManager] removeMultitouchListenersWithTarget:self andCallback:@selector(dealWithMultitouchEvent:)];
 			CGAssociateMouseAndMouseCursorPosition(YES);
 		}
         

@@ -243,7 +243,7 @@
 - (IBAction)toggleSetupWindow:(id)sender {
 	[self positionSetupWindow];
     
-	if ([setupWindow alphaValue] <= 0) {
+	if (setupWindow.alphaValue <= 0) {
 		if (!appController.gestureRecognitionController.recognitionView.detectingInput) {
 			[self launchableTypeChanged:nil];
             
