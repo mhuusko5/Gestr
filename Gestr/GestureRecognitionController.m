@@ -185,7 +185,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 
 - (void)toggleOutRecognitionWindow:(BOOL)fadeOut {
 	if (fadeOut) {
-		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.38];
+        [self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.38];
 	}
 	else {
 		[self hideRecognitionWindow];

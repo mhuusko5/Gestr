@@ -50,16 +50,16 @@
 		}
 		else {
 			gestures = [NSMutableDictionary dictionary];
+            [self saveGestureDictionary];
 		}
 	}
 	@catch (NSException *exception)
 	{
 		gestures = [NSMutableDictionary dictionary];
+        [self saveGestureDictionary];
 	}
     
 	gestureDictionary = gestures;
-    
-	[self saveGestureDictionary];
 }
 
 - (void)saveGestureDictionary {
