@@ -98,7 +98,7 @@
 				detectInputTimer = [NSTimer scheduledTimerWithTimeInterval:((float)setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
 			}
 			else {
-				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 8);
+				BOOL shouldDraw = ([lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > 16);
                 
 				for (MultitouchTouch *touch in event.touches) {
 					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
@@ -121,24 +121,22 @@
                         
 						[[gestureStrokes objectForKey:identity] addPoint:detectorPoint];
                         
-						if (shouldDraw) {
-							drawPoint.x *= self.frame.size.width;
-							drawPoint.y *= self.frame.size.height;
+						drawPoint.x *= self.frame.size.width;
+                        drawPoint.y *= self.frame.size.height;
+                        
+                        NSBezierPath *tempPath;
+                        if ((tempPath = [touchPaths objectForKey:identity])) {
+                            [tempPath lineToPoint:drawPoint];
+                        }
+                        else {
+                            tempPath = [NSBezierPath bezierPath];
+                            [tempPath setLineWidth:6.0];
+                            [tempPath setLineCapStyle:NSRoundLineCapStyle];
+                            [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
+                            [tempPath moveToPoint:drawPoint];
                             
-							NSBezierPath *tempPath;
-							if ((tempPath = [touchPaths objectForKey:identity])) {
-								[tempPath lineToPoint:drawPoint];
-							}
-							else {
-								tempPath = [NSBezierPath bezierPath];
-								[tempPath setLineWidth:6.0];
-								[tempPath setLineCapStyle:NSRoundLineCapStyle];
-								[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
-								[tempPath moveToPoint:drawPoint];
-                                
-								[touchPaths setObject:tempPath forKey:identity];
-							}
-						}
+                            [touchPaths setObject:tempPath forKey:identity];
+                        }
 					}
 				}
                 

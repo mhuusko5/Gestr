@@ -139,11 +139,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Gestr/GestureRecognitionView.m"
-            timestampString = "405186204.580082"
+            timestampString = "406493679.286367"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "-dealWithMultitouchEvent:"
             landmarkType = "5">
          </BreakpointContent>
