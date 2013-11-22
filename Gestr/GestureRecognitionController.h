@@ -28,6 +28,7 @@
 	IBOutlet NSTextField *partialDescriptionAlert;
     
 	NSDate *recentRightClickDate;
+    NSArray *beforeFourFingerTouches;
 	NSMutableArray *recentFourFingerTouches;
 }
 @property (retain) GestureRecognitionModel *recognitionModel;

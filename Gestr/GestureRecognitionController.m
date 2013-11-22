@@ -17,6 +17,7 @@
 		recognitionModel = [[GestureRecognitionModel alloc] init];
         
 		recentRightClickDate = [NSDate date];
+        beforeFourFingerTouches = [NSArray arrayWithObjects:@0, @0, @0, nil];
 		recentFourFingerTouches = [NSMutableArray array];
 	}
 }
@@ -102,24 +103,36 @@
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (recognitionWindow.alphaValue <= 0) {
-		if (event && event.touches.count == 4 && ((MultitouchTouch *)[event.touches objectAtIndex:0]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:1]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:2]).state == MultitouchTouchStateActive && ((MultitouchTouch *)[event.touches objectAtIndex:3]).state == MultitouchTouchStateActive) {
+		int activeTouches = 0;
+        for (MultitouchTouch *touch in event.touches) {
+            if (touch.state == MultitouchTouchStateActive) {
+                activeTouches++;
+            }
+        }
+        
+        if (activeTouches == 4) {
 			[recentFourFingerTouches addObject:event];
 		}
-		else if (recentFourFingerTouches.count > 0) {
-			int totalCount = 0;
-			float totalVelocity = 0.0f;
-			for (MultitouchEvent *fourFingerEvent in recentFourFingerTouches) {
-				for (MultitouchTouch *touch in fourFingerEvent.touches) {
-					totalCount++;
-					totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
-				}
-			}
+		else {
+            if (recentFourFingerTouches.count >= 4 && recentFourFingerTouches.count <= 30) {
+                int totalCount = 0;
+                float totalVelocity = 0.0f;
+                for (MultitouchEvent *fourFingerEvent in recentFourFingerTouches) {
+                    for (MultitouchTouch *touch in fourFingerEvent.touches) {
+                        totalCount++;
+                        totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+                    }
+                }
+                
+                NSCountedSet *countedBeforeFourFingerTouches = [[NSCountedSet alloc] initWithArray:beforeFourFingerTouches];
+                if ((totalVelocity / totalCount) <= 0.46 && [countedBeforeFourFingerTouches countForObject:@3] < 3 && [countedBeforeFourFingerTouches countForObject:@5] < 3) {
+                    [self shouldStartDetectingGesture];
+                }
+            }
             
-			[recentFourFingerTouches removeAllObjects];
+            beforeFourFingerTouches = [NSArray arrayWithObjects:[beforeFourFingerTouches objectAtIndex:1], [beforeFourFingerTouches objectAtIndex:2], [NSNumber numberWithInt:activeTouches], nil];
             
-			if (totalCount / 4 <= 30 && (totalVelocity / totalCount) <= 0.5) {
-				[self shouldStartDetectingGesture];
-			}
+            [recentFourFingerTouches removeAllObjects];
 		}
 	}
 }

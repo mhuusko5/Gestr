@@ -25,7 +25,8 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="4211"/>
-                            <menuItem title="Quit Gestr" keyEquivalent="q" id="1379">
+                            <menuItem title="Quit Gestr" id="1379">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="closeAndQuit:" target="844" id="1505"/>
                                 </connections>
