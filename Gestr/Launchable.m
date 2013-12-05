@@ -2,14 +2,12 @@
 
 @implementation Launchable
 
-@synthesize displayName, launchId, icon;
-
-- (id)initWithDisplayName:(NSString *)_displayName launchId:(NSString *)_launchId icon:(NSImage *)_icon {
+- (id)initWithDisplayName:(NSString *)displayName launchId:(NSString *)launchId icon:(NSImage *)icon {
 	self = [super init];
     
-	displayName = _displayName;
-	launchId = _launchId;
-	icon = _icon;
+	_displayName = displayName;
+	_launchId = launchId;
+	_icon = icon;
     
 	return self;
 }

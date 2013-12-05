@@ -1,12 +1,16 @@
 #import "RepeatedImageView.h"
 
+@interface RepeatedImageView ()
+
+@property NSColor *backgroundColor;
+
+@end
+
 @implementation RepeatedImageView
 
-@synthesize roundRadius;
-
 - (void)drawRect:(NSRect)dirtyRect {
-	if (!backgroundColor) {
-		backgroundColor = [NSColor colorWithPatternImage:self.image];
+	if (!self.backgroundColor) {
+		self.backgroundColor = [NSColor colorWithPatternImage:self.image];
 	}
     
 	if (self.roundRadius > 0) {
@@ -14,7 +18,7 @@
 		[path addClip];
 	}
     
-	[backgroundColor set];
+	[self.backgroundColor set];
 	NSRectFill(dirtyRect);
 }
 

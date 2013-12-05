@@ -1,13 +1,11 @@
 #import "Launchable.h"
 
-@interface WebPage : Launchable {
-	NSString *url;
-	NSString *targetBrowserId;
-}
+@interface WebPage : Launchable
+
 @property NSString *url;
 @property NSString *targetBrowserId;
 
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url targetBrowserId:(NSString *)_targetBrowserId;
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon url:(NSString *)url targetBrowserId:(NSString *)targetBrowserId;
 + (NSString *)stripUrl:(NSString *)url;
 
 @end

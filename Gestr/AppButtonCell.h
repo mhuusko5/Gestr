@@ -32,9 +32,6 @@
 #define AppButtonCheckboxCheckmarkShadowColor     [NSColor colorWithDeviceWhite:0.000 alpha:0.750]
 #define AppButtonCheckboxCheckmarkLineWidth       2.f
 
-@interface AppButtonCell : NSButtonCell {
-	NSBezierPath *__bezelPath;
-	NSButtonType __buttonType;
-}
+@interface AppButtonCell : NSButtonCell
 
 @end

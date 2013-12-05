@@ -1,54 +1,61 @@
 #import "GestureSetupModel.h"
 
-@implementation GestureSetupModel
+@interface GestureSetupModel ()
 
-@synthesize webPageArray;
-@synthesize normalAppArray, utilitiesAppArray, systemAppArray;
-@synthesize readingDelayTime, minimumRecognitionScore;
-@synthesize multitouchOption, fullscreenOption, loginStartOption;
+@property NSUserDefaults *storage;
+
+@end
+
+@implementation GestureSetupModel
 
 - (id)init {
 	self = [super init];
     
-	userDefaults = [NSUserDefaults standardUserDefaults];
-    
-	[self fetchWebPageArray];
-    
-	[self fetchNormalAppArray];
-	[self fetchUtilitiesAppArray];
-	[self fetchSystemAppArray];
-    
-	[self fetchMinimumRecognitionScore];
-	[self fetchReadingDelayTime];
-	[self fetchMultitouchOption];
-	[self fetchFullscreenOption];
-	[self saveLoginStartOption:[self fetchLoginStartOption]];
+	_storage = [NSUserDefaults standardUserDefaults];
     
 	return self;
 }
 
 #pragma mark -
+#pragma mark Setup
+- (void)setup {
+    [self fetchWebPageArray];
+
+	[self fetchNormalAppArray];
+	[self fetchUtilitiesAppArray];
+	[self fetchSystemAppArray];
+
+	[self fetchMinimumRecognitionScore];
+	[self fetchReadingDelayTime];
+	[self fetchMultitouchOption];
+	[self fetchFullscreenOption];
+	[self saveLoginStartOption:[self fetchLoginStartOption]];
+}
+
+#pragma mark -
+
+#pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
-	for (ChromePage *page in webPageArray) {
+	for (ChromePage *page in self.webPageArray) {
 		if ([page.launchId isEqualTo:identity]) {
 			return page;
 		}
 	}
     
-	for (Application *app in normalAppArray) {
+	for (Application *app in self.normalAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
 	}
     
-	for (Application *app in utilitiesAppArray) {
+	for (Application *app in self.utilitiesAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
 	}
     
-	for (Application *app in systemAppArray) {
+	for (Application *app in self.systemAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
@@ -62,16 +69,16 @@
 #pragma mark -
 #pragma mark Web Page Management
 - (NSMutableArray *)fetchWebPageArray {
-	webPageArray = [NSMutableArray array];
+	self.webPageArray = [NSMutableArray array];
     
-	[webPageArray addObjectsFromArray:[self fetchChromePages]];
-	[webPageArray addObjectsFromArray:[self fetchSafariPages]];
+	[self.webPageArray addObjectsFromArray:[self fetchChromePages]];
+	[self.webPageArray addObjectsFromArray:[self fetchSafariPages]];
     
-	webPageArray = [NSMutableArray arrayWithArray:[webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
+	self.webPageArray = [NSMutableArray arrayWithArray:[self.webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
 	    return [a.displayName compare:b.displayName];
 	}]];
     
-	return webPageArray;
+	return self.webPageArray;
 }
 
 - (NSMutableArray *)fetchChromePages {
@@ -143,23 +150,23 @@
 #pragma mark -
 #pragma mark Applications Management
 - (NSMutableArray *)fetchNormalAppArray {
-	return (normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
+	return (self.normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchUtilitiesAppArray {
-	return (utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
+	return (self.utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchSystemAppArray {
-	systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
-	for (Application *maybeFinder in systemAppArray) {
+	self.systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
+	for (Application *maybeFinder in self.systemAppArray) {
 		if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
-			[systemAppArray removeObject:maybeFinder];
-			[systemAppArray insertObject:maybeFinder atIndex:0];
+			[self.systemAppArray removeObject:maybeFinder];
+			[self.systemAppArray insertObject:maybeFinder atIndex:0];
 			break;
 		}
 	}
-	return systemAppArray;
+	return self.systemAppArray;
 }
 
 - (NSMutableArray *)addApplicationsAtPath:(NSString *)path toArray:(NSMutableArray *)arr depth:(int)depth {
@@ -199,70 +206,70 @@
 #pragma mark Recognition Options
 - (int)fetchMinimumRecognitionScore {
 	id storedMinimumRecognitionScore;
-	if ((storedMinimumRecognitionScore = [userDefaults objectForKey:@"minimumRecognitionScore"])) {
-		minimumRecognitionScore = [storedMinimumRecognitionScore intValue];
+	if ((storedMinimumRecognitionScore = [self.storage objectForKey:@"minimumRecognitionScore"])) {
+		self.minimumRecognitionScore = [storedMinimumRecognitionScore intValue];
 	}
 	else {
 		[self saveMinimumRecognitionScore:80];
 	}
     
-	return minimumRecognitionScore;
+	return self.minimumRecognitionScore;
 }
 
 - (void)saveMinimumRecognitionScore:(int)newScore {
-	[userDefaults setInteger:(minimumRecognitionScore = newScore) forKey:@"minimumRecognitionScore"];
-	[userDefaults synchronize];
+	[self.storage setInteger:(self.minimumRecognitionScore = newScore) forKey:@"minimumRecognitionScore"];
+	[self.storage synchronize];
 }
 
 - (int)fetchReadingDelayTime {
 	id storedReadingDelayTime;
-	if ((storedReadingDelayTime = [userDefaults objectForKey:@"readingDelayTime"])) {
-		readingDelayTime = [storedReadingDelayTime intValue];
+	if ((storedReadingDelayTime = [self.storage objectForKey:@"readingDelayTime"])) {
+		self.readingDelayTime = [storedReadingDelayTime intValue];
 	}
 	else {
 		[self saveReadingDelayTime:5];
 	}
     
-	return readingDelayTime;
+	return self.readingDelayTime;
 }
 
 - (void)saveReadingDelayTime:(int)newTime {
-	[userDefaults setInteger:(readingDelayTime = newTime) forKey:@"readingDelayTime"];
-	[userDefaults synchronize];
+	[self.storage setInteger:(self.readingDelayTime = newTime) forKey:@"readingDelayTime"];
+	[self.storage synchronize];
 }
 
 - (BOOL)fetchMultitouchOption {
 	id storedMultitouchRecognition;
-	if ((storedMultitouchRecognition = [userDefaults objectForKey:@"multitouchOption"])) {
-		multitouchOption = [storedMultitouchRecognition boolValue];
+	if ((storedMultitouchRecognition = [self.storage objectForKey:@"multitouchOption"])) {
+		self.multitouchOption = [storedMultitouchRecognition boolValue];
 	}
 	else {
 		[self saveMultitouchOption:[MultitouchManager systemIsMultitouchCapable]];
 	}
     
-	return multitouchOption;
+	return self.multitouchOption;
 }
 
 - (void)saveMultitouchOption:(BOOL)newChoice {
-	[userDefaults setBool:(multitouchOption = newChoice) forKey:@"multitouchOption"];
-	[userDefaults synchronize];
+	[self.storage setBool:(self.multitouchOption = newChoice) forKey:@"multitouchOption"];
+	[self.storage synchronize];
 }
 
 - (BOOL)fetchFullscreenOption {
 	id storedFullscreenRecognition;
-	if ((storedFullscreenRecognition = [userDefaults objectForKey:@"fullscreenOption"])) {
-		fullscreenOption = [storedFullscreenRecognition boolValue];
+	if ((storedFullscreenRecognition = [self.storage objectForKey:@"fullscreenOption"])) {
+		self.fullscreenOption = [storedFullscreenRecognition boolValue];
 	}
 	else {
 		[self saveFullscreenOption:NO];
 	}
     
-	return fullscreenOption;
+	return self.fullscreenOption;
 }
 
 - (void)saveFullscreenOption:(BOOL)newChoice {
-	[userDefaults setBool:(fullscreenOption = newChoice) forKey:@"fullscreenOption"];
-	[userDefaults synchronize];
+	[self.storage setBool:(self.fullscreenOption = newChoice) forKey:@"fullscreenOption"];
+	[self.storage synchronize];
 }
 
 - (BOOL)fetchLoginStartOption {
@@ -288,11 +295,11 @@
 		CFRelease(loginItems);
 	}
     
-	return (loginStartOption = foundIt);
+	return (self.loginStartOption = foundIt);
 }
 
 - (void)saveLoginStartOption:(BOOL)newChoice {
-	loginStartOption = newChoice;
+	self.loginStartOption = newChoice;
     
 	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
 	LSSharedFileListItemRef existingItem = NULL;
@@ -314,10 +321,10 @@
 				}
 			}
 		}
-		if (loginStartOption && (existingItem == NULL)) {
+		if (self.loginStartOption && (existingItem == NULL)) {
 			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (CFURLRef)itemURL, NULL, NULL);
 		}
-		else if (!loginStartOption && (existingItem != NULL)) {
+		else if (!self.loginStartOption && (existingItem != NULL)) {
 			LSSharedFileListItemRemove(loginItems, existingItem);
 		}
 		CFRelease(loginItems);

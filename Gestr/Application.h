@@ -1,11 +1,10 @@
 #import "Launchable.h"
 
-@interface Application : Launchable {
-	NSString *bundleId;
-}
+@interface Application : Launchable
+
 @property NSString *bundleId;
 
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon bundleId:(NSString *)_bundleId;
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon bundleId:(NSString *)bundleId;
 - (void)launch;
 
 @end

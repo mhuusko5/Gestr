@@ -2,30 +2,11 @@
 #import "GestureSetupController.h"
 #import "Gesture.h"
 #import "MultitouchManager.h"
-
 @class GestureSetupController;
 
-@interface GestureSetupView : NSView {
-	NSMutableDictionary *touchPaths;
-	NSMutableDictionary *gestureStrokes;
-	NSMutableArray *orderedStrokeIds;
-    
-    NSTimer *startInputTimer;
-    NSTimer *noInputTimer;
-	NSTimer *detectInputTimer;
-    
-	GestureSetupController *setupController;
-    
-	int mouseStrokeIndex;
-    
-	BOOL showingStoredGesture;
-    
-	NSDate *lastMultitouchRedraw;
-	NSNumber *initialMultitouchDeviceId;
-    
-	BOOL detectingInput;
-}
-@property (retain) GestureSetupController *setupController;
+@interface GestureSetupView : NSView
+
+@property GestureSetupController *setupController;
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;

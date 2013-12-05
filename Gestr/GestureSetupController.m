@@ -1,39 +1,63 @@
 #import "GestureSetupController.h"
 
-@implementation GestureSetupController
+@interface GestureSetupController ()
 
-@synthesize appController, setupModel, setupWindow, setupView;
+@property BOOL awakedFromNib;
+
+@property NSStatusItem *statusBarItem;
+@property IBOutlet NSView *statusBarView;
+
+@property NSThread *showGestureThread;
+
+@property IBOutlet NSTextField *drawNotificationText;
+
+@property int launchableSelectedIndex;
+@property IBOutlet NSSegmentedControl *launchableTypePicker;
+@property IBOutlet NSTableView *launchableTableView;
+@property IBOutlet NSArrayController *launchableArrayController;
+
+@property IBOutlet NSButton *assignGestureButton, *showGestureButton, *clearGestureButton;
+
+@property IBOutlet NSTextField *minimumRecognitionScoreField, *readingDelayTimeField;
+@property IBOutlet NSTextField *multitouchRecognitionLabel;
+@property IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField;
+@property IBOutlet NSButton *loginStartOptionField;
+
+@end
+
+@implementation GestureSetupController
 
 #pragma mark -
 #pragma mark Initialization
 - (void)awakeFromNib {
-	if (!awakedFromNib) {
-		awakedFromNib = YES;
+	if (!self.awakedFromNib) {
+		self.awakedFromNib = YES;
         
-		setupView.setupController = self;
+		self.setupView.setupController = self;
         
 		[self hideSetupWindow];
         
-		setupModel = [[GestureSetupModel alloc] init];
+		self.setupModel = [[GestureSetupModel alloc] init];
+        [self.setupModel setup];
         
-		statusBarItem = [NSStatusItemPrioritizer prioritizedStatusItem];
-		statusBarItem.title = @"";
-		statusBarView.alphaValue = 0.0;
-		statusBarItem.view = statusBarView;
+		self.statusBarItem = [NSStatusItemPrioritizer prioritizedStatusItem];
+		self.statusBarItem.title = @"";
+		self.statusBarView.alphaValue = 0.0;
+		self.statusBarItem.view = self.statusBarView;
 	}
 }
 
 - (void)applicationDidFinishLaunching {
-	[[statusBarView animator] setAlphaValue:1.0];
+	[[self.statusBarView animator] setAlphaValue:1.0];
     
-	[launchableTypePicker setSelectedSegment:0];
-	launchableArrayController.content = setupModel.normalAppArray;
+	[self.launchableTypePicker setSelectedSegment:0];
+	self.launchableArrayController.content = self.setupModel.normalAppArray;
     
-	if (appController.gestureRecognitionController.recognitionModel.gestureDetector.loadedGestures.count < 1) {
+	if (self.appController.gestureRecognitionController.recognitionModel.gestureDetector.loadedGestures.count < 1) {
 		[self toggleSetupWindow:nil];
 	}
     
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repositionSetupWindow:) name:NSWindowDidMoveNotification object:statusBarView.window];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repositionSetupWindow:) name:NSWindowDidMoveNotification object:self.statusBarView.window];
     
 	[self updateSetupControls];
     
@@ -45,49 +69,49 @@
 #pragma mark -
 #pragma mark Tableview Management
 - (NSMutableArray *)currentLaunchableArray {
-	return (NSMutableArray *)launchableArrayController.content;
+	return (NSMutableArray *)self.launchableArrayController.content;
 }
 
 - (NSTableView *)currentLaunchableTableView {
-	return launchableTableView;
+	return self.launchableTableView;
 }
 
 - (IBAction)launchableTypeChanged:(id)sender {
-	switch (launchableTypePicker.selectedSegment) {
+	switch (self.launchableTypePicker.selectedSegment) {
 		case 0:
-			[setupModel fetchNormalAppArray];
-			launchableArrayController.content = setupModel.normalAppArray;
+			[self.setupModel fetchNormalAppArray];
+			self.launchableArrayController.content = self.setupModel.normalAppArray;
 			break;
             
 		case 1:
-			[setupModel fetchWebPageArray];
-			launchableArrayController.content = setupModel.webPageArray;
+			[self.setupModel fetchWebPageArray];
+			self.launchableArrayController.content = self.setupModel.webPageArray;
 			break;
             
 		case 2:
-			[setupModel fetchUtilitiesAppArray];
-			launchableArrayController.content = setupModel.utilitiesAppArray;
+			[self.setupModel fetchUtilitiesAppArray];
+			self.launchableArrayController.content = self.setupModel.utilitiesAppArray;
 			break;
             
 		case 3:
-			[setupModel fetchSystemAppArray];
-			launchableArrayController.content = setupModel.systemAppArray;
+			[self.setupModel fetchSystemAppArray];
+			self.launchableArrayController.content = self.setupModel.systemAppArray;
 			break;
             
 		default:
 			break;
 	}
     
-	[showGestureButton setEnabled:NO];
-	[assignGestureButton setEnabled:NO];
-	[clearGestureButton setEnabled:NO];
+	[self.showGestureButton setEnabled:NO];
+	[self.assignGestureButton setEnabled:NO];
+	[self.clearGestureButton setEnabled:NO];
 }
 
 - (void)tableViewFocus:(BOOL)lost {
 	if (lost) {
-		[showGestureButton setEnabled:NO];
-		[assignGestureButton setEnabled:NO];
-		[clearGestureButton setEnabled:NO];
+		[self.showGestureButton setEnabled:NO];
+		[self.assignGestureButton setEnabled:NO];
+		[self.clearGestureButton setEnabled:NO];
 	}
 	else {
 		[self updateSetupControls];
@@ -95,7 +119,7 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
 	[self updateSetupControls];
 }
@@ -118,64 +142,64 @@
 #pragma mark -
 #pragma mark Interface Control
 - (void)updateSetupControls {
-	[setupView resetAll];
+	[self.setupView resetAll];
     
-	[setupWindow makeFirstResponder:[self currentLaunchableTableView]];
+	[self.setupWindow makeFirstResponder:[self currentLaunchableTableView]];
     
-	launchableSelectedIndex = (int)([[self currentLaunchableTableView] selectedRow]);
+	self.launchableSelectedIndex = (int)([[self currentLaunchableTableView] selectedRow]);
     
-	if (launchableSelectedIndex >= 0) {
+	if (self.launchableSelectedIndex >= 0) {
 		BOOL gestureExistsForSelectedApp = NO;
         
-		gestureExistsForSelectedApp = ([appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId] != nil);
+		gestureExistsForSelectedApp = ([self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId] != nil);
         
 		if (gestureExistsForSelectedApp) {
-			[showGestureButton setEnabled:YES];
-			[assignGestureButton setEnabled:YES];
-			[clearGestureButton setEnabled:YES];
+			[self.showGestureButton setEnabled:YES];
+			[self.assignGestureButton setEnabled:YES];
+			[self.clearGestureButton setEnabled:YES];
 		}
 		else {
-			[showGestureButton setEnabled:NO];
-			[assignGestureButton setEnabled:YES];
-			[clearGestureButton setEnabled:NO];
+			[self.showGestureButton setEnabled:NO];
+			[self.assignGestureButton setEnabled:YES];
+			[self.clearGestureButton setEnabled:NO];
 		}
 	}
     
 	if (![MultitouchManager systemIsMultitouchCapable]) {
-		multitouchOptionField.alphaValue = 0.5;
-		[multitouchOptionField setEnabled:NO];
-		multitouchRecognitionLabel.alphaValue = 0.5;
+		self.multitouchOptionField.alphaValue = 0.5;
+		[self.multitouchOptionField setEnabled:NO];
+		self.multitouchRecognitionLabel.alphaValue = 0.5;
         
-		if (setupModel.multitouchOption) {
-			[setupModel saveMultitouchOption:NO];
+		if (self.setupModel.multitouchOption) {
+			[self.setupModel saveMultitouchOption:NO];
 		}
 	}
 	else {
-		multitouchOptionField.alphaValue = 1.0;
-		[multitouchOptionField setEnabled:YES];
-		multitouchRecognitionLabel.alphaValue = 1.0;
+		self.multitouchOptionField.alphaValue = 1.0;
+		[self.multitouchOptionField setEnabled:YES];
+		self.multitouchRecognitionLabel.alphaValue = 1.0;
 	}
     
-	minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", setupModel.minimumRecognitionScore];
-	readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", setupModel.readingDelayTime];
-	multitouchOptionField.state = setupModel.multitouchOption;
-	fullscreenOptionField.state = setupModel.fullscreenOption;
-	loginStartOptionField.state = setupModel.loginStartOption;
+	self.minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", self.setupModel.minimumRecognitionScore];
+	self.readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", self.setupModel.readingDelayTime];
+	self.multitouchOptionField.state = self.setupModel.multitouchOption;
+	self.fullscreenOptionField.state = self.setupModel.fullscreenOption;
+	self.loginStartOptionField.state = self.setupModel.loginStartOption;
 }
 
 - (void)showDrawNotification:(BOOL)show {
-	if (setupModel.multitouchOption) {
-		drawNotificationText.stringValue = @"Draw now!";
+	if (self.setupModel.multitouchOption) {
+		self.drawNotificationText.stringValue = @"Draw now!";
 	}
 	else {
-		drawNotificationText.stringValue = @"Draw here!";
+		self.drawNotificationText.stringValue = @"Draw here!";
 	}
     
 	if (show) {
-		drawNotificationText.alphaValue = 1.0;
+		self.drawNotificationText.alphaValue = 1.0;
 	}
 	else {
-		drawNotificationText.alphaValue = 0.0;
+		self.drawNotificationText.alphaValue = 0.0;
 	}
 }
 
@@ -184,9 +208,9 @@
 #pragma mark -
 #pragma mark Setup Utilities
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
-	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex];
+	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex];
     
-	[appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
+	[self.appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
     
 	[self updateSetupControls];
 }
@@ -196,20 +220,20 @@
 #pragma mark -
 #pragma mark Setup Actions
 - (IBAction)assignSelectedGesture:(id)sender {
-	[setupView startDetectingGesture];
+	[self.setupView startDetectingGesture];
 }
 
 - (IBAction)showSelectedGesture:(id)sender {
-	if (showGestureThread) {
-		[showGestureThread cancel];
-		showGestureThread = nil;
+	if (self.showGestureThread) {
+		[self.showGestureThread cancel];
+		self.showGestureThread = nil;
 	}
     
-	if (launchableSelectedIndex >= 0) {
+	if (self.launchableSelectedIndex >= 0) {
 		@try {
-			Gesture *gestureToShow = [appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId];
-			showGestureThread = [[NSThread alloc] initWithTarget:setupView selector:@selector(showGesture:) object:gestureToShow];
-			[showGestureThread start];
+			Gesture *gestureToShow = [self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId];
+			self.showGestureThread = [[NSThread alloc] initWithTarget:self.setupView selector:@selector(showGesture:) object:gestureToShow];
+			[self.showGestureThread start];
 		}
 		@catch (NSException *exception)
 		{
@@ -218,8 +242,8 @@
 }
 
 - (IBAction)clearSelectedGesture:(id)sender {
-	if (launchableSelectedIndex >= 0) {
-		[appController.gestureRecognitionController.recognitionModel deleteGestureWithName:((Launchable *)[[self currentLaunchableArray] objectAtIndex:launchableSelectedIndex]).launchId];
+	if (self.launchableSelectedIndex >= 0) {
+		[self.appController.gestureRecognitionController.recognitionModel deleteGestureWithName:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId];
 	}
     
 	[self updateSetupControls];
@@ -230,31 +254,31 @@
 #pragma mark -
 #pragma mark Window Methods
 - (void)positionSetupWindow {
-	NSRect menuBarFrame = [[[statusBarItem view] window] frame];
+	NSRect menuBarFrame = [[[self.statusBarItem view] window] frame];
 	NSPoint pt = NSMakePoint(NSMidX(menuBarFrame), NSMidY(menuBarFrame));
     
 	pt.y -= menuBarFrame.size.height / 2;
-	pt.y -= setupWindow.frame.size.height;
-	pt.x -= setupWindow.frame.size.width / 2;
+	pt.y -= self.setupWindow.frame.size.height;
+	pt.x -= self.setupWindow.frame.size.width / 2;
     
-	[setupWindow setFrameOrigin:pt];
+	[self.setupWindow setFrameOrigin:pt];
 }
 
 - (IBAction)toggleSetupWindow:(id)sender {
 	[self positionSetupWindow];
     
-	if (setupWindow.alphaValue <= 0) {
-		if (!appController.gestureRecognitionController.recognitionView.detectingInput) {
+	if (self.setupWindow.alphaValue <= 0) {
+		if (!self.appController.gestureRecognitionController.recognitionView.detectingInput) {
 			[self launchableTypeChanged:nil];
             
-			[setupWindow orderFrontRegardless];
+			[self.setupWindow orderFrontRegardless];
             
 			[NSAnimationContext beginGrouping];
 			[[NSAnimationContext currentContext] setDuration:0.16];
 			[[NSAnimationContext currentContext] setCompletionHandler: ^{
-			    [setupWindow makeKeyWindow];
+			    [self.setupWindow makeKeyWindow];
 			}];
-			[setupWindow.animator setAlphaValue:1.0];
+			[self.setupWindow.animator setAlphaValue:1.0];
 			[NSAnimationContext endGrouping];
 		}
 	}
@@ -264,7 +288,7 @@
 		[[NSAnimationContext currentContext] setCompletionHandler: ^{
 		    [self hideSetupWindow];
 		}];
-		[setupWindow.animator setAlphaValue:0.0];
+		[self.setupWindow.animator setAlphaValue:0.0];
 		[NSAnimationContext endGrouping];
 	}
     
@@ -272,15 +296,15 @@
 }
 
 - (void)hideSetupWindow {
-	setupWindow.alphaValue = 0.0;
-	[setupWindow orderOut:self];
-	[setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+	self.setupWindow.alphaValue = 0.0;
+	[self.setupWindow orderOut:self];
+	[self.setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
-	if (setupWindow.alphaValue > 0) {
-		if (setupView.detectingInput) {
-			[setupView finishDetectingGesture:YES];
+	if (self.setupWindow.alphaValue > 0) {
+		if (self.setupView.detectingInput) {
+			[self.setupView finishDetectingGesture:YES];
 		}
         
 		[self toggleSetupWindow:nil];
@@ -288,7 +312,7 @@
 }
 
 - (void)repositionSetupWindow:(NSNotification *)notification {
-	if (setupWindow.alphaValue > 0) {
+	if (self.setupWindow.alphaValue > 0) {
 		[self positionSetupWindow];
 	}
 }
@@ -298,49 +322,49 @@
 #pragma mark -
 #pragma mark Recognition Options
 - (IBAction)minimumRecognitionScoreChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
-	int newScore = [minimumRecognitionScoreField intValue];
+	int newScore = [self.minimumRecognitionScoreField intValue];
 	if (newScore >= 70 && newScore <= 100) {
-		[setupModel saveMinimumRecognitionScore:newScore];
+		[self.setupModel saveMinimumRecognitionScore:newScore];
 	}
     
 	[self updateSetupControls];
 }
 
 - (IBAction)readingDelayTimeChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
-	int newTime = [readingDelayTimeField intValue];
+	int newTime = [self.readingDelayTimeField intValue];
 	if (newTime >= 1 && newTime <= 1000) {
-		[setupModel saveReadingDelayTime:newTime];
+		[self.setupModel saveReadingDelayTime:newTime];
 	}
     
 	[self updateSetupControls];
 }
 
 - (IBAction)multitouchOptionChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
-	[setupModel saveMultitouchOption:multitouchOptionField.state];
+	[self.setupModel saveMultitouchOption:self.multitouchOptionField.state];
     
 	[self updateSetupControls];
 }
 
 - (IBAction)fullscreenOptionChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
-	[setupModel saveFullscreenOption:fullscreenOptionField.state];
+	[self.setupModel saveFullscreenOption:self.fullscreenOptionField.state];
     
 	[self updateSetupControls];
 }
 
 - (IBAction)loginStartOptionChanged:(id)sender {
-	[setupView finishDetectingGesture:YES];
+	[self.setupView finishDetectingGesture:YES];
     
-	[setupModel saveLoginStartOption:loginStartOptionField.state];
+	[self.setupModel saveLoginStartOption:self.loginStartOptionField.state];
     
-	loginStartOptionField.state = [setupModel fetchLoginStartOption];
+	self.loginStartOptionField.state = [self.setupModel fetchLoginStartOption];
     
 	[self updateSetupControls];
 }

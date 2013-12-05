@@ -1,7 +1,6 @@
 #import "NSBezierPath+MCAdditions.h"
 #import "NSColor+ColorExtensions.h"
 
-@interface AppSegmentedCell : NSSegmentedCell {
-}
+@interface AppSegmentedCell : NSSegmentedCell
 
 @end

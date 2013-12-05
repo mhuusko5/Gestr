@@ -1,6 +1,7 @@
 #import "GestureSetupController.h"
 
-@interface AppTableView : NSTableView {
-}
+@interface AppTableView : NSTableView
+
 - (BOOL)resignFirstResponder;
+
 @end

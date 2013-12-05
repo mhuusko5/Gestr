@@ -1,17 +1,12 @@
 #import "GestureSetupController.h"
 #import "GestureRecognitionController.h"
 #import "MultitouchManager.h"
-
 @class GestureSetupController, GestureRecognitionController;
 
-@interface AppController : NSObject <NSApplicationDelegate> {
-	BOOL awakedFromNib;
-    
-	IBOutlet GestureSetupController *gestureSetupController;
-	IBOutlet GestureRecognitionController *gestureRecognitionController;
-}
-@property (retain) GestureSetupController *gestureSetupController;
-@property (retain) GestureRecognitionController *gestureRecognitionController;
+@interface AppController : NSObject <NSApplicationDelegate>
+
+@property GestureSetupController *gestureSetupController;
+@property GestureRecognitionController *gestureRecognitionController;
 
 - (void)awakeFromNib;
 - (IBAction)closeAndQuit:(id)sender;

@@ -5,42 +5,14 @@
 #import "Launchable.h"
 #import "MultitouchManager.h"
 #import "NSStatusItemPrioritizer.h"
-
 @class GestureSetupView, AppController;
 
-@interface GestureSetupController : NSObject {
-	BOOL awakedFromNib;
-    
-	GestureSetupModel *setupModel;
-    
-	AppController *appController;
-    
-	NSStatusItem *statusBarItem;
-	IBOutlet NSView *statusBarView;
-    
-	NSThread *showGestureThread;
-    
-	IBOutlet GestureSetupWindow *setupWindow;
-	IBOutlet GestureSetupView *setupView;
-    
-	IBOutlet NSTextField *drawNotificationText;
-    
-	int launchableSelectedIndex;
-	IBOutlet NSSegmentedControl *launchableTypePicker;
-	IBOutlet NSTableView *launchableTableView;
-	IBOutlet NSArrayController *launchableArrayController;
-    
-	IBOutlet NSButton *assignGestureButton, *showGestureButton, *clearGestureButton;
-    
-	IBOutlet NSTextField *minimumRecognitionScoreField, *readingDelayTimeField;
-	IBOutlet NSTextField *multitouchRecognitionLabel;
-	IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField;
-	IBOutlet NSButton *loginStartOptionField;
-}
-@property (retain) GestureSetupModel *setupModel;
-@property (retain) AppController *appController;
-@property (retain) GestureSetupWindow *setupWindow;
-@property (retain) GestureSetupView *setupView;
+@interface GestureSetupController : NSObject
+
+@property GestureSetupModel *setupModel;
+@property AppController *appController;
+@property IBOutlet GestureSetupWindow *setupWindow;
+@property IBOutlet GestureSetupView *setupView;
 
 #pragma mark -
 #pragma mark Initialization

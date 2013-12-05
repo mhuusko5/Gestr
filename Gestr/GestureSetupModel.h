@@ -3,19 +3,17 @@
 #import "ChromePage.h"
 #import "SafariPage.h"
 
-@interface GestureSetupModel : NSObject {
-	NSUserDefaults *userDefaults;
-    
-	NSMutableArray *webPageArray;
-	NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
-    
-	int readingDelayTime, minimumRecognitionScore;
-	BOOL multitouchOption, fullscreenOption, loginStartOption;
-}
+@interface GestureSetupModel : NSObject
+
 @property NSMutableArray *webPageArray;
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
 @property int readingDelayTime, minimumRecognitionScore;
 @property BOOL multitouchOption, fullscreenOption, loginStartOption;
+
+#pragma mark -
+#pragma mark Setup
+- (void)setup;
+#pragma mark -
 
 #pragma mark -
 #pragma mark Launchable Management

@@ -4,7 +4,7 @@
 
 @interface ChromePage : WebPage
 
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url;
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon url:(NSString *)url;
 - (void)launch;
 
 @end

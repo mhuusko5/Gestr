@@ -1,6 +1,7 @@
 #import "AppButtonCell.h"
 
-@interface ShadowTextFieldCell : NSTextFieldCell {
-}
+@interface ShadowTextFieldCell : NSTextFieldCell
+
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView;
+
 @end

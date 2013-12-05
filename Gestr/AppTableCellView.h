@@ -1,7 +1,6 @@
 #import "AppButtonCell.h"
 
-@interface AppTableCellView : NSTableCellView {
-}
+@interface AppTableCellView : NSTableCellView
 
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle;
 

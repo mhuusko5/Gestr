@@ -2,16 +2,13 @@
 
 @implementation WebPage
 
-@synthesize url;
-@synthesize targetBrowserId;
-
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url targetBrowserId:(NSString *)_targetBrowserId {
-	NSString *_launchId = [NSString stringWithFormat:@"%@:%@", _targetBrowserId, _url];
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon url:(NSString *)url targetBrowserId:(NSString *)targetBrowserId {
+	NSString *launchId = [NSString stringWithFormat:@"%@:%@", targetBrowserId, url];
     
-	self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
+	self = [super initWithDisplayName:displayName launchId:launchId icon:icon];
     
-	url = _url;
-	targetBrowserId = _targetBrowserId;
+	_url = url;
+	_targetBrowserId = targetBrowserId;
     
 	return self;
 }

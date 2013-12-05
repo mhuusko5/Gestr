@@ -2,8 +2,8 @@
 
 @implementation SafariPage
 
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon url:(NSString *)_url {
-	self = [super initWithDisplayName:_displayName icon:_icon url:_url targetBrowserId:@"com.apple.Safari"];
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon url:(NSString *)url {
+	self = [super initWithDisplayName:displayName icon:icon url:url targetBrowserId:@"com.apple.Safari"];
     
 	return self;
 }
@@ -13,7 +13,7 @@
 	[safari activate];
     
 	if (safari.documents.count == 0) {
-		[safari.documents addObject:[[[safari classForScriptingClass:@"document"] alloc] initWithProperties:@{ @"URL": url }]];
+		[safari.documents addObject:[[[safari classForScriptingClass:@"document"] alloc] initWithProperties:@{ @"URL": self.url }]];
 	}
 	else {
 		BOOL tabExists = NO;
@@ -22,7 +22,7 @@
 		for (window in safari.windows) {
 			for (int i = 0; i < window.tabs.count; i++) {
 				SafariTab *tab = [window.tabs objectAtIndex:i];
-				if ([[[self class] stripUrl:tab.URL] isEqualToString:[[self class] stripUrl:url]]) {
+				if ([[[self class] stripUrl:tab.URL] isEqualToString:[[self class] stripUrl:self.url]]) {
 					tabIndex = i;
 					tabExists = YES;
 					break;
@@ -38,7 +38,7 @@
 			window.index = 1;
 		}
 		else {
-			SafariTab *newTab = [[[safari classForScriptingClass:@"tab"] alloc] initWithProperties:@{ @"URL": url }];
+			SafariTab *newTab = [[[safari classForScriptingClass:@"tab"] alloc] initWithProperties:@{ @"URL": self.url }];
 			window = [safari.windows objectAtIndex:0];
 			[window.tabs addObject:newTab];
 			window.currentTab = newTab;

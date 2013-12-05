@@ -1,28 +1,10 @@
 #import "GestureRecognitionController.h"
 #import "MultitouchEvent.h"
-
 @class GestureRecognitionController;
 
-@interface GestureRecognitionView : NSView {
-	NSMutableDictionary *touchPaths;
-	NSMutableDictionary *gestureStrokes;
-	NSMutableArray *orderedStrokeIds;
-    
-    NSTimer *startInputTimer;
-    NSTimer *noInputTimer;
-	NSTimer *detectInputTimer;
-	NSTimer *checkPartialGestureTimer;
-    
-	GestureRecognitionController *recognitionController;
-    
-	int mouseStrokeIndex;
-    
-	NSDate *lastMultitouchRedraw;
-	NSNumber *initialMultitouchDeviceId;
-    
-	BOOL detectingInput;
-}
-@property (retain) GestureRecognitionController *recognitionController;
+@interface GestureRecognitionView : NSView
+
+@property GestureRecognitionController *recognitionController;
 @property BOOL detectingInput;
 
 - (id)initWithFrame:(NSRect)frame;

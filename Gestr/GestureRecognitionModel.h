@@ -1,13 +1,13 @@
 #import "GestureRecognizer.h"
 
-@interface GestureRecognitionModel : NSObject {
-	NSUserDefaults *userDefaults;
-    
-	NSMutableDictionary *gestureDictionary;
-    
-	GestureRecognizer *gestureDetector;
-}
-@property (retain) GestureRecognizer *gestureDetector;
+@interface GestureRecognitionModel : NSObject
+
+@property GestureRecognizer *gestureDetector;
+
+#pragma mark -
+#pragma mark Setup
+- (void)setup;
+#pragma mark -
 
 #pragma mark -
 #pragma mark Gesture Data

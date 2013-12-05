@@ -6,35 +6,14 @@
 #import "Launchable.h"
 #import "MultitouchManager.h"
 #import "RepeatedImageView.h"
-
 @class GestureRecognitionView, GestureRecognizer, AppController, RepeatedImageView;
 
-@interface GestureRecognitionController : NSObject {
-	BOOL awakedFromNib;
-    
-	GestureRecognitionModel *recognitionModel;
-    
-	AppController *appController;
-    
-	IBOutlet GestureRecognitionWindow *recognitionWindow;
-	IBOutlet GestureRecognitionView *recognitionView;
-    
-	IBOutlet RepeatedImageView *recognitionBackground;
-    
-	IBOutlet NSImageView *appIconAlert;
-	IBOutlet NSTextField *appDescriptionAlert;
-    
-	IBOutlet NSImageView *partialIconAlert;
-	IBOutlet NSTextField *partialDescriptionAlert;
-    
-	NSDate *recentRightClickDate;
-    NSArray *beforeFourFingerTouches;
-	NSMutableArray *recentFourFingerTouches;
-}
-@property (retain) GestureRecognitionModel *recognitionModel;
-@property (retain) AppController *appController;
-@property (retain) GestureRecognitionWindow *recognitionWindow;
-@property (retain) GestureRecognitionView *recognitionView;
+@interface GestureRecognitionController : NSObject
+
+@property GestureRecognitionModel *recognitionModel;
+@property AppController *appController;
+@property IBOutlet GestureRecognitionWindow *recognitionWindow;
+@property IBOutlet GestureRecognitionView *recognitionView;
 
 #pragma mark -
 #pragma mark Initialization

@@ -1,12 +1,10 @@
-@interface Launchable : NSObject {
-	NSString *displayName;
-	NSString *launchId;
-	NSImage *icon;
-}
-@property (assign) NSString *displayName, *launchId;
+@interface Launchable : NSObject
+
+@property (assign) NSString *displayName;
+@property (assign) NSString *launchId;
 @property (assign) NSImage *icon;
 
-- (id)initWithDisplayName:(NSString *)_displayName launchId:(NSString *)_launchId icon:(NSImage *)_icon;
+- (id)initWithDisplayName:(NSString *)displayName launchId:(NSString *)launchId icon:(NSImage *)icon;
 - (void)launchWithNewThread:(BOOL)newThread;
 
 @end

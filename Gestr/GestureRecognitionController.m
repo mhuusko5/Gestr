@@ -1,24 +1,41 @@
 #import "GestureRecognitionController.h"
 
-@implementation GestureRecognitionController
+@interface GestureRecognitionController ()
 
-@synthesize recognitionModel, appController, recognitionWindow, recognitionView;
+@property BOOL awakedFromNib;
+
+@property IBOutlet RepeatedImageView *recognitionBackground;
+
+@property IBOutlet NSImageView *appIconAlert;
+@property IBOutlet NSTextField *appDescriptionAlert;
+
+@property IBOutlet NSImageView *partialIconAlert;
+@property IBOutlet NSTextField *partialDescriptionAlert;
+
+@property NSDate *recentRightClickDate;
+@property NSArray *beforeFourFingerTouches;
+@property NSMutableArray *recentFourFingerTouches;
+
+@end
+
+@implementation GestureRecognitionController
 
 #pragma mark -
 #pragma mark Initialization
 - (void)awakeFromNib {
-	if (!awakedFromNib) {
-		awakedFromNib = YES;
+	if (!self.awakedFromNib) {
+		self.awakedFromNib = YES;
         
-		recognitionView.recognitionController = self;
+		self.recognitionView.recognitionController = self;
         
 		[self hideRecognitionWindow];
         
-		recognitionModel = [[GestureRecognitionModel alloc] init];
+		self.recognitionModel = [[GestureRecognitionModel alloc] init];
+        [self.recognitionModel setup];
         
-		recentRightClickDate = [NSDate date];
-        beforeFourFingerTouches = [NSArray arrayWithObjects:@0, @0, @0, nil];
-		recentFourFingerTouches = [NSMutableArray array];
+		self.recentRightClickDate = [NSDate date];
+        self.beforeFourFingerTouches = [NSArray arrayWithObjects:@0, @0, @0, nil];
+		self.recentFourFingerTouches = [NSMutableArray array];
 	}
 }
 
@@ -40,40 +57,40 @@
 #pragma mark -
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
-	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
+	GestureResult *result = [self.recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
-		Launchable *launchableToShow = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
+	if (result && (rating = result.score) >= self.appController.gestureSetupController.setupModel.minimumRecognitionScore) {
+		Launchable *launchableToShow = [self.appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToShow != nil) {
-			partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
-			partialIconAlert.image = launchableToShow.icon;
+			self.partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
+			self.partialIconAlert.image = launchableToShow.icon;
 		}
 		else {
-			[recognitionModel deleteGestureWithName:result.gestureIdentity];
+			[self.recognitionModel deleteGestureWithName:result.gestureIdentity];
 		}
 	}
 	else {
-		partialDescriptionAlert.stringValue = @"";
-		partialIconAlert.image = nil;
+		self.partialDescriptionAlert.stringValue = @"";
+		self.partialIconAlert.image = nil;
 	}
 }
 
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
-	GestureResult *result = [recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
+	GestureResult *result = [self.recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
-	if (result && (rating = result.score) >= appController.gestureSetupController.setupModel.minimumRecognitionScore) {
-		Launchable *launchableToLaunch = [appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
+	if (result && (rating = result.score) >= self.appController.gestureSetupController.setupModel.minimumRecognitionScore) {
+		Launchable *launchableToLaunch = [self.appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToLaunch != nil) {
-			partialDescriptionAlert.stringValue = @"";
-			partialIconAlert.image = nil;
+			self.partialDescriptionAlert.stringValue = @"";
+			self.partialIconAlert.image = nil;
             
-			appDescriptionAlert.stringValue = launchableToLaunch.displayName;
-			appIconAlert.image = launchableToLaunch.icon;
+			self.appDescriptionAlert.stringValue = launchableToLaunch.displayName;
+			self.appIconAlert.image = launchableToLaunch.icon;
             
 			[launchableToLaunch launchWithNewThread:YES];
 		}
 		else {
-			[recognitionModel deleteGestureWithName:result.gestureIdentity];
+			[self.recognitionModel deleteGestureWithName:result.gestureIdentity];
 		}
         
 		[self toggleOutRecognitionWindow:YES];
@@ -84,16 +101,16 @@
 }
 
 - (void)shouldStartDetectingGesture {
-	if (recognitionWindow.alphaValue <= 0) {
-		appDescriptionAlert.stringValue = @"";
-		appIconAlert.image = nil;
+	if (self.recognitionWindow.alphaValue <= 0) {
+		self.appDescriptionAlert.stringValue = @"";
+		self.appIconAlert.image = nil;
         
-		partialDescriptionAlert.stringValue = @"";
-		partialIconAlert.image = nil;
+		self.partialDescriptionAlert.stringValue = @"";
+		self.partialIconAlert.image = nil;
         
 		[self toggleInRecognitionWindow];
         
-		[recognitionView startDetectingGesture];
+		[self.recognitionView startDetectingGesture];
 	}
 }
 
@@ -102,7 +119,7 @@
 #pragma mark -
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
-	if (recognitionWindow.alphaValue <= 0) {
+	if (self.recognitionWindow.alphaValue <= 0) {
 		int activeTouches = 0;
         for (MultitouchTouch *touch in event.touches) {
             if (touch.state == MultitouchTouchStateActive) {
@@ -111,46 +128,46 @@
         }
         
         if (activeTouches == 4) {
-			[recentFourFingerTouches addObject:event];
+			[self.recentFourFingerTouches addObject:event];
 		}
 		else {
-            if (recentFourFingerTouches.count >= 4 && recentFourFingerTouches.count <= 30) {
+            if (self.recentFourFingerTouches.count >= 4 && self.recentFourFingerTouches.count <= 30) {
                 int totalCount = 0;
                 float totalVelocity = 0.0f;
-                for (MultitouchEvent *fourFingerEvent in recentFourFingerTouches) {
+                for (MultitouchEvent *fourFingerEvent in self.recentFourFingerTouches) {
                     for (MultitouchTouch *touch in fourFingerEvent.touches) {
                         totalCount++;
                         totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
                     }
                 }
                 
-                NSCountedSet *countedBeforeFourFingerTouches = [[NSCountedSet alloc] initWithArray:beforeFourFingerTouches];
+                NSCountedSet *countedBeforeFourFingerTouches = [[NSCountedSet alloc] initWithArray:self.beforeFourFingerTouches];
                 if ((totalVelocity / totalCount) <= 0.46 && [countedBeforeFourFingerTouches countForObject:@3] < 3 && [countedBeforeFourFingerTouches countForObject:@5] < 3) {
                     [self shouldStartDetectingGesture];
                 }
             }
             
-            beforeFourFingerTouches = [NSArray arrayWithObjects:[beforeFourFingerTouches objectAtIndex:1], [beforeFourFingerTouches objectAtIndex:2], [NSNumber numberWithInt:activeTouches], nil];
+            self.beforeFourFingerTouches = [NSArray arrayWithObjects:[self.beforeFourFingerTouches objectAtIndex:1], [self.beforeFourFingerTouches objectAtIndex:2], [NSNumber numberWithInt:activeTouches], nil];
             
-            [recentFourFingerTouches removeAllObjects];
+            [self.recentFourFingerTouches removeAllObjects];
 		}
 	}
 }
 
 - (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type {
-	if (appController.gestureSetupController.setupModel.multitouchOption) {
-		if (recognitionView.detectingInput) {
+	if (self.appController.gestureSetupController.setupModel.multitouchOption) {
+		if (self.recognitionView.detectingInput) {
 			if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
-				[recognitionView finishDetectingGesture:YES];
+				[self.recognitionView finishDetectingGesture:YES];
 				return event;
 			}
 			else {
 				return NULL;
 			}
 		}
-		else if (appController.gestureSetupController.setupView.detectingInput) {
+		else if (self.appController.gestureSetupController.setupView.detectingInput) {
 			if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
-				[appController.gestureSetupController.setupView finishDetectingGesture:YES];
+				[self.appController.gestureSetupController.setupView finishDetectingGesture:YES];
 				return event;
 			}
 			else {
@@ -158,14 +175,14 @@
 			}
 		}
 	}
-	else if (type == kCGEventRightMouseDown && recognitionWindow.alphaValue <= 0) {
-		if ([[NSDate date] timeIntervalSinceDate:recentRightClickDate] * 1000 < 420) {
+	else if (type == kCGEventRightMouseDown && self.recognitionWindow.alphaValue <= 0) {
+		if ([[NSDate date] timeIntervalSinceDate:self.recentRightClickDate] * 1000 < 420) {
 			[self shouldStartDetectingGesture];
             
-			recentRightClickDate = [NSDate date];
+			self.recentRightClickDate = [NSDate date];
 		}
 		else {
-			recentRightClickDate = [NSDate date];
+			self.recentRightClickDate = [NSDate date];
 		}
 	}
     
@@ -192,7 +209,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 	[[NSAnimationContext currentContext] setCompletionHandler: ^{
 	    [self toggleOutRecognitionWindow:NO];
 	}];
-	[recognitionWindow.animator setAlphaValue:0.0];
+	[self.recognitionWindow.animator setAlphaValue:0.0];
 	[NSAnimationContext endGrouping];
 }
 
@@ -208,22 +225,22 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 - (void)toggleInRecognitionWindow {
 	[self layoutRecognitionWindow];
     
-	recognitionWindow.alphaValue = 1.0;
-	[recognitionWindow orderFrontRegardless];
-	[recognitionWindow makeKeyWindow];
+	self.recognitionWindow.alphaValue = 1.0;
+	[self.recognitionWindow orderFrontRegardless];
+	[self.recognitionWindow makeKeyWindow];
 }
 
 - (void)hideRecognitionWindow {
-	recognitionWindow.alphaValue = 0.0;
-	[recognitionWindow orderOut:self];
-	[recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
+	self.recognitionWindow.alphaValue = 0.0;
+	[self.recognitionWindow orderOut:self];
+	[self.recognitionWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
 	[NSApp hide:self];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
-	if (recognitionWindow.alphaValue > 0) {
-		if (recognitionView.detectingInput) {
-			[recognitionView finishDetectingGesture:YES];
+	if (self.recognitionWindow.alphaValue > 0) {
+		if (self.recognitionView.detectingInput) {
+			[self.recognitionView finishDetectingGesture:YES];
 		}
 	}
 }
@@ -238,9 +255,9 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
     
 	NSRect windowRect = NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height);
     
-	if (appController.gestureSetupController.setupModel.fullscreenOption) {
-		recognitionBackground.alphaValue = 0.91;
-		recognitionBackground.roundRadius = 0;
+	if (self.appController.gestureSetupController.setupModel.fullscreenOption) {
+		self.recognitionBackground.alphaValue = 0.91;
+		self.recognitionBackground.roundRadius = 0;
 	}
 	else {
         windowRect.size.height /= 2.3;
@@ -248,41 +265,41 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
         windowRect.origin.x += (screenRect.size.width - windowRect.size.width) / 2;
         windowRect.origin.y += (screenRect.size.height - windowRect.size.height) / 2;
         
-		recognitionBackground.alphaValue = 0.94;
-		recognitionBackground.roundRadius = windowRect.size.height / 48;
+		self.recognitionBackground.alphaValue = 0.94;
+		self.recognitionBackground.roundRadius = windowRect.size.height / 48;
 	}
     
-	[recognitionWindow setFrame:windowRect display:NO];
+	[self.recognitionWindow setFrame:windowRect display:NO];
     
 	NSRect recognitionRect = NSMakeRect(0, 0, windowRect.size.width, windowRect.size.height);
-	[recognitionView setFrame:recognitionRect];
-	[recognitionBackground setFrame:recognitionRect];
+	[self.recognitionView setFrame:recognitionRect];
+	[self.recognitionBackground setFrame:recognitionRect];
     
 	NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - (recognitionRect.size.height / 2)) / 2,
 	                                  recognitionRect.size.height / 3.4,
 	                                  recognitionRect.size.height / 2,
 	                                  recognitionRect.size.height / 2);
-	[appIconAlert setFrame:alertIconRect];
+	[self.appIconAlert setFrame:alertIconRect];
     
 	NSRect alertDescriptionRect = NSMakeRect(0,
 	                                         recognitionRect.size.height / 5.5,
 	                                         recognitionRect.size.width,
 	                                         recognitionRect.size.height / 12);
-	[appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 26]];
-	[appDescriptionAlert setFrame:alertDescriptionRect];
+	[self.appDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 26]];
+	[self.appDescriptionAlert setFrame:alertDescriptionRect];
     
 	NSRect partialIconRect = NSMakeRect(recognitionRect.size.width / 40,
 	                                    recognitionRect.size.width / 50,
 	                                    recognitionRect.size.width / 6.4,
 	                                    recognitionRect.size.width / 6.4);
-	[partialIconAlert setFrame:partialIconRect];
+	[self.partialIconAlert setFrame:partialIconRect];
     
 	NSRect partialDescriptionRect = NSMakeRect(recognitionRect.size.width / 5,
 	                                           recognitionRect.size.width / 40,
 	                                           recognitionRect.size.width,
 	                                           recognitionRect.size.width / 28);
-	[partialDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 40]];
-	[partialDescriptionAlert setFrame:partialDescriptionRect];
+	[self.partialDescriptionAlert setFont:[NSFont fontWithName:@"Lucida Grande" size:recognitionRect.size.width / 40]];
+	[self.partialDescriptionAlert setFrame:partialDescriptionRect];
 }
 
 #pragma mark -

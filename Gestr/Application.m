@@ -2,20 +2,18 @@
 
 @implementation Application
 
-@synthesize bundleId;
-
-- (id)initWithDisplayName:(NSString *)_displayName icon:(NSImage *)_icon bundleId:(NSString *)_bundleId {
-	NSString *_launchId = _bundleId;
+- (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon bundleId:(NSString *)bundleId {
+	NSString *launchId = bundleId;
     
-	self = [super initWithDisplayName:_displayName launchId:_launchId icon:_icon];
+	self = [super initWithDisplayName:displayName launchId:launchId icon:icon];
     
-	bundleId = _bundleId;
+	_bundleId = bundleId;
     
 	return self;
 }
 
 - (void)launch {
-	[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
+	[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:self.bundleId options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
 }
 
 @end
