@@ -14,7 +14,7 @@
     
 	if (chrome.windows.count == 0) {
 		[chrome.windows addObject:[[[chrome classForScriptingClass:@"window"] alloc] init]];
-		((ChromeWindow *)[chrome.windows objectAtIndex:0]).activeTab.URL = self.url;
+		((ChromeWindow *)(chrome.windows)[0]).activeTab.URL = self.url;
 	}
 	else {
 		BOOL tabExists = NO;
@@ -22,7 +22,7 @@
 		ChromeWindow *window = nil;
 		for (window in chrome.windows) {
 			for (int i = 0; i < window.tabs.count; i++) {
-				ChromeTab *tab = [window.tabs objectAtIndex:i];
+				ChromeTab *tab = (window.tabs)[i];
 				if ([[[self class] stripUrl:tab.URL] isEqualToString:[[self class] stripUrl:self.url]]) {
 					tabIndex = i;
 					tabExists = YES;
@@ -40,7 +40,7 @@
 		}
 		else {
 			ChromeTab *newTab = [[[chrome classForScriptingClass:@"tab"] alloc] initWithProperties:@{ @"URL": self.url }];
-			window = [chrome.windows objectAtIndex:0];
+			window = (chrome.windows)[0];
 			[window.tabs addObject:newTab];
 			window.index = 1;
 		}

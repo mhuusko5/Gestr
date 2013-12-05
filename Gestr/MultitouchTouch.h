@@ -4,12 +4,8 @@
 
 static int MultitouchTouchStateActive = 4;
 
-@interface MultitouchTouch : NSObject {
-	MultitouchEvent *event;
-	NSNumber *identifier;
-	int state;
-	float x, y, minorAxis, majorAxis, angle, size, velX, velY;
-}
+@interface MultitouchTouch : NSObject
+
 @property MultitouchEvent *event;
 @property NSNumber *identifier;
 @property int state;
@@ -22,6 +18,6 @@ static int MultitouchTouchStateActive = 4;
 @property float velX;
 @property float velY;
 
-- (id)initWithMTTouch:(MTTouch *)touch andMultitouchEvent:(MultitouchEvent *)_event;
+- (id)initWithMTTouch:(MTTouch *)touch andMultitouchEvent:(MultitouchEvent *)event;
 
 @end

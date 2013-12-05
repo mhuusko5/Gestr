@@ -45,16 +45,16 @@
 			self.mouseStrokeIndex++;
 		}
         
-		NSNumber *identity = [NSNumber numberWithInt:self.mouseStrokeIndex];
+		NSNumber *identity = @(self.mouseStrokeIndex);
         
-		if (![self.gestureStrokes objectForKey:identity]) {
+		if (!(self.gestureStrokes)[identity]) {
 			[self.orderedStrokeIds addObject:identity];
-			[self.gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+			(self.gestureStrokes)[identity] = [[GestureStroke alloc] init];
 		}
         
 		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / self.frame.size.height) * GUBoundingBoxSize andStrokeId:[identity intValue]];
         
-		[[self.gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+		[(self.gestureStrokes)[identity] addPoint:detectorPoint];
         
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
@@ -63,10 +63,10 @@
 			[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 			[tempPath moveToPoint:drawPoint];
             
-			[self.touchPaths setObject:tempPath forKey:identity];
+			(self.touchPaths)[identity] = tempPath;
 		}
 		else if ([mouseType isEqualToString:@"drag"]) {
-			NSBezierPath *tempPath = [self.touchPaths objectForKey:identity];
+			NSBezierPath *tempPath = (self.touchPaths)[identity];
 			[tempPath lineToPoint:drawPoint];
 		}
 		else if ([mouseType isEqualToString:@"up"]) {
@@ -80,7 +80,7 @@
 				return;
 			}
             
-			NSBezierPath *tempPath = [self.touchPaths objectForKey:identity];
+			NSBezierPath *tempPath = (self.touchPaths)[identity];
 			[tempPath lineToPoint:drawPoint];
 		}
         
@@ -124,10 +124,10 @@
                         
 						NSNumber *identity = touch.identifier;
                         
-						if (![self.gestureStrokes objectForKey:identity]) {
+						if (!(self.gestureStrokes)[identity]) {
 							if (self.orderedStrokeIds.count < 3) {
 								[self.orderedStrokeIds addObject:identity];
-								[self.gestureStrokes setObject:[[GestureStroke alloc] init] forKey:identity];
+								(self.gestureStrokes)[identity] = [[GestureStroke alloc] init];
 							}
 							else {
 								continue;
@@ -136,13 +136,13 @@
                         
 						GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:drawPoint.x * GUBoundingBoxSize andY:drawPoint.y * GUBoundingBoxSize andStrokeId:[identity intValue]];
                         
-						[[self.gestureStrokes objectForKey:identity] addPoint:detectorPoint];
+						[(self.gestureStrokes)[identity] addPoint:detectorPoint];
                         
 						drawPoint.x *= self.frame.size.width;
                         drawPoint.y *= self.frame.size.height;
                         
                         NSBezierPath *tempPath;
-                        if ((tempPath = [self.touchPaths objectForKey:identity])) {
+                        if ((tempPath = (self.touchPaths)[identity])) {
                             [tempPath lineToPoint:drawPoint];
                         }
                         else {
@@ -152,7 +152,7 @@
                             [tempPath setLineJoinStyle:NSRoundLineJoinStyle];
                             [tempPath moveToPoint:drawPoint];
                             
-                            [self.touchPaths setObject:tempPath forKey:identity];
+                            (self.touchPaths)[identity] = tempPath;
                         }
 					}
 				}
@@ -212,7 +212,7 @@
     if (!ignore) {
         NSMutableArray *orderedStrokes = [NSMutableArray array];
         for (int i = 0; i < self.orderedStrokeIds.count; i++) {
-            [orderedStrokes addObject:[self.gestureStrokes objectForKey:[self.orderedStrokeIds objectAtIndex:i]]];
+            [orderedStrokes addObject:(self.gestureStrokes)[(self.orderedStrokeIds)[i]]];
         }
         
         [self.setupController saveGestureWithStrokes:orderedStrokes];
@@ -251,9 +251,9 @@
 			}
             
 			for (int strokeIndex = 0; strokeIndex < gesture.strokes.count; strokeIndex++) {
-				GestureStroke *cStroke = [gesture.strokes objectAtIndex:strokeIndex];
+				GestureStroke *cStroke = (gesture.strokes)[strokeIndex];
 				if (pointIndex < cStroke.pointCount) {
-					GesturePoint *cPoint = [cStroke.points objectAtIndex:pointIndex];
+					GesturePoint *cPoint = (cStroke.points)[pointIndex];
                     
 					NSPoint drawPoint = NSMakePoint([cPoint getX] / GUBoundingBoxSize * self.frame.size.width, [cPoint getY] / GUBoundingBoxSize * self.frame.size.height);
                     
@@ -265,14 +265,14 @@
 						[tempPath setLineCapStyle:NSRoundLineCapStyle];
 						[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 						[tempPath moveToPoint:drawPoint];
-						[self.touchPaths setObject:tempPath forKey:ident];
+						(self.touchPaths)[ident] = tempPath;
 					}
 					else if (pointIndex > 1 && pointIndex < [cStroke pointCount]) {
-						NSBezierPath *tempPath = [self.touchPaths objectForKey:ident];
+						NSBezierPath *tempPath = (self.touchPaths)[ident];
 						[tempPath lineToPoint:drawPoint];
 					}
 					else if (pointIndex == [cStroke pointCount]) {
-						NSBezierPath *tempPath = [self.touchPaths objectForKey:ident];
+						NSBezierPath *tempPath = (self.touchPaths)[ident];
 						[tempPath lineToPoint:drawPoint];
 						[self.touchPaths removeObjectForKey:ident];
 					}

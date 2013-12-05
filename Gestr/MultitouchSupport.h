@@ -1,17 +1,17 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
     typedef struct {
         float x;
         float y;
     } MTPoint;
-    
+
     typedef struct {
         MTPoint position;
         MTPoint velocity;
     } MTVector;
-    
+
     typedef struct {
         int frame;
         double timestamp;
@@ -29,21 +29,21 @@ extern "C" {
         int unknown5[2];
         float unknown6;
     } MTTouch;
-    
+
     typedef void *MTDeviceRef;
     typedef int (*MTContactCallbackFunction)(int, MTTouch *, int, double, int);
-    
+
     MTDeviceRef MTDeviceCreateDefault();
     CFMutableArrayRef MTDeviceCreateList(void);
-    
+
     void MTRegisterContactFrameCallback(MTDeviceRef, MTContactCallbackFunction);
     void MTUnregisterContactFrameCallback(MTDeviceRef, MTContactCallbackFunction);
-    
+
     void MTDeviceStart(MTDeviceRef, int);
     void MTDeviceStop(MTDeviceRef);
-    
+
     void MTDeviceRelease(MTDeviceRef);
-    
+
 #ifdef __cplusplus
 }
 #endif

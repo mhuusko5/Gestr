@@ -161,8 +161,9 @@
 	self.systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
 	for (Application *maybeFinder in self.systemAppArray) {
 		if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
+            Application *finder = maybeFinder;
 			[self.systemAppArray removeObject:maybeFinder];
-			[self.systemAppArray insertObject:maybeFinder atIndex:0];
+			[self.systemAppArray insertObject:finder atIndex:0];
 			break;
 		}
 	}
@@ -183,7 +184,7 @@
 			if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
 				NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
                 
-				NSString *bundleId = [dict objectForKey:@"CFBundleIdentifier"];
+				NSString *bundleId = dict[@"CFBundleIdentifier"];
 				NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                 
@@ -278,14 +279,14 @@
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
 	if (loginItems) {
 		UInt32 seed = 0U;
-		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
+		NSArray *currentLoginItems = (__bridge NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
 		for (id itemObject in currentLoginItems) {
-			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
+			LSSharedFileListItemRef item = (__bridge LSSharedFileListItemRef)itemObject;
 			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
 			CFURLRef URL = NULL;
 			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
 			if (err == noErr) {
-				foundIt = CFEqual(URL, itemURL);
+				foundIt = CFEqual(URL, (__bridge CFTypeRef)(itemURL));
 				CFRelease(URL);
 				if (foundIt) {
 					break;
@@ -306,14 +307,14 @@
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
 	if (loginItems) {
 		UInt32 seed = 0U;
-		NSArray *currentLoginItems = [NSMakeCollectable(LSSharedFileListCopySnapshot(loginItems, &seed)) autorelease];
+		NSArray *currentLoginItems = (__bridge NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
 		for (id itemObject in currentLoginItems) {
-			LSSharedFileListItemRef item = (LSSharedFileListItemRef)itemObject;
+			LSSharedFileListItemRef item = (__bridge LSSharedFileListItemRef)itemObject;
 			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
 			CFURLRef URL = NULL;
 			OSStatus err = LSSharedFileListItemResolve(item, resolutionFlags, &URL, /*outRef*/ NULL);
 			if (err == noErr) {
-				Boolean foundIt = CFEqual(URL, itemURL);
+				Boolean foundIt = CFEqual(URL, (__bridge CFTypeRef)(itemURL));
 				CFRelease(URL);
 				if (foundIt) {
 					existingItem = item;
@@ -322,7 +323,7 @@
 			}
 		}
 		if (self.loginStartOption && (existingItem == NULL)) {
-			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (CFURLRef)itemURL, NULL, NULL);
+			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (__bridge CFURLRef)itemURL, NULL, NULL);
 		}
 		else if (!self.loginStartOption && (existingItem != NULL)) {
 			LSSharedFileListItemRemove(loginItems, existingItem);

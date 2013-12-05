@@ -11,7 +11,7 @@ static const int NSStatusItemPriority = 8001;
 @implementation NSStatusItemPrioritizer
 
 + (void)restartSystemUIServer {
-    NSTask *killSystemUITask = [[[NSTask alloc] init] autorelease];
+    NSTask *killSystemUITask = [[NSTask alloc] init];
     NSMutableArray *args = [NSMutableArray array];
     [args addObject:@"SystemUIServer"];
     [args addObject:@"-HUP"];

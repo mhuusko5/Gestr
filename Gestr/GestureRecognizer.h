@@ -4,9 +4,8 @@
 #import "GestureTemplate.h"
 #import "GestureResult.h"
 
-@interface GestureRecognizer : NSObject {
-	NSMutableArray *loadedGestures;
-}
+@interface GestureRecognizer : NSObject
+
 @property NSMutableArray *loadedGestures;
 
 - (GestureResult *)recognizeGestureWithStrokes:(NSMutableArray *)strokes;

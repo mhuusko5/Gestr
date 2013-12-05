@@ -1,8 +1,8 @@
 @interface Launchable : NSObject
 
-@property (assign) NSString *displayName;
-@property (assign) NSString *launchId;
-@property (assign) NSImage *icon;
+@property NSString *displayName;
+@property NSString *launchId;
+@property NSImage *icon;
 
 - (id)initWithDisplayName:(NSString *)displayName launchId:(NSString *)launchId icon:(NSImage *)icon;
 - (void)launchWithNewThread:(BOOL)newThread;

@@ -1,9 +1,7 @@
 #import <Foundation/Foundation.h>
 
-@interface GestureResult : NSObject {
-	NSString *gestureIdentity;
-	int score;
-}
+@interface GestureResult : NSObject
+
 @property NSString *gestureIdentity;
 @property int score;
 

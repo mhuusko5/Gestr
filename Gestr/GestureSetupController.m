@@ -130,7 +130,7 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-	Launchable *launchable = [[self currentLaunchableArray] objectAtIndex:row];
+	Launchable *launchable = [self currentLaunchableArray][row];
 	result.imageView.image = launchable.icon;
 	result.textField.stringValue = launchable.displayName;
     
@@ -151,7 +151,7 @@
 	if (self.launchableSelectedIndex >= 0) {
 		BOOL gestureExistsForSelectedApp = NO;
         
-		gestureExistsForSelectedApp = ([self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId] != nil);
+		gestureExistsForSelectedApp = ([self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][self.launchableSelectedIndex]).launchId] != nil);
         
 		if (gestureExistsForSelectedApp) {
 			[self.showGestureButton setEnabled:YES];
@@ -208,7 +208,7 @@
 #pragma mark -
 #pragma mark Setup Utilities
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes {
-	Launchable *gestureToSaveLaunchable = [[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex];
+	Launchable *gestureToSaveLaunchable = [self currentLaunchableArray][self.launchableSelectedIndex];
     
 	[self.appController.gestureRecognitionController.recognitionModel saveGestureWithStrokes:gestureStrokes andIdentity:gestureToSaveLaunchable.launchId];
     
@@ -231,7 +231,7 @@
     
 	if (self.launchableSelectedIndex >= 0) {
 		@try {
-			Gesture *gestureToShow = [self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId];
+			Gesture *gestureToShow = [self.appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][self.launchableSelectedIndex]).launchId];
 			self.showGestureThread = [[NSThread alloc] initWithTarget:self.setupView selector:@selector(showGesture:) object:gestureToShow];
 			[self.showGestureThread start];
 		}
@@ -243,7 +243,7 @@
 
 - (IBAction)clearSelectedGesture:(id)sender {
 	if (self.launchableSelectedIndex >= 0) {
-		[self.appController.gestureRecognitionController.recognitionModel deleteGestureWithName:((Launchable *)[[self currentLaunchableArray] objectAtIndex:self.launchableSelectedIndex]).launchId];
+		[self.appController.gestureRecognitionController.recognitionModel deleteGestureWithName:((Launchable *)[self currentLaunchableArray][self.launchableSelectedIndex]).launchId];
 	}
     
 	[self updateSetupControls];

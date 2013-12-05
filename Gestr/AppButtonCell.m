@@ -152,7 +152,7 @@ static NSString *const AppButtonReturnKeyEquivalent = @"\r";
 		textColor = [myWhiteColor lightenColorByValue:0.6];
 	}
     
-	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:AppButtonTextFont, NSFontAttributeName, textColor, NSForegroundColorAttributeName, textShadow, NSShadowAttributeName, nil];
+	NSDictionary *attributes = @{NSFontAttributeName: AppButtonTextFont, NSForegroundColorAttributeName: textColor, NSShadowAttributeName: textShadow};
 	NSAttributedString *attrLabel = [[NSAttributedString alloc] initWithString:label attributes:attributes];
 	NSSize labelSize = attrLabel.size;
 	NSRect labelRect = NSMakeRect(NSMidX(frame) - (labelSize.width / 2.f), 1 + NSMidY(frame) - (labelSize.height / 2.f), labelSize.width, labelSize.height);
@@ -174,7 +174,7 @@ static NSString *const AppButtonReturnKeyEquivalent = @"\r";
 		textColor = [myWhiteColor lightenColorByValue:0.6];
 	}
     
-	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:AppButtonTextFont, NSFontAttributeName, textColor, NSForegroundColorAttributeName, textShadow, NSShadowAttributeName, nil];
+	NSDictionary *attributes = @{NSFontAttributeName: AppButtonTextFont, NSForegroundColorAttributeName: textColor, NSShadowAttributeName: textShadow};
 	NSAttributedString *attrLabel = [[NSAttributedString alloc] initWithString:label attributes:attributes];
 	NSSize labelSize = attrLabel.size;
 	NSRect labelRect = NSMakeRect(frame.origin.x + AppButtonCheckboxTextOffset, NSMidY(frame) - (labelSize.height / 2.f), labelSize.width, labelSize.height);

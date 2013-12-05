@@ -2,7 +2,7 @@
 
 @interface GestureRecognitionModel ()
 
-@property NSUserDefaults *userDefaults;
+@property NSUserDefaults *storage;
 
 @property NSMutableDictionary *gestureDictionary;
 
@@ -13,7 +13,7 @@
 - (id)init {
 	self = [super init];
     
-	_userDefaults = [NSUserDefaults standardUserDefaults];
+	_storage = [NSUserDefaults standardUserDefaults];
     
 	return self;
 }
@@ -57,7 +57,7 @@
 	NSMutableDictionary *gestures;
 	@try {
 		NSData *gestureData;
-		if ((gestureData = [self.userDefaults objectForKey:@"Gestures"])) {
+		if ((gestureData = [self.storage objectForKey:@"Gestures"])) {
 			gestures = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:gestureData]];
 		}
 		else {
@@ -73,8 +73,8 @@
 }
 
 - (void)saveGestureDictionary {
-	[self.userDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.gestureDictionary] forKey:@"Gestures"];
-	[self.userDefaults synchronize];
+	[self.storage setObject:[NSKeyedArchiver archivedDataWithRootObject:self.gestureDictionary] forKey:@"Gestures"];
+	[self.storage synchronize];
 }
 
 #pragma mark -
@@ -89,7 +89,7 @@
 	if (inputPointCount > GUMinimumPointCount) {
 		Gesture *gestureToSave = [[Gesture alloc] initWithIdentity:identity andStrokes:gestureStrokes];
         
-        [self.gestureDictionary setObject:gestureToSave forKey:identity];
+        (self.gestureDictionary)[identity] = gestureToSave;
         [self saveGestureDictionary];
         
         [self.gestureDetector addGesture:gestureToSave];
@@ -97,7 +97,7 @@
 }
 
 - (Gesture *)getGestureWithIdentity:(NSString *)identity {
-	Gesture *gesture = [self.gestureDictionary objectForKey:identity];
+	Gesture *gesture = (self.gestureDictionary)[identity];
 	if (gesture && gesture.identity && gesture.strokes && gesture.strokes.count > 0) {
 		return gesture;
 	}

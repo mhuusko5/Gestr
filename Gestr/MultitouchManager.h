@@ -4,11 +4,8 @@
 #import "MultitouchEvent.h"
 #import "MultitouchListener.h"
 
-@interface MultitouchManager : NSObject {
-	NSMutableArray *multitouchListeners;
-	NSMutableArray *multitouchDevices;
-	BOOL forwardingMultitouchEventsToListeners;
-}
+@interface MultitouchManager : NSObject
+
 @property (readonly) BOOL forwardingMultitouchEventsToListeners;
 
 - (void)startForwardingMultitouchEventsToListeners;

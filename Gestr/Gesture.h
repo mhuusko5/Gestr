@@ -2,16 +2,13 @@
 #import "GestureUtils.h"
 #import "GestureTemplate.h"
 
-@interface Gesture : NSObject <NSCopying, NSCoding> {
-	NSMutableArray *strokes;
-	NSMutableArray *templates;
-	NSString *identity;
-}
+@interface Gesture : NSObject <NSCopying, NSCoding>
+
 @property NSString *identity;
 @property NSMutableArray *strokes;
 @property NSMutableArray *templates;
 
-- (id)initWithIdentity:(NSString *)_identity andStrokes:(NSMutableArray *)_strokes;
+- (id)initWithIdentity:(NSString *)identity andStrokes:(NSMutableArray *)strokes;
 - (void)generateTemplates;
 - (void)encodeWithCoder:(NSCoder *)coder;
 - (id)initWithCoder:(NSCoder *)coder;

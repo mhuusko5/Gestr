@@ -192,7 +192,7 @@
 			textColor = [myWhiteColor darkenColorByValue:0.1];
 		}
         
-		NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:AppSegControlTextFont, NSFontAttributeName, textColor, NSForegroundColorAttributeName, textShadow, NSShadowAttributeName, nil];
+		NSDictionary *attributes = @{NSFontAttributeName: AppSegControlTextFont, NSForegroundColorAttributeName: textColor, NSShadowAttributeName: textShadow};
 		NSAttributedString *attrLabel = [[NSAttributedString alloc] initWithString:label attributes:attributes];
 		NSSize labelSize = attrLabel.size;
 		if (image) {

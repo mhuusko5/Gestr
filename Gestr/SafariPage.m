@@ -21,7 +21,7 @@
 		SafariWindow *window = nil;
 		for (window in safari.windows) {
 			for (int i = 0; i < window.tabs.count; i++) {
-				SafariTab *tab = [window.tabs objectAtIndex:i];
+				SafariTab *tab = (window.tabs)[i];
 				if ([[[self class] stripUrl:tab.URL] isEqualToString:[[self class] stripUrl:self.url]]) {
 					tabIndex = i;
 					tabExists = YES;
@@ -34,12 +34,12 @@
 		}
         
 		if (tabExists) {
-			window.currentTab = [window.tabs objectAtIndex:tabIndex];
+			window.currentTab = (window.tabs)[tabIndex];
 			window.index = 1;
 		}
 		else {
 			SafariTab *newTab = [[[safari classForScriptingClass:@"tab"] alloc] initWithProperties:@{ @"URL": self.url }];
-			window = [safari.windows objectAtIndex:0];
+			window = (safari.windows)[0];
 			[window.tabs addObject:newTab];
 			window.currentTab = newTab;
 			window.index = 1;

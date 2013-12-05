@@ -2,50 +2,48 @@
 
 @implementation GestureTemplate
 
-@synthesize stroke, startUnitVector, originalStroke;
-
-- (id)initWithPoints:(GestureStroke *)_points {
+- (id)initWithPoints:(GestureStroke *)points {
 	self = [super init];
-    
-	originalStroke = _points;
-    
-	stroke = GUResample(originalStroke);
-	stroke = GUScale(stroke);
-	stroke = GUTranslateToOrigin(stroke);
-    
-	startUnitVector = GUCalcStartUnitVector(stroke);
-    
+
+	_originalStroke = points;
+
+	_stroke = GUResample(_originalStroke);
+	_stroke = GUScale(_stroke);
+	_stroke = GUTranslateToOrigin(_stroke);
+
+	_startUnitVector = GUCalcStartUnitVector(_stroke);
+
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:originalStroke forKey:@"originalStroke"];
-	[coder encodeObject:stroke forKey:@"stroke"];
-	[coder encodeObject:startUnitVector forKey:@"startUnitVector"];
+	[coder encodeObject:self.originalStroke forKey:@"originalStroke"];
+	[coder encodeObject:self.stroke forKey:@"stroke"];
+	[coder encodeObject:self.startUnitVector forKey:@"startUnitVector"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
-    
-	originalStroke = [coder decodeObjectForKey:@"originalStroke"];
-	stroke = [coder decodeObjectForKey:@"stroke"];
-	startUnitVector = [coder decodeObjectForKey:@"startUnitVector"];
-    
+
+	_originalStroke = [coder decodeObjectForKey:@"originalStroke"];
+	_stroke = [coder decodeObjectForKey:@"stroke"];
+	_startUnitVector = [coder decodeObjectForKey:@"startUnitVector"];
+
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	GestureTemplate *copy = [[GestureTemplate allocWithZone:zone] initWithPoints:[originalStroke copy]];
-    
+	GestureTemplate *copy = [[GestureTemplate allocWithZone:zone] initWithPoints:[self.originalStroke copy]];
+
 	return copy;
 }
 
 - (NSString *)description {
 	NSMutableString *desc = [[NSMutableString alloc] init];
-	for (GesturePoint *point in stroke.points) {
+	for (GesturePoint *point in self.stroke.points) {
 		[desc appendFormat:@"%@ \r", [point description]];
 	}
-    
+
 	return desc;
 }
 

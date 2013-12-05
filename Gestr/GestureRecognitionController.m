@@ -34,13 +34,13 @@
         [self.recognitionModel setup];
         
 		self.recentRightClickDate = [NSDate date];
-        self.beforeFourFingerTouches = [NSArray arrayWithObjects:@0, @0, @0, nil];
+        self.beforeFourFingerTouches = @[@0, @0, @0];
 		self.recentFourFingerTouches = [NSMutableArray array];
 	}
 }
 
 - (void)applicationDidFinishLaunching {
-	eventHandler = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleEvent, self);
+	eventHandler = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleEvent, (__bridge void *)(self));
 	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventHandler, 0);
 	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
 	CGEventTapEnable(eventHandler, YES);
@@ -147,7 +147,7 @@
                 }
             }
             
-            self.beforeFourFingerTouches = [NSArray arrayWithObjects:[self.beforeFourFingerTouches objectAtIndex:1], [self.beforeFourFingerTouches objectAtIndex:2], [NSNumber numberWithInt:activeTouches], nil];
+            self.beforeFourFingerTouches = @[(self.beforeFourFingerTouches)[1], (self.beforeFourFingerTouches)[2], @(activeTouches)];
             
             [self.recentFourFingerTouches removeAllObjects];
 		}
@@ -196,7 +196,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 		return eventRef;
 	}
     
-	return [(GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];
+	return [(__bridge GestureRecognitionController *)refcon handleEvent : eventRef withType : (int)type];
 }
 
 #pragma mark -
