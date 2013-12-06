@@ -279,7 +279,7 @@
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
 	if (loginItems) {
 		UInt32 seed = 0U;
-		NSArray *currentLoginItems = (__bridge NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
+		NSArray *currentLoginItems = (__bridge_transfer NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
 		for (id itemObject in currentLoginItems) {
 			LSSharedFileListItemRef item = (__bridge LSSharedFileListItemRef)itemObject;
 			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
@@ -307,7 +307,7 @@
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
 	if (loginItems) {
 		UInt32 seed = 0U;
-		NSArray *currentLoginItems = (__bridge NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
+		NSArray *currentLoginItems = (__bridge_transfer NSArray *)(LSSharedFileListCopySnapshot(loginItems, &seed));
 		for (id itemObject in currentLoginItems) {
 			LSSharedFileListItemRef item = (__bridge LSSharedFileListItemRef)itemObject;
 			UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
