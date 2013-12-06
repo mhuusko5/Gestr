@@ -104,7 +104,7 @@ static int mtEventHandler(int mtEventDeviceId, MTTouch *mtEventTouches, int mtEv
 		[multitouchTouches addObject:multitouchTouch];
 	}
 
-	multitouchEvent.touches = [NSArray arrayWithArray:multitouchTouches];
+	multitouchEvent.touches = multitouchTouches;
 
 	[[MultitouchManager sharedMultitouchManager] handleMultitouchEvent:multitouchEvent];
 
