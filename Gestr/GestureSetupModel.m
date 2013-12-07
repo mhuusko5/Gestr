@@ -10,16 +10,16 @@
 
 - (id)init {
 	self = [super init];
-    
+
 	_storage = [NSUserDefaults standardUserDefaults];
-    
+
 	return self;
 }
 
 #pragma mark -
 #pragma mark Setup
 - (void)setup {
-    [self fetchWebPageArray];
+	[self fetchWebPageArray];
 
 	[self fetchNormalAppArray];
 	[self fetchUtilitiesAppArray];
@@ -37,30 +37,30 @@
 #pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
-	for (ChromePage *page in self.webPageArray) {
+	for (ChromePage *page in _webPageArray) {
 		if ([page.launchId isEqualTo:identity]) {
 			return page;
 		}
 	}
-    
-	for (Application *app in self.normalAppArray) {
+
+	for (Application *app in _normalAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
 	}
-    
-	for (Application *app in self.utilitiesAppArray) {
+
+	for (Application *app in _utilitiesAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
 	}
-    
-	for (Application *app in self.systemAppArray) {
+
+	for (Application *app in _systemAppArray) {
 		if ([app.launchId isEqualTo:identity]) {
 			return app;
 		}
 	}
-    
+
 	return nil;
 }
 
@@ -69,27 +69,27 @@
 #pragma mark -
 #pragma mark Web Page Management
 - (NSMutableArray *)fetchWebPageArray {
-	self.webPageArray = [NSMutableArray array];
-    
-	[self.webPageArray addObjectsFromArray:[self fetchChromePages]];
-	[self.webPageArray addObjectsFromArray:[self fetchSafariPages]];
-    
-	self.webPageArray = [NSMutableArray arrayWithArray:[self.webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
+	_webPageArray = [NSMutableArray array];
+
+	[_webPageArray addObjectsFromArray:[self fetchChromePages]];
+	[_webPageArray addObjectsFromArray:[self fetchSafariPages]];
+
+	_webPageArray = [[_webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
 	    return [a.displayName compare:b.displayName];
-	}]];
-    
-	return self.webPageArray;
+	}] mutableCopy];
+
+	return _webPageArray;
 }
 
 - (NSMutableArray *)fetchChromePages {
 	NSMutableArray *chromePages = [NSMutableArray array];
-    
+
 	@try {
 		NSImage *chromeIcon;
 		if ((chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:@"/Applications/Google Chrome.app"]) || (chromeIcon = [[NSWorkspace sharedWorkspace] iconForFile:[@"~/Applications/Google Chrome.app" stringByExpandingTildeInPath]])) {
 			NSData *chromeBooksmarksData = [NSData dataWithContentsOfFile:[@"~/Library/Application Support/Google/Chrome/Default/Bookmarks" stringByExpandingTildeInPath]];
 			NSDictionary *chromeBookmarksJson = [NSJSONSerialization JSONObjectWithData:chromeBooksmarksData options:NSJSONReadingMutableContainers error:nil];
-            
+
 			NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
 			for (NSDictionary *bookmark in bookmarksBar) {
 				if ([[bookmark valueForKey:@"type"] isEqualToString:@"url"]) {
@@ -102,21 +102,21 @@
 	{
 		chromePages = [NSMutableArray array];
 	}
-    
+
 	return chromePages;
 }
 
 - (NSMutableArray *)fetchSafariPages {
 	NSMutableArray *safariPages = [NSMutableArray array];
-    
+
 	@try {
 		NSImage *safariIcon;
 		if ((safariIcon = [[NSWorkspace sharedWorkspace] iconForFile:@"/Applications/Safari.app"]) || (safariIcon = [[NSWorkspace sharedWorkspace] iconForFile:[@"~/Applications/Safari.app" stringByExpandingTildeInPath]])) {
 			NSData *safariBooksmarksData = [NSData dataWithContentsOfFile:[@"~/Library/Safari/Bookmarks.plist" stringByExpandingTildeInPath]];
 			NSDictionary *safariBookmarksPlist = [NSPropertyListSerialization propertyListWithData:safariBooksmarksData options:NSPropertyListImmutable format:nil error:nil];
-            
+
 			NSArray *bookmarksBar = nil;
-            
+
 			NSArray *bookmarkSections = [safariBookmarksPlist valueForKey:@"Children"];
 			for (NSDictionary *bookmarkSection in bookmarkSections) {
 				if ([[bookmarkSection valueForKey:@"Title"] isEqualToString:@"BookmarksBar"]) {
@@ -124,7 +124,7 @@
 					break;
 				}
 			}
-            
+
 			if (bookmarksBar) {
 				for (NSDictionary *bookmark in bookmarksBar) {
 					@try {
@@ -141,7 +141,7 @@
 	{
 		safariPages = [NSMutableArray array];
 	}
-    
+
 	return safariPages;
 }
 
@@ -150,24 +150,24 @@
 #pragma mark -
 #pragma mark Applications Management
 - (NSMutableArray *)fetchNormalAppArray {
-	return (self.normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
+	return (_normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchUtilitiesAppArray {
-	return (self.utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
+	return (_utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
 }
 
 - (NSMutableArray *)fetchSystemAppArray {
-	self.systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
-	for (Application *maybeFinder in self.systemAppArray) {
+	_systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
+	for (Application *maybeFinder in _systemAppArray) {
 		if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
-            Application *finder = maybeFinder;
-			[self.systemAppArray removeObject:maybeFinder];
-			[self.systemAppArray insertObject:finder atIndex:0];
+			Application *finder = maybeFinder;
+			[_systemAppArray removeObject:maybeFinder];
+			[_systemAppArray insertObject:finder atIndex:0];
 			break;
 		}
 	}
-	return self.systemAppArray;
+	return _systemAppArray;
 }
 
 - (NSMutableArray *)addApplicationsAtPath:(NSString *)path toArray:(NSMutableArray *)arr depth:(int)depth {
@@ -183,11 +183,11 @@
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
 			if ([[fileUrl pathExtension] isEqualToString:@"app"]) {
 				NSDictionary *dict = [[NSBundle bundleWithPath:[fileUrl path]] infoDictionary];
-                
+
 				NSString *bundleId = dict[@"CFBundleIdentifier"];
 				NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
-                
+
 				if (bundleId && ![bundleId isEqualToString:[[NSBundle mainBundle] bundleIdentifier]] && ![bundleId isEqualToString:@"com.mhuusko5.Tapr"]) {
 					[arr addObject:[[Application alloc] initWithDisplayName:displayName icon:icon bundleId:bundleId]];
 				}
@@ -197,7 +197,7 @@
 			}
 		}
 	}
-    
+
 	return arr;
 }
 
@@ -207,70 +207,70 @@
 #pragma mark Recognition Options
 - (int)fetchMinimumRecognitionScore {
 	id storedMinimumRecognitionScore;
-	if ((storedMinimumRecognitionScore = [self.storage objectForKey:@"minimumRecognitionScore"])) {
-		self.minimumRecognitionScore = [storedMinimumRecognitionScore intValue];
+	if ((storedMinimumRecognitionScore = [_storage objectForKey:@"minimumRecognitionScore"])) {
+		_minimumRecognitionScore = [storedMinimumRecognitionScore intValue];
 	}
 	else {
 		[self saveMinimumRecognitionScore:80];
 	}
-    
-	return self.minimumRecognitionScore;
+
+	return _minimumRecognitionScore;
 }
 
 - (void)saveMinimumRecognitionScore:(int)newScore {
-	[self.storage setInteger:(self.minimumRecognitionScore = newScore) forKey:@"minimumRecognitionScore"];
-	[self.storage synchronize];
+	[_storage setInteger:(_minimumRecognitionScore = newScore) forKey:@"minimumRecognitionScore"];
+	[_storage synchronize];
 }
 
 - (int)fetchReadingDelayTime {
 	id storedReadingDelayTime;
-	if ((storedReadingDelayTime = [self.storage objectForKey:@"readingDelayTime"])) {
-		self.readingDelayTime = [storedReadingDelayTime intValue];
+	if ((storedReadingDelayTime = [_storage objectForKey:@"readingDelayTime"])) {
+		_readingDelayTime = [storedReadingDelayTime intValue];
 	}
 	else {
 		[self saveReadingDelayTime:5];
 	}
-    
-	return self.readingDelayTime;
+
+	return _readingDelayTime;
 }
 
 - (void)saveReadingDelayTime:(int)newTime {
-	[self.storage setInteger:(self.readingDelayTime = newTime) forKey:@"readingDelayTime"];
-	[self.storage synchronize];
+	[_storage setInteger:(_readingDelayTime = newTime) forKey:@"readingDelayTime"];
+	[_storage synchronize];
 }
 
 - (BOOL)fetchMultitouchOption {
 	id storedMultitouchRecognition;
-	if ((storedMultitouchRecognition = [self.storage objectForKey:@"multitouchOption"])) {
-		self.multitouchOption = [storedMultitouchRecognition boolValue];
+	if ((storedMultitouchRecognition = [_storage objectForKey:@"multitouchOption"])) {
+		_multitouchOption = [storedMultitouchRecognition boolValue];
 	}
 	else {
 		[self saveMultitouchOption:[MultitouchManager systemIsMultitouchCapable]];
 	}
-    
-	return self.multitouchOption;
+
+	return _multitouchOption;
 }
 
 - (void)saveMultitouchOption:(BOOL)newChoice {
-	[self.storage setBool:(self.multitouchOption = newChoice) forKey:@"multitouchOption"];
-	[self.storage synchronize];
+	[_storage setBool:(_multitouchOption = newChoice) forKey:@"multitouchOption"];
+	[_storage synchronize];
 }
 
 - (BOOL)fetchFullscreenOption {
 	id storedFullscreenRecognition;
-	if ((storedFullscreenRecognition = [self.storage objectForKey:@"fullscreenOption"])) {
-		self.fullscreenOption = [storedFullscreenRecognition boolValue];
+	if ((storedFullscreenRecognition = [_storage objectForKey:@"fullscreenOption"])) {
+		_fullscreenOption = [storedFullscreenRecognition boolValue];
 	}
 	else {
 		[self saveFullscreenOption:NO];
 	}
-    
-	return self.fullscreenOption;
+
+	return _fullscreenOption;
 }
 
 - (void)saveFullscreenOption:(BOOL)newChoice {
-	[self.storage setBool:(self.fullscreenOption = newChoice) forKey:@"fullscreenOption"];
-	[self.storage synchronize];
+	[_storage setBool:(_fullscreenOption = newChoice) forKey:@"fullscreenOption"];
+	[_storage synchronize];
 }
 
 - (BOOL)fetchLoginStartOption {
@@ -295,13 +295,13 @@
 		}
 		CFRelease(loginItems);
 	}
-    
-	return (self.loginStartOption = foundIt);
+
+	return (_loginStartOption = foundIt);
 }
 
 - (void)saveLoginStartOption:(BOOL)newChoice {
-	self.loginStartOption = newChoice;
-    
+	_loginStartOption = newChoice;
+
 	NSURL *itemURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
 	LSSharedFileListItemRef existingItem = NULL;
 	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
@@ -322,10 +322,10 @@
 				}
 			}
 		}
-		if (self.loginStartOption && (existingItem == NULL)) {
+		if (_loginStartOption && (existingItem == NULL)) {
 			LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, (__bridge CFURLRef)itemURL, NULL, NULL);
 		}
-		else if (!self.loginStartOption && (existingItem != NULL)) {
+		else if (!_loginStartOption && (existingItem != NULL)) {
 			LSSharedFileListItemRemove(loginItems, existingItem);
 		}
 		CFRelease(loginItems);

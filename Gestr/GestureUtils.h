@@ -2,7 +2,7 @@
 #import "GestureStroke.h"
 #import "GesturePoint.h"
 
-#define GUBoundingBoxSize 400
+#define GUBoundingBoxSize 1000.0f
 
 #define GUGoldenRatio (0.5 * (-1.0 + sqrt(5.0)))
 
@@ -28,7 +28,6 @@ GestureStroke *GURotateBy(GestureStroke *points, float radians);
 GestureStroke *GUResample(GestureStroke *points);
 GestureStroke *GUScale(GestureStroke *points);
 GestureStroke *GUTranslateToOrigin(GestureStroke *points);
-GestureStroke *GUSplice(GestureStroke *originalPoints, id newVal, int i);
 float GUAngleBetweenUnitVectors(GesturePoint *unitVector1, GesturePoint *unitVector2);
 float GUPathDistance(GestureStroke *points1, GestureStroke *points2);
 GesturePoint *GUCalcStartUnitVector(GestureStroke *points);

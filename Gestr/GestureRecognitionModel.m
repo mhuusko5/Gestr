@@ -12,16 +12,16 @@
 
 - (id)init {
 	self = [super init];
-    
+
 	_storage = [NSUserDefaults standardUserDefaults];
-    
+
 	return self;
 }
 
 #pragma mark -
 #pragma mark Setup
 - (void)setup {
-    [self fetchAndLoadGestures];
+	[self fetchAndLoadGestures];
 }
 
 #pragma mark -
@@ -30,14 +30,14 @@
 #pragma mark Gesture Data
 - (void)fetchAndLoadGestures {
 	[self fetchGestureDictionary];
-    
-	self.gestureDetector = [[GestureRecognizer alloc] init];
-    
+
+	_gestureDetector = [[GestureRecognizer alloc] init];
+
 	@try {
-		for (id plistGestureKey in self.gestureDictionary) {
+		for (id plistGestureKey in _gestureDictionary) {
 			Gesture *plistGesture = [self getGestureWithIdentity:plistGestureKey];
 			if (plistGesture) {
-				[self.gestureDetector addGesture:plistGesture];
+				[_gestureDetector addGesture:plistGesture];
 			}
 			else {
 				@throw [NSException exceptionWithName:@"InvalidGesture" reason:@"Corrupted gesture data." userInfo:nil];
@@ -46,10 +46,10 @@
 	}
 	@catch (NSException *exception)
 	{
-		self.gestureDictionary = [NSMutableDictionary dictionary];
+		_gestureDictionary = [NSMutableDictionary dictionary];
 		[self saveGestureDictionary];
-        
-		self.gestureDetector = [[GestureRecognizer alloc] init];
+
+		_gestureDetector = [[GestureRecognizer alloc] init];
 	}
 }
 
@@ -57,8 +57,8 @@
 	NSMutableDictionary *gestures;
 	@try {
 		NSData *gestureData;
-		if ((gestureData = [self.storage objectForKey:@"Gestures"])) {
-			gestures = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:gestureData]];
+		if ((gestureData = [_storage objectForKey:@"Gestures"])) {
+			gestures = [((NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:gestureData])mutableCopy];
 		}
 		else {
 			gestures = [NSMutableDictionary dictionary];
@@ -68,13 +68,13 @@
 	{
 		gestures = [NSMutableDictionary dictionary];
 	}
-    
-	self.gestureDictionary = gestures;
+
+	_gestureDictionary = gestures;
 }
 
 - (void)saveGestureDictionary {
-	[self.storage setObject:[NSKeyedArchiver archivedDataWithRootObject:self.gestureDictionary] forKey:@"Gestures"];
-	[self.storage synchronize];
+	[_storage setObject:[NSKeyedArchiver archivedDataWithRootObject:_gestureDictionary] forKey:@"Gestures"];
+	[_storage synchronize];
 }
 
 #pragma mark -
@@ -82,22 +82,22 @@
 #pragma mark -
 #pragma mark Setup Utilities
 - (void)saveGestureWithStrokes:(NSMutableArray *)gestureStrokes andIdentity:(NSString *)identity {
-    int inputPointCount = 0;
+	int inputPointCount = 0;
 	for (GestureStroke *stroke in gestureStrokes) {
-		inputPointCount += [stroke pointCount];
+		inputPointCount += stroke.pointCount;
 	}
 	if (inputPointCount > GUMinimumPointCount) {
 		Gesture *gestureToSave = [[Gesture alloc] initWithIdentity:identity andStrokes:gestureStrokes];
-        
-        (self.gestureDictionary)[identity] = gestureToSave;
-        [self saveGestureDictionary];
-        
-        [self.gestureDetector addGesture:gestureToSave];
+
+		_gestureDictionary[identity] = gestureToSave;
+		[self saveGestureDictionary];
+
+		[_gestureDetector addGesture:gestureToSave];
 	}
 }
 
 - (Gesture *)getGestureWithIdentity:(NSString *)identity {
-	Gesture *gesture = (self.gestureDictionary)[identity];
+	Gesture *gesture = _gestureDictionary[identity];
 	if (gesture && gesture.identity && gesture.strokes && gesture.strokes.count > 0) {
 		return gesture;
 	}
@@ -107,10 +107,10 @@
 }
 
 - (void)deleteGestureWithName:(NSString *)identity {
-	[self.gestureDictionary removeObjectForKey:identity];
+	[_gestureDictionary removeObjectForKey:identity];
 	[self saveGestureDictionary];
-    
-	[self.gestureDetector removeGestureWithIdentity:identity];
+
+	[_gestureDetector removeGestureWithIdentity:identity];
 }
 
 #pragma mark -

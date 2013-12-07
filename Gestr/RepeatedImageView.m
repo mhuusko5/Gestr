@@ -9,16 +9,16 @@
 @implementation RepeatedImageView
 
 - (void)drawRect:(NSRect)dirtyRect {
-	if (!self.backgroundColor) {
-		self.backgroundColor = [NSColor colorWithPatternImage:self.image];
+	if (!_backgroundColor) {
+		_backgroundColor = [NSColor colorWithPatternImage:self.image];
 	}
-    
-	if (self.roundRadius > 0) {
-		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:dirtyRect xRadius:self.roundRadius yRadius:self.roundRadius];
+
+	if (_roundRadius > 0) {
+		NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:dirtyRect xRadius:_roundRadius yRadius:_roundRadius];
 		[path addClip];
 	}
-    
-	[self.backgroundColor set];
+
+	[_backgroundColor set];
 	NSRectFill(dirtyRect);
 }
 

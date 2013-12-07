@@ -17,12 +17,7 @@
 }
 
 - (void)sendMultitouchEvent:(MultitouchEvent *)event {
-	@try {
-		[self.target performSelector:self.callback onThread:self.thread withObject:event waitUntilDone:NO];
-	}
-	@catch (NSException *exception)
-	{
-	}
+	[_target performSelector:_callback onThread:_thread withObject:event waitUntilDone:NO];
 }
 
 @end

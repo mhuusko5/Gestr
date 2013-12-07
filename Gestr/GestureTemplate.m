@@ -17,9 +17,9 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:self.originalStroke forKey:@"originalStroke"];
-	[coder encodeObject:self.stroke forKey:@"stroke"];
-	[coder encodeObject:self.startUnitVector forKey:@"startUnitVector"];
+	[coder encodeObject:_originalStroke forKey:@"originalStroke"];
+	[coder encodeObject:_stroke forKey:@"stroke"];
+	[coder encodeObject:_startUnitVector forKey:@"startUnitVector"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -33,14 +33,14 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	GestureTemplate *copy = [[GestureTemplate allocWithZone:zone] initWithPoints:[self.originalStroke copy]];
+	GestureTemplate *copy = [[GestureTemplate allocWithZone:zone] initWithPoints:[_originalStroke copy]];
 
 	return copy;
 }
 
 - (NSString *)description {
 	NSMutableString *desc = [[NSMutableString alloc] init];
-	for (GesturePoint *point in self.stroke.points) {
+	for (GesturePoint *point in _stroke.points) {
 		[desc appendFormat:@"%@ \r", [point description]];
 	}
 

@@ -12,50 +12,49 @@
 }
 
 - (void)generateTemplates {
-	self.templates = [NSMutableArray array];
-
 	GestureStroke *allPoints = [[GestureStroke alloc] init];
-	for (GestureStroke *stroke in self.strokes) {
+	for (GestureStroke *stroke in _strokes) {
 		for (GesturePoint *point in stroke.points) {
 			[allPoints addPoint:point];
 		}
 	}
 
 	NSMutableArray *order = [NSMutableArray array];
-	for (int i = 0; i < self.strokes.count; i++) {
+	for (int i = 0; i < _strokes.count; i++) {
 		[order insertObject:@(i) atIndex:i];
 	}
 
-	NSMutableArray *unistrokes = GUMakeUnistrokes(self.strokes, GUHeapPermute((int)self.strokes.count, order, [NSMutableArray array]));
+	NSMutableArray *unistrokes = GUMakeUnistrokes(_strokes, GUHeapPermute((int)_strokes.count, order, [NSMutableArray array]));
 
+	_templates = [NSMutableArray array];
 	for (int j = 0; j < unistrokes.count; j++) {
-		[self.templates addObject:[[GestureTemplate alloc] initWithPoints:unistrokes[j]]];
+		[_templates addObject:[[GestureTemplate alloc] initWithPoints:unistrokes[j]]];
 	}
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:self.strokes forKey:@"strokes"];
-	[coder encodeObject:self.identity forKey:@"identity"];
+	[coder encodeObject:_strokes forKey:@"strokes"];
+	[coder encodeObject:_identity forKey:@"identity"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
 
-	self.strokes = [coder decodeObjectForKey:@"strokes"];
-	self.identity = [coder decodeObjectForKey:@"identity"];
+	_strokes = [coder decodeObjectForKey:@"strokes"];
+	_identity = [coder decodeObjectForKey:@"identity"];
 
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	Gesture *copy = [[Gesture allocWithZone:zone] initWithIdentity:[self.identity copy] andStrokes:[self.strokes copy]];
+	Gesture *copy = [[Gesture allocWithZone:zone] initWithIdentity:[_identity copy] andStrokes:[_strokes copy]];
 
 	return copy;
 }
 
 - (NSString *)description {
 	NSMutableString *desc = [[NSMutableString alloc] init];
-	for (GestureStroke *stroke in self.strokes) {
+	for (GestureStroke *stroke in _strokes) {
 		[desc appendFormat:@"%@ \r", [stroke description]];
 	}
 

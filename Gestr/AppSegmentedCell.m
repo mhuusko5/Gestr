@@ -50,12 +50,12 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	cellFrame.size.height += 5;
-    
+
 	CGContextRef ctx = [[NSGraphicsContext currentContext] graphicsPort];
 	if (![self isEnabled]) {
 		CGContextSetAlpha(ctx, AppSegControlDisabledAlpha);
 	}
-    
+
 	// The frame needs to be inset 0.5px to make the border line crisp
 	// because NSBezierPath draws the stroke centered on the bounds of the rect
 	// This means that 0.5px of the 1px stroke line will be outside the rect and the other half will be inside
@@ -69,31 +69,31 @@
 	if (!segmentCount) {
 		return;
 	}                              // Stop drawing if there are no segments
-    
+
 	[path addClip];
 	// Need to improvise a bit here because there is no public API to get the
 	// drawing rect of a specific segment
 	CGFloat currentOrigin = 0.0;
 	for (NSInteger i = 0; i < segmentCount; i++) {
 		CGFloat width = [self widthForSegment:i];
-        
+
 		// widthForSegment: returns 0 for autosized segments
 		// so we need to divide the width of the cell evenly between all the segments
 		// It will still break if one segment is much wider than the others
 		if (width == 0) {
 			width = (cellFrame.size.width - (AppSegControlDivderWidth * (segmentCount - 1))) / segmentCount;
 		}
-        
+
 		if (i != (segmentCount - 1)) {
 			width += AppSegControlDivderWidth;
 		}
-        
+
 		NSRect frame = NSMakeRect(bounds.origin.x + currentOrigin, bounds.origin.y, width, bounds.size.height);
 		[NSGraphicsContext saveGraphicsState];
 		if ([self isEnabled] && ![self isEnabledForSegment:i]) {
 			CGContextSetAlpha(ctx, AppSegControlDisabledAlpha);
 		}
-        
+
 		[self drawSegment:i inFrame:frame withView:controlView];
 		[NSGraphicsContext restoreGraphicsState];
 		currentOrigin += width;
@@ -144,7 +144,7 @@
 		NSBezierPath *path = [NSBezierPath bezierPathWithRect:frame];
 		[path fillWithInnerShadow:innerShadow];
 	}
-    
+
 	[self App_drawInteriorOfSegment:segment inFrame:frame inView:controlView];
 	NSEvent *currentEvent = [NSApp currentEvent]; // This is probably a dirty way of figuring out whether to highlight
 	if (currentEvent.type == NSLeftMouseDown && [self isEnabledForSegment:segment]) {
@@ -154,7 +154,7 @@
 			[NSBezierPath fillRect:frame];
 		}
 	}
-    
+
 	if (drawDivider) {
 		NSRect highlightRect = NSMakeRect(round(NSMaxX(frame) - 1.f), frame.origin.y, 1.f, frame.size.height);
 		[AppSegControlHighlightColor set];
@@ -177,13 +177,13 @@
 		CGFloat imageHeight = MIN(maxImageHeight, imageSize.height);
 		imageRect = NSMakeRect(round(NSMidX(frame) - (imageSize.width / 2.f)), round(NSMidY(frame) - (imageHeight / 2.f)), imageSize.width, imageHeight);
 	}
-    
+
 	if (label) {
 		NSShadow *textShadow = [NSShadow new];
 		[textShadow setShadowOffset:selected ? AppSegControlSelectedTextShadowOffset:AppSegControlTextShadowOffset];
 		[textShadow setShadowColor:AppSegControlTextShadowColor];
 		[textShadow setShadowBlurRadius:AppSegControlTextShadowBlurRadius];
-        
+
 		NSColor *textColor;
 		if (selected) {
 			textColor = myGreenColor;
@@ -191,19 +191,19 @@
 		else {
 			textColor = [myWhiteColor darkenColorByValue:0.1];
 		}
-        
-		NSDictionary *attributes = @{NSFontAttributeName: AppSegControlTextFont, NSForegroundColorAttributeName: textColor, NSShadowAttributeName: textShadow};
+
+		NSDictionary *attributes = @{ NSFontAttributeName : AppSegControlTextFont, NSForegroundColorAttributeName: textColor, NSShadowAttributeName: textShadow };
 		NSAttributedString *attrLabel = [[NSAttributedString alloc] initWithString:label attributes:attributes];
 		NSSize labelSize = attrLabel.size;
 		if (image) {
 			CGFloat totalContentWidth = labelSize.width + imageRect.size.width + AppSegControlImageLabelMargin;
 			imageRect.origin.x = round(NSMidX(frame) - (totalContentWidth / 2.f));
 		}
-        
+
 		NSRect labelRect = NSMakeRect((image == nil) ? (NSMidX(frame) - (labelSize.width / 2.f)) : (NSMaxX(imageRect) + AppSegControlImageLabelMargin), -4 + NSMidY(frame) - (labelSize.height / 2.f), labelSize.width, labelSize.height);
 		[attrLabel drawInRect:NSIntegralRect(labelRect)];
 	}
-    
+
 	NSImageCell *imageCell = [[NSImageCell alloc] init];
 	[imageCell setImage:image];
 	[imageCell setImageScaling:[self imageScalingForSegment:segment]];

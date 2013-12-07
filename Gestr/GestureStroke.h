@@ -9,8 +9,8 @@
 - (id)initWithPoints:(NSMutableArray *)points;
 - (void)addPoint:(GesturePoint *)point;
 - (int)pointCount;
-- (void)insertPoint:(GesturePoint *)point AtIndex:(int)index;
 - (GesturePoint *)pointAtIndex:(int)i;
+- (void)insertPoint:(GesturePoint *)point atIndex:(int)i;
 - (void)encodeWithCoder:(NSCoder *)coder;
 - (id)initWithCoder:(NSCoder *)coder;
 - (id)copyWithZone:(NSZone *)zone;

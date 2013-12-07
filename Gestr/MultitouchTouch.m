@@ -2,10 +2,9 @@
 
 @implementation MultitouchTouch
 
-- (id)initWithMTTouch:(MTTouch *)touch andMultitouchEvent:(MultitouchEvent *)event {
+- (id)initWithMTTouch:(MTTouch *)touch {
 	self = [super init];
 
-	_event = event;
 	_identifier = @(touch->identifier);
 	_state = touch->state;
 	_x = touch->normalized.position.x;
@@ -21,7 +20,7 @@
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"Id: %i, State: %i, X: %f, Y: %f, MinorAxis: %f, MajorAxis: %f, Angle: %f, Size: %f, VelocityX: %f, VelocityY: %f", [self.identifier intValue], self.state, self.x, self.y, self.minorAxis, self.majorAxis, self.angle, self.size, self.velX, self.velY];
+	return [NSString stringWithFormat:@"Id: %i, State: %i, X: %f, Y: %f, MinorAxis: %f, MajorAxis: %f, Angle: %f, Size: %f, VelocityX: %f, VelocityY: %f", [_identifier intValue], _state, _x, _y, _minorAxis, _majorAxis, _angle, _size, _velX, _velY];
 }
 
 @end

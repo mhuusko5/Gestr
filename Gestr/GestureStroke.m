@@ -13,48 +13,48 @@
 - (id)initWithPoints:(NSMutableArray *)points {
 	self = [super init];
 
-	_points = [NSMutableArray arrayWithArray:points];
+	_points = points;
 
 	return self;
 }
 
 - (void)addPoint:(GesturePoint *)point {
-	[self.points addObject:point];
+	[_points addObject:point];
 }
 
 - (int)pointCount {
-	return (int)self.points.count;
-}
-
-- (void)insertPoint:(GesturePoint *)point AtIndex:(int)index {
-	[self.points insertObject:point atIndex:index];
+	return (int)_points.count;
 }
 
 - (GesturePoint *)pointAtIndex:(int)i {
-	return (self.points)[i];
+	return _points[i];
+}
+
+- (void)insertPoint:(GesturePoint *)point atIndex:(int)i {
+	[_points insertObject:point atIndex:i];
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-	[coder encodeObject:self.points forKey:@"points"];
+	[coder encodeObject:_points forKey:@"points"];
 }
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];
 
-	_points = [coder decodeObjectForKey:@"points"];
+	_points = [[coder decodeObjectForKey:@"points"] mutableCopy];
 
 	return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	GestureStroke *copy = [[GestureStroke allocWithZone:zone] initWithPoints:[self.points copy]];
+	GestureStroke *copy = [[GestureStroke allocWithZone:zone] initWithPoints:[_points mutableCopy]];
 
 	return copy;
 }
 
 - (NSString *)description {
 	NSMutableString *desc = [[NSMutableString alloc] init];
-	for (GesturePoint *point in self.points) {
+	for (GesturePoint *point in _points) {
 		[desc appendFormat:@"%@ \r", [point description]];
 	}
 

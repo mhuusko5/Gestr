@@ -11,10 +11,10 @@
 @implementation MultitouchManager
 
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
-	if (self.forwardingMultitouchEventsToListeners) {
-		int multitouchListenerCount = (int)self.multitouchListeners.count;
+	if (_forwardingMultitouchEventsToListeners) {
+		int multitouchListenerCount = (int)_multitouchListeners.count;
 		while (multitouchListenerCount-- > 0) {
-			MultitouchListener *multitouchListenerToForwardEvent = (self.multitouchListeners)[multitouchListenerCount];
+			MultitouchListener *multitouchListenerToForwardEvent = _multitouchListeners[multitouchListenerCount];
 			[multitouchListenerToForwardEvent sendMultitouchEvent:event];
 		}
 	}
@@ -22,7 +22,7 @@
 
 - (void)startForwardingMultitouchEventsToListeners {
 	if ([[NSThread currentThread] isMainThread]) {
-		if (!self.forwardingMultitouchEventsToListeners && [MultitouchManager systemIsMultitouchCapable]) {
+		if (!_forwardingMultitouchEventsToListeners && [MultitouchManager systemIsMultitouchCapable]) {
 			NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
 
 			int mtDeviceCount = (int)mtDevices.count;
@@ -38,10 +38,10 @@
 				{
 				}
 
-				[self.multitouchDevices addObject:device];
+				[_multitouchDevices addObject:device];
 			}
 
-			self.forwardingMultitouchEventsToListeners = YES;
+			_forwardingMultitouchEventsToListeners = YES;
 		}
 	}
 	else {
@@ -51,12 +51,12 @@
 
 - (void)stopForwardingMultitouchEventsToListeners {
 	if ([[NSThread currentThread] isMainThread]) {
-		if (self.forwardingMultitouchEventsToListeners) {
-			int multitouchDeviceCount = (int)self.multitouchDevices.count;
+		if (_forwardingMultitouchEventsToListeners) {
+			int multitouchDeviceCount = (int)_multitouchDevices.count;
 			while (multitouchDeviceCount-- > 0) {
-				id device = (self.multitouchDevices)[multitouchDeviceCount];
+				id device = _multitouchDevices[multitouchDeviceCount];
 
-				[self.multitouchDevices removeObject:device];
+				[_multitouchDevices removeObject:device];
 
 				@try {
 					MTDeviceRef mtDevice = (__bridge MTDeviceRef)device;
@@ -69,7 +69,7 @@
 				}
 			}
 
-			self.forwardingMultitouchEventsToListeners = NO;
+			_forwardingMultitouchEventsToListeners = NO;
 		}
 	}
 	else {
@@ -78,11 +78,11 @@
 }
 
 - (void)removeMultitouchListenersWithTarget:(id)target andCallback:(SEL)callback {
-	int multitouchListenerCount = (int)self.multitouchListeners.count;
+	int multitouchListenerCount = (int)_multitouchListeners.count;
 	while (multitouchListenerCount-- > 0) {
-		MultitouchListener *multitouchListenerToRemove = (self.multitouchListeners)[multitouchListenerCount];
+		MultitouchListener *multitouchListenerToRemove = _multitouchListeners[multitouchListenerCount];
 		if ([multitouchListenerToRemove.target isEqual:target] && (!callback || multitouchListenerToRemove.callback == callback)) {
-			[self.multitouchListeners removeObject:multitouchListenerToRemove];
+			[_multitouchListeners removeObject:multitouchListenerToRemove];
 		}
 	}
 }
@@ -90,21 +90,19 @@
 - (void)addMultitouchListenerWithTarget:(id)target callback:(SEL)callback andThread:(NSThread *)thread {
 	[self removeMultitouchListenersWithTarget:target andCallback:callback];
 
-	[self.multitouchListeners addObject:[[MultitouchListener alloc] initWithTarget:target callback:callback andThread:thread]];
+	[_multitouchListeners addObject:[[MultitouchListener alloc] initWithTarget:target callback:callback andThread:thread]];
 
 	[self startForwardingMultitouchEventsToListeners];
 }
 
 static int mtEventHandler(int mtEventDeviceId, MTTouch *mtEventTouches, int mtEventTouchesNum, double mtEventTimestamp, int mtEventFrameId) {
-	MultitouchEvent *multitouchEvent = [[MultitouchEvent alloc] initWithDeviceIdentifier:mtEventDeviceId frameIdentifier:mtEventFrameId andTimestamp:mtEventTimestamp];
-
 	NSMutableArray *multitouchTouches = [[NSMutableArray alloc] initWithCapacity:mtEventTouchesNum];
 	for (int i = 0; i < mtEventTouchesNum; i++) {
-		MultitouchTouch *multitouchTouch = [[MultitouchTouch alloc] initWithMTTouch:&mtEventTouches[i] andMultitouchEvent:multitouchEvent];
-		[multitouchTouches addObject:multitouchTouch];
+		MultitouchTouch *multitouchTouch = [[MultitouchTouch alloc] initWithMTTouch:&mtEventTouches[i]];
+		multitouchTouches[i] = multitouchTouch;
 	}
 
-	multitouchEvent.touches = multitouchTouches;
+	MultitouchEvent *multitouchEvent = [[MultitouchEvent alloc] initWithDeviceIdentifier:mtEventDeviceId frameIdentifier:mtEventFrameId timestamp:mtEventTimestamp andTouches:multitouchTouches];
 
 	[[MultitouchManager sharedMultitouchManager] handleMultitouchEvent:multitouchEvent];
 

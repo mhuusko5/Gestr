@@ -21,12 +21,12 @@
 
 		GestureResult *result = [[GestureResult alloc] init];
 
-		if ([currentPoints pointCount] > GUMinimumPointCount) {
+		if (currentPoints.pointCount > GUMinimumPointCount) {
 			GestureTemplate *inputTemplate = [[GestureTemplate alloc] initWithPoints:currentPoints];
 
 			float lowestDistance = FLT_MAX;
-			for (int i = 0; i < self.loadedGestures.count; i++) {
-				Gesture *gestureToMatch = (self.loadedGestures)[i];
+			for (int i = 0; i < _loadedGestures.count; i++) {
+				Gesture *gestureToMatch = _loadedGestures[i];
 
 				if (gestureToMatch.strokes.count == strokes.count) {
 					NSMutableArray *loadedGestureTemplates = [gestureToMatch templates];
@@ -59,9 +59,9 @@
 }
 
 - (void)removeGestureWithIdentity:(NSString *)identity {
-	for (int i = 0; i < self.loadedGestures.count; i++) {
-		if ([((Gesture *)(self.loadedGestures)[i]).identity isEqualToString:identity]) {
-			[self.loadedGestures removeObjectAtIndex:i];
+	for (int i = 0; i < _loadedGestures.count; i++) {
+		if ([((Gesture *)_loadedGestures[i]).identity isEqualToString:identity]) {
+			[_loadedGestures removeObjectAtIndex:i];
 			return;
 		}
 	}
@@ -72,7 +72,7 @@
 
 	[gesture generateTemplates];
 
-	[self.loadedGestures addObject:gesture];
+	[_loadedGestures addObject:gesture];
 }
 
 @end

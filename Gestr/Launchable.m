@@ -4,11 +4,11 @@
 
 - (id)initWithDisplayName:(NSString *)displayName launchId:(NSString *)launchId icon:(NSImage *)icon {
 	self = [super init];
-    
+
 	_displayName = displayName;
 	_launchId = launchId;
 	_icon = icon;
-    
+
 	return self;
 }
 

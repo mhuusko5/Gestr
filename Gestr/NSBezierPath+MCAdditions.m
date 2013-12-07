@@ -4,7 +4,7 @@
 
 - (void)fillWithInnerShadow:(NSShadow *)shadow {
 	[NSGraphicsContext saveGraphicsState];
-    
+
 	NSSize offset = shadow.shadowOffset;
 	NSSize originalOffset = offset;
 	CGFloat radius = shadow.shadowBlurRadius;
@@ -18,19 +18,19 @@
 	else {
 		[transform translateXBy:0 yBy:-bounds.size.height];
 	}
-    
+
 	NSBezierPath *drawingPath = [NSBezierPath bezierPathWithRect:bounds];
 	[drawingPath setWindingRule:NSEvenOddWindingRule];
 	[drawingPath appendBezierPath:self];
 	[drawingPath transformUsingAffineTransform:transform];
-    
+
 	[self addClip];
 	[shadow set];
 	[[NSColor blackColor] set];
 	[drawingPath fill];
-    
+
 	shadow.shadowOffset = originalOffset;
-    
+
 	[NSGraphicsContext restoreGraphicsState];
 }
 

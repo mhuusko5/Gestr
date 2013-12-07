@@ -8,6 +8,6 @@
 @property double timestamp;
 @property NSArray *touches;
 
-- (id)initWithDeviceIdentifier:(int)deviceId frameIdentifier:(int)frameId andTimestamp:(double)timestamp;
+- (id)initWithDeviceIdentifier:(int)deviceId frameIdentifier:(int)frameId timestamp:(double)timestamp andTouches:(NSArray *)touches;
 
 @end
