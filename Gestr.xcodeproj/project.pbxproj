@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0021B260185582D100C42444 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0021B25F185582D100C42444 /* MultitouchSupport.framework */; };
+		0021B2621855830000C42444 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0021B2611855830000C42444 /* Sparkle.framework */; };
 		0029FDF318557DE600BDBA25 /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDA018557DE600BDBA25 /* AppButtonCell.m */; };
 		0029FDF418557DE600BDBA25 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDA218557DE600BDBA25 /* AppController.m */; };
 		0029FDF518557DE600BDBA25 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDA418557DE600BDBA25 /* Application.m */; };
@@ -52,12 +54,9 @@
 		0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDF218557DE600BDBA25 /* WebPage.m */; };
 		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
 		00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3A185553AF00336935 /* CoreServices.framework */; };
-		00D15F3D185553C200336935 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3C185553C200336935 /* MultitouchSupport.framework */; };
 		00D15F3F185553D100336935 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3E185553D100336935 /* Carbon.framework */; };
 		00D15F41185553D900336935 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F40185553D900336935 /* QuartzCore.framework */; };
 		00D15F4E1855564000336935 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00D15F4D1855564000336935 /* Icon.icns */; };
-		00EAB3F718557C3A006428F9 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00EAB3F518557C21006428F9 /* Sparkle.framework */; };
-		00EAB3F818557C3C006428F9 /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 00EAB3F518557C21006428F9 /* Sparkle.framework */; };
 		00F58E8018557E9300F23D42 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,7 +67,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				00EAB3F818557C3C006428F9 /* Sparkle.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0021B25F185582D100C42444 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
+		0021B2611855830000C42444 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Gestr/Sparkle.framework; sourceTree = "<group>"; };
 		0029FD9F18557DE600BDBA25 /* AppButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppButtonCell.h; sourceTree = "<group>"; };
 		0029FDA018557DE600BDBA25 /* AppButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppButtonCell.m; sourceTree = "<group>"; };
 		0029FDA118557DE600BDBA25 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -164,11 +164,9 @@
 		00D15EBA1855520C00336935 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		00D15EBC1855520C00336935 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		00D15F3A185553AF00336935 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
-		00D15F3C185553C200336935 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
 		00D15F3E185553D100336935 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		00D15F40185553D900336935 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		00D15F4D1855564000336935 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
-		00EAB3F518557C21006428F9 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Gestr/Sparkle.framework; sourceTree = "<group>"; };
 		00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -177,11 +175,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0021B2621855830000C42444 /* Sparkle.framework in Frameworks */,
+				0021B260185582D100C42444 /* MultitouchSupport.framework in Frameworks */,
 				00F58E8018557E9300F23D42 /* ScriptingBridge.framework in Frameworks */,
 				00D15F41185553D900336935 /* QuartzCore.framework in Frameworks */,
 				00D15F3F185553D100336935 /* Carbon.framework in Frameworks */,
-				00EAB3F718557C3A006428F9 /* Sparkle.framework in Frameworks */,
-				00D15F3D185553C200336935 /* MultitouchSupport.framework in Frameworks */,
 				00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */,
 				00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */,
 			);
@@ -211,11 +209,11 @@
 		00D15EB61855520C00336935 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0021B2611855830000C42444 /* Sparkle.framework */,
+				0021B25F185582D100C42444 /* MultitouchSupport.framework */,
 				00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */,
-				00EAB3F518557C21006428F9 /* Sparkle.framework */,
 				00D15F40185553D900336935 /* QuartzCore.framework */,
 				00D15F3E185553D100336935 /* Carbon.framework */,
-				00D15F3C185553C200336935 /* MultitouchSupport.framework */,
 				00D15F3A185553AF00336935 /* CoreServices.framework */,
 				00D15EB71855520C00336935 /* Cocoa.framework */,
 				00D15EB91855520C00336935 /* Other Frameworks */,
@@ -610,8 +608,8 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mhuusko/Downloads/Gestr/Gestr,
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"/Users/mhuusko/Dropbox/Mac\\ Dev/Gestr/Gestr",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
@@ -630,8 +628,8 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mhuusko/Downloads/Gestr/Gestr,
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"/Users/mhuusko/Dropbox/Mac\\ Dev/Gestr/Gestr",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
