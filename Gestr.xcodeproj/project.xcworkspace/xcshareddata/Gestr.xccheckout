@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>10C44D56-E0A4-465A-AA47-EFE4F39758D8</string>
+	<string>FEA89BFB-3B99-4EBE-A4D5-AF6E581AF68B</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Gestr</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>D64FABA5-D12C-4B6B-9872-74CB39AC8901</key>
+		<key>24FFF87D-35BC-4279-BBC0-05060ECA5196</key>
 		<string>https://github.com/mhuusko5/Gestr.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Gestr.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>D64FABA5-D12C-4B6B-9872-74CB39AC8901</key>
+		<key>24FFF87D-35BC-4279-BBC0-05060ECA5196</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>D64FABA5-D12C-4B6B-9872-74CB39AC8901</string>
+	<string>24FFF87D-35BC-4279-BBC0-05060ECA5196</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D64FABA5-D12C-4B6B-9872-74CB39AC8901</string>
+			<string>24FFF87D-35BC-4279-BBC0-05060ECA5196</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Gestr</string>
 		</dict>
