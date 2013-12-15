@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000CBB401855862200E5E7A7 /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 0021B2611855830000C42444 /* Sparkle.framework */; };
 		0021B260185582D100C42444 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0021B25F185582D100C42444 /* MultitouchSupport.framework */; };
 		0021B2621855830000C42444 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0021B2611855830000C42444 /* Sparkle.framework */; };
 		0029FDF318557DE600BDBA25 /* AppButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDA018557DE600BDBA25 /* AppButtonCell.m */; };
@@ -67,6 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				000CBB401855862200E5E7A7 /* Sparkle.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;

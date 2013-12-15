@@ -130,9 +130,12 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-	Launchable *launchable = [self currentLaunchableArray][row];
-	result.imageView.image = launchable.icon;
-	result.textField.stringValue = launchable.displayName;
+
+	Launchable *launchable;
+    if ((launchable = [self currentLaunchableArray][row])) {
+        result.imageView.image = launchable.icon;
+        result.textField.stringValue = launchable.displayName;
+    }
 
 	return result;
 }
@@ -149,11 +152,7 @@
 	_launchableSelectedIndex = (int)([[self currentLaunchableTableView] selectedRow]);
 
 	if (_launchableSelectedIndex >= 0) {
-		BOOL gestureExistsForSelectedApp = NO;
-
-		gestureExistsForSelectedApp = ([_appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][_launchableSelectedIndex]).launchId] != nil);
-
-		if (gestureExistsForSelectedApp) {
+		if ([_appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][_launchableSelectedIndex]).launchId] != nil) {
 			[_showGestureButton setEnabled:YES];
 			[_assignGestureButton setEnabled:YES];
 			[_clearGestureButton setEnabled:YES];

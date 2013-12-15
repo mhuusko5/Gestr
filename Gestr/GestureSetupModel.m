@@ -69,9 +69,8 @@
 #pragma mark -
 #pragma mark Web Page Management
 - (NSMutableArray *)fetchWebPageArray {
-	_webPageArray = [NSMutableArray array];
-
-	[_webPageArray addObjectsFromArray:[self fetchChromePages]];
+	_webPageArray = [self fetchChromePages];
+    
 	[_webPageArray addObjectsFromArray:[self fetchSafariPages]];
 
 	_webPageArray = [[_webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
