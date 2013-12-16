@@ -57,6 +57,9 @@
 #pragma mark -
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
+    _partialDescriptionAlert.stringValue = @"";
+    _partialIconAlert.image = nil;
+    
 	GestureResult *result = [_recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= _appController.gestureSetupController.setupModel.minimumRecognitionScore) {
@@ -69,21 +72,17 @@
 			[_recognitionModel deleteGestureWithName:result.gestureIdentity];
 		}
 	}
-	else {
-		_partialDescriptionAlert.stringValue = @"";
-		_partialIconAlert.image = nil;
-	}
 }
 
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
+    _partialDescriptionAlert.stringValue = @"";
+    _partialIconAlert.image = nil;
+
 	GestureResult *result = [_recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= _appController.gestureSetupController.setupModel.minimumRecognitionScore) {
 		Launchable *launchableToLaunch = [_appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToLaunch != nil) {
-			_partialDescriptionAlert.stringValue = @"";
-			_partialIconAlert.image = nil;
-
 			_appDescriptionAlert.stringValue = launchableToLaunch.displayName;
 			_appIconAlert.image = launchableToLaunch.icon;
 

@@ -229,14 +229,11 @@
 	}
 
 	if (_launchableSelectedIndex >= 0) {
-		@try {
-			Gesture *gestureToShow = [_appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][_launchableSelectedIndex]).launchId];
-			_showGestureThread = [[NSThread alloc] initWithTarget:_setupView selector:@selector(showGesture:) object:gestureToShow];
-			[_showGestureThread start];
-		}
-		@catch (NSException *exception)
-		{
-		}
+		Gesture *gestureToShow = [_appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][_launchableSelectedIndex]).launchId];
+        if (gestureToShow) {
+            _showGestureThread = [[NSThread alloc] initWithTarget:_setupView selector:@selector(showGesture:) object:gestureToShow];
+            [_showGestureThread start];
+        }
 	}
 }
 

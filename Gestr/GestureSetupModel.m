@@ -91,8 +91,11 @@
 
 			NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
 			for (NSDictionary *bookmark in bookmarksBar) {
-				if ([[bookmark valueForKey:@"type"] isEqualToString:@"url"]) {
-					[chromePages addObject:[[ChromePage alloc] initWithDisplayName:[bookmark valueForKey:@"name"] icon:chromeIcon url:[bookmark valueForKey:@"url"]]];
+                NSString *type = [bookmark valueForKey:@"type"];
+                NSString *name = [bookmark valueForKey:@"name"];
+                NSString *url = [bookmark valueForKey:@"url"];
+				if ([type isEqualToString:@"url"] && name && url) {
+					[chromePages addObject:[[ChromePage alloc] initWithDisplayName:name icon:chromeIcon url:url]];
 				}
 			}
 		}
@@ -126,12 +129,11 @@
 
 			if (bookmarksBar) {
 				for (NSDictionary *bookmark in bookmarksBar) {
-					@try {
-						[safariPages addObject:[[SafariPage alloc] initWithDisplayName:[[bookmark valueForKey:@"URIDictionary"] valueForKey:@"title"] icon:safariIcon url:[bookmark valueForKey:@"URLString"]]];
-					}
-					@catch (NSException *exception)
-					{
-					}
+                    NSString *title = [[bookmark valueForKey:@"URIDictionary"] valueForKey:@"title"];
+                    NSString *url = [bookmark valueForKey:@"URLString"];
+                    if (title && url) {
+                        [safariPages addObject:[[SafariPage alloc] initWithDisplayName:title icon:safariIcon url:url]];
+                    }
 				}
 			}
 		}
@@ -187,7 +189,7 @@
 				NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
 				NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
 
-				if (bundleId && ![bundleId isEqualToString:[[NSBundle mainBundle] bundleIdentifier]] && ![bundleId isEqualToString:@"com.mhuusko5.Tapr"]) {
+				if (bundleId && ![bundleId isEqualToString:[[NSBundle mainBundle] bundleIdentifier]] && ![bundleId isEqualToString:@"com.mhuusko5.Tapr"] && displayName && icon) {
 					[arr addObject:[[Application alloc] initWithDisplayName:displayName icon:icon bundleId:bundleId]];
 				}
 			}
