@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A3017" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -457,9 +457,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button id="3860">
-                    <rect key="frame" x="5" y="1" width="18" height="17"/>
+                    <rect key="frame" x="5" y="0.0" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" image="Icon" imagePosition="overlaps" alignment="center" state="on" imageScaling="axesIndependently" inset="2" id="3861">
+                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" image="MenuIcon" imagePosition="overlaps" alignment="center" state="on" imageScaling="axesIndependently" inset="2" id="3861">
                         <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -471,7 +471,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="Icon" width="512" height="512"/>
+        <image name="MenuIcon" width="32" height="32"/>
         <image name="background" width="256" height="256"/>
         <image name="background2" width="50" height="50"/>
         <image name="niceLine" width="365" height="4"/>

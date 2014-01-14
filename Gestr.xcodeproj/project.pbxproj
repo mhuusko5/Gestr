@@ -53,11 +53,11 @@
 		0029FE1D18557DE600BDBA25 /* tableCellBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDEF18557DE600BDBA25 /* tableCellBack.png */; };
 		0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDF018557DE600BDBA25 /* trackpadBackground.png */; };
 		0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDF218557DE600BDBA25 /* WebPage.m */; };
+		00CD07FC1885C7B80070860F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00CD07FB1885C7B80070860F /* Images.xcassets */; };
 		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
 		00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3A185553AF00336935 /* CoreServices.framework */; };
 		00D15F3F185553D100336935 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3E185553D100336935 /* Carbon.framework */; };
 		00D15F41185553D900336935 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F40185553D900336935 /* QuartzCore.framework */; };
-		00D15F4E1855564000336935 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00D15F4D1855564000336935 /* Icon.icns */; };
 		00F58E8018557E9300F23D42 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
@@ -161,6 +161,7 @@
 		0029FDF018557DE600BDBA25 /* trackpadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trackpadBackground.png; sourceTree = "<group>"; };
 		0029FDF118557DE600BDBA25 /* WebPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPage.h; sourceTree = "<group>"; };
 		0029FDF218557DE600BDBA25 /* WebPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebPage.m; sourceTree = "<group>"; };
+		00CD07FB1885C7B80070860F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		00D15EB41855520C00336935 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D15EB71855520C00336935 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		00D15EBA1855520C00336935 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -168,7 +169,6 @@
 		00D15F3A185553AF00336935 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		00D15F3E185553D100336935 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		00D15F40185553D900336935 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		00D15F4D1855564000336935 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -193,7 +193,6 @@
 		00D15EAB1855520C00336935 = {
 			isa = PBXGroup;
 			children = (
-				00D15F4D1855564000336935 /* Icon.icns */,
 				00D15EBD1855520C00336935 /* Gestr */,
 				00D15EB61855520C00336935 /* Frameworks */,
 				00D15EB51855520C00336935 /* Products */,
@@ -251,6 +250,7 @@
 		00F58E8118557EC600F23D42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				00CD07FB1885C7B80070860F /* Images.xcassets */,
 				0029FDAF18557DE600BDBA25 /* Chrome.h */,
 				0029FDE918557DE600BDBA25 /* Safari.h */,
 				0029FDEF18557DE600BDBA25 /* tableCellBack.png */,
@@ -477,9 +477,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */,
+				00CD07FC1885C7B80070860F /* Images.xcassets in Resources */,
 				0029FE1418557DE600BDBA25 /* niceLine.png in Resources */,
 				0029FE0F18557DE600BDBA25 /* MainMenu.xib in Resources */,
-				00D15F4E1855564000336935 /* Icon.icns in Resources */,
 				0029FDFB18557DE600BDBA25 /* background2.png in Resources */,
 				0029FE1D18557DE600BDBA25 /* tableCellBack.png in Resources */,
 				0029FE1518557DE600BDBA25 /* niceLineFlipped.png in Resources */,
@@ -606,12 +606,13 @@
 		00D15EE61855520D00336935 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
-					"/Users/mhuusko/Dropbox/Mac\\ Dev/Gestr/Gestr",
+					/Users/mhuusko/Dropbox/Xcode/Gestr/Gestr,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
@@ -626,12 +627,13 @@
 		00D15EE71855520D00336935 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
-					"/Users/mhuusko/Dropbox/Mac\\ Dev/Gestr/Gestr",
+					/Users/mhuusko/Dropbox/Xcode/Gestr/Gestr,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
