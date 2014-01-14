@@ -53,7 +53,7 @@
 		0029FE1D18557DE600BDBA25 /* tableCellBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDEF18557DE600BDBA25 /* tableCellBack.png */; };
 		0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDF018557DE600BDBA25 /* trackpadBackground.png */; };
 		0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDF218557DE600BDBA25 /* WebPage.m */; };
-		00CD07FC1885C7B80070860F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00CD07FB1885C7B80070860F /* Images.xcassets */; };
+		003743101885E30600F9B53A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0037430F1885E30600F9B53A /* Images.xcassets */; };
 		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
 		00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3A185553AF00336935 /* CoreServices.framework */; };
 		00D15F3F185553D100336935 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3E185553D100336935 /* Carbon.framework */; };
@@ -161,7 +161,7 @@
 		0029FDF018557DE600BDBA25 /* trackpadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trackpadBackground.png; sourceTree = "<group>"; };
 		0029FDF118557DE600BDBA25 /* WebPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPage.h; sourceTree = "<group>"; };
 		0029FDF218557DE600BDBA25 /* WebPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebPage.m; sourceTree = "<group>"; };
-		00CD07FB1885C7B80070860F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0037430F1885E30600F9B53A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		00D15EB41855520C00336935 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D15EB71855520C00336935 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		00D15EBA1855520C00336935 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -250,7 +250,7 @@
 		00F58E8118557EC600F23D42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				00CD07FB1885C7B80070860F /* Images.xcassets */,
+				0037430F1885E30600F9B53A /* Images.xcassets */,
 				0029FDAF18557DE600BDBA25 /* Chrome.h */,
 				0029FDE918557DE600BDBA25 /* Safari.h */,
 				0029FDEF18557DE600BDBA25 /* tableCellBack.png */,
@@ -477,7 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */,
-				00CD07FC1885C7B80070860F /* Images.xcassets in Resources */,
+				003743101885E30600F9B53A /* Images.xcassets in Resources */,
 				0029FE1418557DE600BDBA25 /* niceLine.png in Resources */,
 				0029FE0F18557DE600BDBA25 /* MainMenu.xib in Resources */,
 				0029FDFB18557DE600BDBA25 /* background2.png in Resources */,
