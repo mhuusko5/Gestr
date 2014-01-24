@@ -132,10 +132,10 @@
 	NSTableCellView *result = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
 	Launchable *launchable;
-    if ((launchable = [self currentLaunchableArray][row])) {
-        result.imageView.image = launchable.icon;
-        result.textField.stringValue = launchable.displayName;
-    }
+	if ((launchable = [self currentLaunchableArray][row])) {
+		result.imageView.image = launchable.icon;
+		result.textField.stringValue = launchable.displayName;
+	}
 
 	return result;
 }
@@ -230,10 +230,10 @@
 
 	if (_launchableSelectedIndex >= 0) {
 		Gesture *gestureToShow = [_appController.gestureRecognitionController.recognitionModel getGestureWithIdentity:((Launchable *)[self currentLaunchableArray][_launchableSelectedIndex]).launchId];
-        if (gestureToShow) {
-            _showGestureThread = [[NSThread alloc] initWithTarget:_setupView selector:@selector(showGesture:) object:gestureToShow];
-            [_showGestureThread start];
-        }
+		if (gestureToShow) {
+			_showGestureThread = [[NSThread alloc] initWithTarget:_setupView selector:@selector(showGesture:) object:gestureToShow];
+			[_showGestureThread start];
+		}
 	}
 }
 

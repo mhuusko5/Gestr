@@ -95,18 +95,38 @@
 	[self startForwardingMultitouchEventsToListeners];
 }
 
-static int mtEventHandler(int mtEventDeviceId, MTTouch *mtEventTouches, int mtEventTouchesNum, double mtEventTimestamp, int mtEventFrameId) {
+static bool laptopLidClosed() {
+	CGDirectDisplayID builtInDisplay = 0;
+	CGDirectDisplayID activeDisplays[10];
+	uint32_t numActiveDisplays;
+	CGGetActiveDisplayList(10, activeDisplays, &numActiveDisplays);
+
+	while (numActiveDisplays-- > 0) {
+		if (CGDisplayIsBuiltin(activeDisplays[numActiveDisplays])) {
+			builtInDisplay = activeDisplays[numActiveDisplays];
+			break;
+		}
+	}
+
+	return (builtInDisplay == 0);
+}
+
+static void mtEventHandler(MTDeviceRef mtEventDevice, MTTouch mtEventTouches[], int mtEventTouchesNum, double mtEventTimestamp, int mtEventFrameId) {
+	if (MTDeviceIsBuiltIn && MTDeviceIsBuiltIn(mtEventDevice) && laptopLidClosed()) {
+		/*When a Mac laptop lid is closed, it can cause the trackpad to send random
+         multitouch input (insane, I know!). Obviously we want to ignore that input.*/
+		return;
+	}
+
 	NSMutableArray *multitouchTouches = [[NSMutableArray alloc] initWithCapacity:mtEventTouchesNum];
 	for (int i = 0; i < mtEventTouchesNum; i++) {
 		MultitouchTouch *multitouchTouch = [[MultitouchTouch alloc] initWithMTTouch:&mtEventTouches[i]];
 		multitouchTouches[i] = multitouchTouch;
 	}
 
-	MultitouchEvent *multitouchEvent = [[MultitouchEvent alloc] initWithDeviceIdentifier:mtEventDeviceId frameIdentifier:mtEventFrameId timestamp:mtEventTimestamp andTouches:multitouchTouches];
+	MultitouchEvent *multitouchEvent = [[MultitouchEvent alloc] initWithDeviceIdentifier:(int)mtEventDevice frameIdentifier:mtEventFrameId timestamp:mtEventTimestamp andTouches:multitouchTouches];
 
 	[[MultitouchManager sharedMultitouchManager] handleMultitouchEvent:multitouchEvent];
-
-	return 0;
 }
 
 - (void)restartMultitouchEventForwardingAfterWake:(NSNotification *)wakeNotification {
@@ -131,7 +151,7 @@ static int mtEventHandler(int mtEventDeviceId, MTTouch *mtEventTouches, int mtEv
 }
 
 + (BOOL)systemIsMultitouchCapable {
-	return ((__bridge_transfer NSArray *)MTDeviceCreateList()).count > 0;
+	return MTDeviceIsAvailable();
 }
 
 static MultitouchManager *sharedMultitouchManager = nil;

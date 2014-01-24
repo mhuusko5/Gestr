@@ -7,14 +7,14 @@
 
 	_identifier = @(touch->identifier);
 	_state = touch->state;
-	_x = touch->normalized.position.x;
-	_y = touch->normalized.position.y;
+	_x = touch->normalizedPosition.position.x;
+	_y = touch->normalizedPosition.position.y;
 	_minorAxis = touch->minorAxis;
 	_majorAxis = touch->majorAxis;
 	_angle = touch->angle;
 	_size = touch->size;
-	_velX = touch->normalized.velocity.x;
-	_velY = touch->normalized.velocity.y;
+	_velX = touch->normalizedPosition.velocity.x;
+	_velY = touch->normalizedPosition.velocity.y;
 
 	return self;
 }

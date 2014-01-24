@@ -12,36 +12,50 @@ extern "C" {
         MTPoint velocity;
     } MTVector;
 
+    enum {
+        MTTouchStateNotTracking = 0,
+        MTTouchStateStartInRange = 1,
+        MTTouchStateHoverInRange = 2,
+        MTTouchStateMakeTouch = 3,
+        MTTouchStateTouching = 4,
+        MTTouchStateBreakTouch = 5,
+        MTTouchStateLingerInRange = 6,
+        MTTouchStateOutOfRange = 7
+    };
+    typedef int MTTouchState;
+
     typedef struct {
         int frame;
         double timestamp;
         int identifier;
-        int state;
-        int unknown1;
-        int unknown2;
-        MTVector normalized;
+        MTTouchState state;
+        int fingerId;
+        int handId;
+        MTVector normalizedPosition;
         float size;
-        int unknown3;
+        int field9;
         float angle;
         float majorAxis;
         float minorAxis;
-        MTVector unknown4;
-        int unknown5[2];
-        float unknown6;
+        MTVector absolutePosition;
+        int field14;
+        int field15;
+        float density;
     } MTTouch;
 
     typedef void *MTDeviceRef;
-    typedef int (*MTContactCallbackFunction)(int, MTTouch *, int, double, int);
 
-    MTDeviceRef MTDeviceCreateDefault();
-    CFMutableArrayRef MTDeviceCreateList(void);
+    typedef void (*MTFrameCallbackFunction)(MTDeviceRef device, MTTouch touches[], int numTouches, double timestamp, int frame);
 
-    void MTRegisterContactFrameCallback(MTDeviceRef, MTContactCallbackFunction);
-    void MTUnregisterContactFrameCallback(MTDeviceRef, MTContactCallbackFunction);
+    bool MTDeviceIsAvailable();
+    CFMutableArrayRef MTDeviceCreateList();
+    bool MTDeviceIsBuiltIn(MTDeviceRef) __attribute__((weak_import));
+
+    void MTRegisterContactFrameCallback(MTDeviceRef, MTFrameCallbackFunction);
+    void MTUnregisterContactFrameCallback(MTDeviceRef, MTFrameCallbackFunction);
 
     void MTDeviceStart(MTDeviceRef, int);
     void MTDeviceStop(MTDeviceRef);
-
     void MTDeviceRelease(MTDeviceRef);
 
 #ifdef __cplusplus

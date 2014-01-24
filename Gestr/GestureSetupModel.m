@@ -70,7 +70,7 @@
 #pragma mark Web Page Management
 - (NSMutableArray *)fetchWebPageArray {
 	_webPageArray = [self fetchChromePages];
-    
+
 	[_webPageArray addObjectsFromArray:[self fetchSafariPages]];
 
 	_webPageArray = [[_webPageArray sortedArrayUsingComparator: ^NSComparisonResult (WebPage *a, WebPage *b) {
@@ -91,9 +91,9 @@
 
 			NSArray *bookmarksBar = [[[chromeBookmarksJson valueForKey:@"roots"] valueForKey:@"bookmark_bar"] valueForKey:@"children"];
 			for (NSDictionary *bookmark in bookmarksBar) {
-                NSString *type = [bookmark valueForKey:@"type"];
-                NSString *name = [bookmark valueForKey:@"name"];
-                NSString *url = [bookmark valueForKey:@"url"];
+				NSString *type = [bookmark valueForKey:@"type"];
+				NSString *name = [bookmark valueForKey:@"name"];
+				NSString *url = [bookmark valueForKey:@"url"];
 				if ([type isEqualToString:@"url"] && name && url) {
 					[chromePages addObject:[[ChromePage alloc] initWithDisplayName:name icon:chromeIcon url:url]];
 				}
@@ -129,11 +129,11 @@
 
 			if (bookmarksBar) {
 				for (NSDictionary *bookmark in bookmarksBar) {
-                    NSString *title = [[bookmark valueForKey:@"URIDictionary"] valueForKey:@"title"];
-                    NSString *url = [bookmark valueForKey:@"URLString"];
-                    if (title && url) {
-                        [safariPages addObject:[[SafariPage alloc] initWithDisplayName:title icon:safariIcon url:url]];
-                    }
+					NSString *title = [[bookmark valueForKey:@"URIDictionary"] valueForKey:@"title"];
+					NSString *url = [bookmark valueForKey:@"URLString"];
+					if (title && url) {
+						[safariPages addObject:[[SafariPage alloc] initWithDisplayName:title icon:safariIcon url:url]];
+					}
 				}
 			}
 		}

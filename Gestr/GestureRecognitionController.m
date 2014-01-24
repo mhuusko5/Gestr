@@ -57,9 +57,9 @@
 #pragma mark -
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
-    _partialDescriptionAlert.stringValue = @"";
-    _partialIconAlert.image = nil;
-    
+	_partialDescriptionAlert.stringValue = @"";
+	_partialIconAlert.image = nil;
+
 	GestureResult *result = [_recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= _appController.gestureSetupController.setupModel.minimumRecognitionScore) {
@@ -75,8 +75,8 @@
 }
 
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes {
-    _partialDescriptionAlert.stringValue = @"";
-    _partialIconAlert.image = nil;
+	_partialDescriptionAlert.stringValue = @"";
+	_partialIconAlert.image = nil;
 
 	GestureResult *result = [_recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
@@ -121,7 +121,7 @@
 	if (_recognitionWindow.alphaValue <= 0) {
 		int activeTouches = 0;
 		for (MultitouchTouch *touch in event.touches) {
-			if (touch.state == MultitouchTouchStateActive) {
+			if (touch.state == MTTouchStateTouching) {
 				activeTouches++;
 			}
 		}
