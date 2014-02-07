@@ -162,7 +162,9 @@
 					_lastMultitouchRedraw = [NSDate date];
 				}
 			}
-		}
+		} else if (!_detectInputTimer) {
+            _detectInputTimer = [NSTimer scheduledTimerWithTimeInterval:((float)_setupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+        }
 	}
 }
 

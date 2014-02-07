@@ -5,6 +5,7 @@
 @property NSMutableArray *multitouchListeners;
 @property NSMutableArray *multitouchDevices;
 @property BOOL forwardingMultitouchEventsToListeners;
+@property NSTimer *checkForMultitouchDevicesTimer;
 
 @end
 
@@ -18,6 +19,18 @@
 			[multitouchListenerToForwardEvent sendMultitouchEvent:event];
 		}
 	}
+}
+
+- (void)checkForMultitouchDevices {
+    NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
+
+    int mtDeviceCount = (int)mtDevices.count;
+    if (mtDeviceCount != _multitouchDevices.count) {
+        [_checkForMultitouchDevicesTimer invalidate];
+        _checkForMultitouchDevicesTimer = nil;
+
+        [self restartMultitouchEventForwardingAfterWake:nil];
+    }
 }
 
 - (void)startForwardingMultitouchEventsToListeners {
@@ -41,6 +54,8 @@
 				[_multitouchDevices addObject:device];
 			}
 
+            _checkForMultitouchDevicesTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkForMultitouchDevices) userInfo:nil repeats:YES];
+
 			_forwardingMultitouchEventsToListeners = YES;
 		}
 	}
@@ -52,6 +67,9 @@
 - (void)stopForwardingMultitouchEventsToListeners {
 	if ([[NSThread currentThread] isMainThread]) {
 		if (_forwardingMultitouchEventsToListeners) {
+            [_checkForMultitouchDevicesTimer invalidate];
+            _checkForMultitouchDevicesTimer = nil;
+
 			int multitouchDeviceCount = (int)_multitouchDevices.count;
 			while (multitouchDeviceCount-- > 0) {
 				id device = _multitouchDevices[multitouchDeviceCount];
