@@ -24,7 +24,7 @@
 - (id)initWithFrame:(NSRect)frame {
 	self = [super initWithFrame:frame];
 
-	_touchPaths = [[NSMutableDictionary alloc] init];
+	_touchPaths = [NSMutableDictionary dictionary];
 	_gestureStrokes = [NSMutableDictionary dictionary];
 	_orderedStrokeIds = [NSMutableArray array];
 
@@ -318,7 +318,7 @@
 
 	_gestureStrokes = [NSMutableDictionary dictionary];
 	_orderedStrokeIds = [NSMutableArray array];
-	[_touchPaths removeAllObjects];
+	_touchPaths = [NSMutableDictionary dictionary];
 
 	_lastMultitouchRedraw = [NSDate date];
 
