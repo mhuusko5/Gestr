@@ -158,9 +158,10 @@
 					_lastMultitouchRedraw = [NSDate date];
 				}
 			}
-		} else if (!_detectInputTimer) {
-            _detectInputTimer = [NSTimer scheduledTimerWithTimeInterval:((float)_recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
-        }
+		}
+		else if (!_detectInputTimer) {
+			_detectInputTimer = [NSTimer scheduledTimerWithTimeInterval:((float)_recognitionController.appController.gestureSetupController.setupModel.readingDelayTime) / 1000.0 target:self selector:@selector(finishDetectingGesture) userInfo:nil repeats:NO];
+		}
 	}
 }
 
@@ -186,7 +187,7 @@
 		[NSApp activateIgnoringOtherApps:YES];
 		CGAssociateMouseAndMouseCursorPosition(NO);
 
-		_startInputTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(startMultitouchInput) userInfo:nil repeats:NO];
+		_startInputTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(startMultitouchInput) userInfo:nil repeats:NO];
 	}
 
 	_detectingInput = YES;
@@ -265,7 +266,7 @@
 
 	_gestureStrokes = [NSMutableDictionary dictionary];
 	_orderedStrokeIds = [NSMutableArray array];
-    _touchPaths = [NSMutableDictionary dictionary];
+	_touchPaths = [NSMutableDictionary dictionary];
 
 	_lastMultitouchRedraw = [NSDate date];
 

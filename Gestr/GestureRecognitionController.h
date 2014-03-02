@@ -5,7 +5,7 @@
 #import "GestureRecognizer.h"
 #import "Launchable.h"
 #import "MultitouchManager.h"
-#import "RepeatedImageView.h"
+#import "RoundedCornerView.h"
 @class GestureRecognitionView, GestureRecognizer, AppController, RepeatedImageView;
 
 @interface GestureRecognitionController : NSObject

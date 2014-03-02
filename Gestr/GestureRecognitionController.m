@@ -4,13 +4,13 @@
 
 @property BOOL awakedFromNib;
 
-@property IBOutlet RepeatedImageView *recognitionBackground;
-
 @property IBOutlet NSImageView *appIconAlert;
 @property IBOutlet NSTextField *appDescriptionAlert;
 
 @property IBOutlet NSImageView *partialIconAlert;
 @property IBOutlet NSTextField *partialDescriptionAlert;
+
+@property IBOutlet RoundedCornerView *backgroundView;
 
 @property NSDate *recentRightClickDate;
 @property NSArray *beforeFourFingerTouches;
@@ -204,7 +204,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 #pragma mark Window Methods
 - (void)fadeOutRecognitionWindow {
 	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:0.16];
+	[[NSAnimationContext currentContext] setDuration:0.2];
 	[[NSAnimationContext currentContext] setCompletionHandler: ^{
 	    [self toggleOutRecognitionWindow:NO];
 	}];
@@ -214,7 +214,7 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 
 - (void)toggleOutRecognitionWindow:(BOOL)fadeOut {
 	if (fadeOut) {
-		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.38];
+		[self performSelector:@selector(fadeOutRecognitionWindow) withObject:nil afterDelay:0.28];
 	}
 	else {
 		[self hideRecognitionWindow];
@@ -255,8 +255,8 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 	NSRect windowRect = NSMakeRect(screenRect.origin.x, screenRect.origin.y, screenRect.size.width, screenRect.size.height);
 
 	if (_appController.gestureSetupController.setupModel.fullscreenOption) {
-		_recognitionBackground.alphaValue = 0.91;
-		_recognitionBackground.roundRadius = 0;
+		_backgroundView.alphaValue = 0.92;
+		_backgroundView.roundRadius = 0;
 	}
 	else {
 		windowRect.size.height /= 2.3;
@@ -264,15 +264,15 @@ CGEventRef handleEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event
 		windowRect.origin.x += (screenRect.size.width - windowRect.size.width) / 2;
 		windowRect.origin.y += (screenRect.size.height - windowRect.size.height) / 2;
 
-		_recognitionBackground.alphaValue = 0.94;
-		_recognitionBackground.roundRadius = windowRect.size.height / 48;
+		_backgroundView.alphaValue = 0.87;
+		_backgroundView.roundRadius = windowRect.size.height / 48;
 	}
 
 	[_recognitionWindow setFrame:windowRect display:NO];
 
 	NSRect recognitionRect = NSMakeRect(0, 0, windowRect.size.width, windowRect.size.height);
 	[_recognitionView setFrame:recognitionRect];
-	[_recognitionBackground setFrame:recognitionRect];
+	[_backgroundView setFrame:recognitionRect];
 
 	NSRect alertIconRect = NSMakeRect((recognitionRect.size.width - (recognitionRect.size.height / 2)) / 2,
 	                                  recognitionRect.size.height / 3.4,

@@ -10,7 +10,12 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
 	if (!_backgroundColor) {
-		_backgroundColor = [NSColor colorWithPatternImage:self.image];
+		if (self.image) {
+			_backgroundColor = [NSColor colorWithPatternImage:self.image];
+		}
+		else {
+			_backgroundColor = [NSColor blackColor];
+		}
 	}
 
 	if (_roundRadius > 0) {
