@@ -20,7 +20,7 @@
 
 @property IBOutlet NSTextField *minimumRecognitionScoreField, *readingDelayTimeField;
 @property IBOutlet NSTextField *multitouchRecognitionLabel;
-@property IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField;
+@property IBOutlet NSButton *multitouchOptionField, *fullscreenOptionField, *quickdrawOptionField;
 @property IBOutlet NSButton *loginStartOptionField;
 
 @end
@@ -164,26 +164,12 @@
 		}
 	}
 
-	if (![MultitouchManager systemIsMultitouchCapable]) {
-		_multitouchOptionField.alphaValue = 0.5;
-		[_multitouchOptionField setEnabled:NO];
-		_multitouchRecognitionLabel.alphaValue = 0.5;
-
-		if (_setupModel.multitouchOption) {
-			[_setupModel saveMultitouchOption:NO];
-		}
-	}
-	else {
-		_multitouchOptionField.alphaValue = 1.0;
-		[_multitouchOptionField setEnabled:YES];
-		_multitouchRecognitionLabel.alphaValue = 1.0;
-	}
-
 	_minimumRecognitionScoreField.stringValue = [NSString stringWithFormat:@"%i", _setupModel.minimumRecognitionScore];
 	_readingDelayTimeField.stringValue = [NSString stringWithFormat:@"%i", _setupModel.readingDelayTime];
 	_multitouchOptionField.state = _setupModel.multitouchOption;
 	_fullscreenOptionField.state = _setupModel.fullscreenOption;
 	_loginStartOptionField.state = _setupModel.loginStartOption;
+	_quickdrawOptionField.state = _setupModel.quickdrawOption;
 }
 
 - (void)showDrawNotification:(BOOL)show {
@@ -361,6 +347,14 @@
 	[_setupModel saveLoginStartOption:_loginStartOptionField.state];
 
 	_loginStartOptionField.state = [_setupModel fetchLoginStartOption];
+
+	[self updateSetupControls];
+}
+
+- (IBAction)quickdrawOptionChanged:(id)sender {
+	[_setupView finishDetectingGesture:YES];
+
+	[_setupModel saveQuickdrawOption:_quickdrawOptionField.state];
 
 	[self updateSetupControls];
 }

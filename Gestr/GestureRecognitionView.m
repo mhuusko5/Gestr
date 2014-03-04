@@ -12,6 +12,7 @@
 @property NSTimer *checkPartialGestureTimer;
 
 @property int mouseStrokeIndex;
+@property BOOL quickdrawMode;
 
 @property NSDate *lastMultitouchRedraw;
 @property NSNumber *initialMultitouchDeviceId;
@@ -113,15 +114,37 @@
 				int shouldDrawLimit = _recognitionController.appController.gestureSetupController.setupModel.fullscreenOption ? 32 : 16;
 				BOOL shouldDraw = ([_lastMultitouchRedraw timeIntervalSinceNow] * -1000.0 > shouldDrawLimit);
 
+				if (_quickdrawMode && event.touches.count == 3) {
+					MultitouchTouch *touch1 = event.touches[0];
+					MultitouchTouch *touch2 = event.touches[1];
+					MultitouchTouch *touch3 = event.touches[2];
+					MultitouchTouch *middleTouch;
+					if ((touch1.x > touch2.x && touch1.x < touch3.x) || (touch1.x > touch3.x && touch1.x < touch2.x)) {
+						middleTouch = touch1;
+					}
+					else if ((touch2.x > touch1.x && touch2.x < touch3.x) || (touch2.x > touch3.x && touch2.x < touch1.x)) {
+						middleTouch = touch2;
+					}
+					else {
+						middleTouch = touch3;
+					}
+
+					NSMutableArray *rearrangedTouches = [event.touches mutableCopy];
+					[rearrangedTouches removeObject:middleTouch];
+					[rearrangedTouches insertObject:middleTouch atIndex:0];
+
+					event.touches = rearrangedTouches;
+				}
+
 				for (MultitouchTouch *touch in event.touches) {
 					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
-					if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+					if (touch.state == MTTouchStateTouching && combinedTouchVelocity > 0.06) {
 						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
 
 						NSNumber *identity = touch.identifier;
 
 						if (!_gestureStrokes[identity]) {
-							if (_orderedStrokeIds.count < 3) {
+							if (_orderedStrokeIds.count < (_quickdrawMode ? 1 : 3)) {
 								[_orderedStrokeIds addObject:identity];
 								_gestureStrokes[identity] = [[GestureStroke alloc] init];
 							}
@@ -169,10 +192,12 @@
 	[[MultitouchManager sharedMultitouchManager] addMultitouchListenerWithTarget:self callback:@selector(dealWithMultitouchEvent:) andThread:nil];
 }
 
-- (void)startDetectingGesture {
+- (void)startDetectingGesture:(BOOL)quick {
 	[self resetAll];
 
 	_mouseStrokeIndex = 0;
+
+	_quickdrawMode = quick;
 
 	_initialMultitouchDeviceId = nil;
 
@@ -187,7 +212,12 @@
 		[NSApp activateIgnoringOtherApps:YES];
 		CGAssociateMouseAndMouseCursorPosition(NO);
 
-		_startInputTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(startMultitouchInput) userInfo:nil repeats:NO];
+		if (quick) {
+			[self startMultitouchInput];
+		}
+		else {
+			_startInputTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(startMultitouchInput) userInfo:nil repeats:NO];
+		}
 	}
 
 	_detectingInput = YES;

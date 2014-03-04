@@ -25,7 +25,7 @@
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes;
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes;
-- (void)shouldStartDetectingGesture;
+- (void)shouldStartDetectingGesture:(BOOL)quick;
 #pragma mark -
 
 #pragma mark -

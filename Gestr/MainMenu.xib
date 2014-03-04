@@ -59,6 +59,7 @@
                 <outlet property="minimumRecognitionScoreField" destination="4055" id="4196"/>
                 <outlet property="multitouchOptionField" destination="4132" id="4200"/>
                 <outlet property="multitouchRecognitionLabel" destination="4130" id="4170"/>
+                <outlet property="quickdrawOptionField" destination="n2f-cz-eMf" id="kne-bX-86e"/>
                 <outlet property="readingDelayTimeField" destination="4086" id="4197"/>
                 <outlet property="setupView" destination="3747" id="3847"/>
                 <outlet property="setupWindow" destination="2804" id="3846"/>
@@ -205,25 +206,25 @@
                         </connections>
                     </button>
                     <textField toolTip="Activate with a four-finger tap, then swipe away, instead of double-right-click, then click 'n drag..." verticalHuggingPriority="750" id="4130">
-                        <rect key="frame" x="20" y="47" width="133" height="18"/>
+                        <rect key="frame" x="24" y="47" width="72" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multitouch trackpad?" id="4131" customClass="ShadowTextFieldCell">
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multitouch?" id="4131" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField toolTip="Draw your gestures fullscreen instead of in a window..." verticalHuggingPriority="750" id="4142">
-                        <rect key="frame" x="186" y="47" width="145" height="18"/>
+                    <textField toolTip="Draw your gestures fullscreen instead of in a window..." verticalHuggingPriority="750" id="0rJ-p5-rOr">
+                        <rect key="frame" x="252" y="47" width="68" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Fullscreen recognition?" id="4143" customClass="ShadowTextFieldCell">
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Fullscreen?" id="hw3-p4-8L7" customClass="ShadowTextFieldCell">
                             <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <button id="4132">
-                        <rect key="frame" x="150" y="44" width="22" height="22"/>
+                        <rect key="frame" x="99" y="44" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4133" customClass="AppButtonCell">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -254,7 +255,7 @@
                         </connections>
                     </button>
                     <button id="4144">
-                        <rect key="frame" x="328" y="44" width="22" height="22"/>
+                        <rect key="frame" x="324" y="44" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4145" customClass="AppButtonCell">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -262,6 +263,26 @@
                         </buttonCell>
                         <connections>
                             <action selector="fullscreenOptionChanged:" target="3781" id="4205"/>
+                        </connections>
+                    </button>
+                    <textField toolTip="Just draw with three fingers, no need to activate first..." verticalHuggingPriority="750" id="Xbd-w8-5bJ">
+                        <rect key="frame" x="139" y="47" width="71" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Quickdraw?" id="4M4-pf-dZn" customClass="ShadowTextFieldCell">
+                            <font key="font" metaFont="cellTitle"/>
+                            <color key="textColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button id="n2f-cz-eMf">
+                        <rect key="frame" x="213" y="44" width="22" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="9pK-yG-b7O" customClass="AppButtonCell">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="quickdrawOptionChanged:" target="3781" id="f04-jk-uN3"/>
                         </connections>
                     </button>
                     <customView id="4216">

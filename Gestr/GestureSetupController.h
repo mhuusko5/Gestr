@@ -65,6 +65,7 @@
 - (IBAction)multitouchOptionChanged:(id)sender;
 - (IBAction)fullscreenOptionChanged:(id)sender;
 - (IBAction)loginStartOptionChanged:(id)sender;
+- (IBAction)quickdrawOptionChanged:(id)sender;
 #pragma mark -
 
 @end

@@ -30,6 +30,7 @@
 	[self fetchMultitouchOption];
 	[self fetchFullscreenOption];
 	[self saveLoginStartOption:[self fetchLoginStartOption]];
+	[self fetchQuickdrawOption];
 }
 
 #pragma mark -
@@ -241,9 +242,9 @@
 }
 
 - (BOOL)fetchMultitouchOption {
-	id storedMultitouchRecognition;
-	if ((storedMultitouchRecognition = [_storage objectForKey:@"multitouchOption"])) {
-		_multitouchOption = [storedMultitouchRecognition boolValue];
+	id storedMultitouchOption;
+	if ((storedMultitouchOption = [_storage objectForKey:@"multitouchOption"])) {
+		_multitouchOption = [storedMultitouchOption boolValue];
 	}
 	else {
 		[self saveMultitouchOption:[MultitouchManager systemIsMultitouchCapable]];
@@ -258,9 +259,9 @@
 }
 
 - (BOOL)fetchFullscreenOption {
-	id storedFullscreenRecognition;
-	if ((storedFullscreenRecognition = [_storage objectForKey:@"fullscreenOption"])) {
-		_fullscreenOption = [storedFullscreenRecognition boolValue];
+	id storedFullscreenOption;
+	if ((storedFullscreenOption = [_storage objectForKey:@"fullscreenOption"])) {
+		_fullscreenOption = [storedFullscreenOption boolValue];
 	}
 	else {
 		[self saveFullscreenOption:NO];
@@ -331,6 +332,23 @@
 		}
 		CFRelease(loginItems);
 	}
+}
+
+- (BOOL)fetchQuickdrawOption {
+	id storedQuickdrawOption;
+	if ((storedQuickdrawOption = [_storage objectForKey:@"quickdrawOption"])) {
+		_quickdrawOption = [storedQuickdrawOption boolValue];
+	}
+	else {
+		[self saveQuickdrawOption:NO];
+	}
+
+	return _quickdrawOption;
+}
+
+- (void)saveQuickdrawOption:(BOOL)newChoice {
+	[_storage setBool:(_quickdrawOption = newChoice) forKey:@"quickdrawOption"];
+	[_storage synchronize];
 }
 
 #pragma mark -

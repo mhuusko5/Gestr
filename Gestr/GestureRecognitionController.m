@@ -15,6 +15,7 @@
 @property NSDate *recentRightClickDate;
 @property NSArray *beforeFourFingerTouches;
 @property NSMutableArray *recentFourFingerTouches;
+@property NSMutableArray *recentThreeFingerTouches;
 
 @end
 
@@ -36,6 +37,7 @@
 		_recentRightClickDate = [NSDate date];
 		_beforeFourFingerTouches = @[@0, @0, @0];
 		_recentFourFingerTouches = [NSMutableArray array];
+		_recentThreeFingerTouches = [NSMutableArray array];
 	}
 }
 
@@ -99,7 +101,7 @@
 	}
 }
 
-- (void)shouldStartDetectingGesture {
+- (void)shouldStartDetectingGesture:(BOOL)quick {
 	if (_recognitionWindow.alphaValue <= 0) {
 		_appDescriptionAlert.stringValue = @"";
 		_appIconAlert.image = nil;
@@ -109,7 +111,7 @@
 
 		[self toggleInRecognitionWindow];
 
-		[_recognitionView startDetectingGesture];
+		[_recognitionView startDetectingGesture:quick];
 	}
 }
 
@@ -119,14 +121,14 @@
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (_recognitionWindow.alphaValue <= 0) {
-		int activeTouches = 0;
+		int activeTouchCount = 0;
 		for (MultitouchTouch *touch in event.touches) {
 			if (touch.state == MTTouchStateTouching) {
-				activeTouches++;
+				activeTouchCount++;
 			}
 		}
 
-		if (activeTouches == 4) {
+		if (activeTouchCount == 4) {
 			[_recentFourFingerTouches addObject:event];
 		}
 		else {
@@ -142,13 +144,40 @@
 
 				NSCountedSet *countedBeforeFourFingerTouches = [[NSCountedSet alloc] initWithArray:_beforeFourFingerTouches];
 				if ((totalVelocity / totalCount) <= 0.46 && [countedBeforeFourFingerTouches countForObject:@3] < 3 && [countedBeforeFourFingerTouches countForObject:@5] < 3) {
-					[self shouldStartDetectingGesture];
+					[self shouldStartDetectingGesture:NO];
 				}
 			}
 
-			_beforeFourFingerTouches = @[_beforeFourFingerTouches[1], _beforeFourFingerTouches[2], @(activeTouches)];
+			_beforeFourFingerTouches = @[_beforeFourFingerTouches[1], _beforeFourFingerTouches[2], @(activeTouchCount)];
 
 			[_recentFourFingerTouches removeAllObjects];
+		}
+
+		if (_appController.gestureSetupController.setupModel.quickdrawOption && activeTouchCount == 3 && _recentFourFingerTouches.count == 0) {
+			[_recentThreeFingerTouches addObject:event];
+
+			if (_recentThreeFingerTouches.count >= 6) {
+				if (_recentThreeFingerTouches.count >= 16) {
+					[_recentThreeFingerTouches removeObjectAtIndex:0];
+				}
+
+				int totalCount = 0;
+				float totalVelocity = 0.0f;
+				for (MultitouchEvent *threeFingerEvent in _recentThreeFingerTouches) {
+					for (MultitouchTouch *touch in threeFingerEvent.touches) {
+						totalCount++;
+						totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+					}
+				}
+
+				if ((totalVelocity / totalCount) >= 0.28) {
+					[self shouldStartDetectingGesture:YES];
+					[_recentThreeFingerTouches removeAllObjects];
+				}
+			}
+		}
+		else {
+			[_recentThreeFingerTouches removeAllObjects];
 		}
 	}
 }
@@ -176,7 +205,7 @@
 	}
 	else if (type == kCGEventRightMouseDown && _recognitionWindow.alphaValue <= 0) {
 		if ([[NSDate date] timeIntervalSinceDate:_recentRightClickDate] * 1000 < 420) {
-			[self shouldStartDetectingGesture];
+			[self shouldStartDetectingGesture:NO];
 
 			_recentRightClickDate = [NSDate date];
 		}

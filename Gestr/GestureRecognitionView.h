@@ -13,7 +13,7 @@
 - (void)dealWithMultitouchEvent:(MultitouchEvent *)event;
 
 - (void)startMultitouchInput;
-- (void)startDetectingGesture;
+- (void)startDetectingGesture:(BOOL)quick;
 
 - (void)finishDetectingGesture;
 - (void)finishDetectingGestureIgnore;

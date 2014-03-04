@@ -8,7 +8,7 @@
 @property NSMutableArray *webPageArray;
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
 @property int readingDelayTime, minimumRecognitionScore;
-@property BOOL multitouchOption, fullscreenOption, loginStartOption;
+@property BOOL multitouchOption, fullscreenOption, loginStartOption, quickdrawOption;
 
 #pragma mark -
 #pragma mark Setup
@@ -47,6 +47,8 @@
 - (void)saveFullscreenOption:(BOOL)newChoice;
 - (BOOL)fetchLoginStartOption;
 - (void)saveLoginStartOption:(BOOL)newChoice;
+- (BOOL)fetchQuickdrawOption;
+- (void)saveQuickdrawOption:(BOOL)newChoice;
 #pragma mark -
 
 @end

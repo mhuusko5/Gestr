@@ -119,7 +119,7 @@
 
 				for (MultitouchTouch *touch in event.touches) {
 					float combinedTouchVelocity = fabs(touch.velX) + fabs(touch.velY);
-					if (touch.state == 4 && combinedTouchVelocity > 0.06) {
+					if (touch.state == MTTouchStateTouching && combinedTouchVelocity > 0.06) {
 						NSPoint drawPoint = NSMakePoint(touch.x, touch.y);
 
 						NSNumber *identity = touch.identifier;
