@@ -153,7 +153,7 @@
 			[_recentFourFingerTouches removeAllObjects];
 		}
 
-		if (_appController.gestureSetupController.setupModel.quickdrawOption && activeTouchCount == 3 && _recentFourFingerTouches.count == 0) {
+		if (_appController.gestureSetupController.setupModel.quickdrawOption && activeTouchCount == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
 			[_recentThreeFingerTouches addObject:event];
 
 			if (_recentThreeFingerTouches.count >= 6) {
