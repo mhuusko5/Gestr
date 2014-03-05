@@ -5,11 +5,38 @@
 @property NSMutableArray *multitouchListeners;
 @property NSMutableArray *multitouchDevices;
 @property BOOL forwardingMultitouchEventsToListeners;
-@property NSTimer *checkForMultitouchDevicesTimer;
+@property NSTimer *multitouchHardwareCheckTimer;
 
 @end
 
 @implementation MultitouchManager
+
+static BOOL laptopLidClosed = NO;
+- (void)checkMultitouchHardware {
+	CGDirectDisplayID builtInDisplay = 0;
+	CGDirectDisplayID activeDisplays[10];
+	uint32_t numActiveDisplays;
+	CGGetActiveDisplayList(10, activeDisplays, &numActiveDisplays);
+
+	while (numActiveDisplays-- > 0) {
+		if (CGDisplayIsBuiltin(activeDisplays[numActiveDisplays])) {
+			builtInDisplay = activeDisplays[numActiveDisplays];
+			break;
+		}
+	}
+
+	laptopLidClosed = (builtInDisplay == 0);
+
+	NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
+
+	int mtDeviceCount = (int)mtDevices.count;
+	if (mtDeviceCount != _multitouchDevices.count) {
+		[_multitouchHardwareCheckTimer invalidate];
+		_multitouchHardwareCheckTimer = nil;
+
+		[self restartMultitouchEventForwardingAfterWake:nil];
+	}
+}
 
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (_forwardingMultitouchEventsToListeners) {
@@ -19,18 +46,6 @@
 			[multitouchListenerToForwardEvent sendMultitouchEvent:event];
 		}
 	}
-}
-
-- (void)checkForMultitouchDevices {
-    NSArray *mtDevices = (NSArray *)CFBridgingRelease(MTDeviceCreateList());
-
-    int mtDeviceCount = (int)mtDevices.count;
-    if (mtDeviceCount != _multitouchDevices.count) {
-        [_checkForMultitouchDevicesTimer invalidate];
-        _checkForMultitouchDevicesTimer = nil;
-
-        [self restartMultitouchEventForwardingAfterWake:nil];
-    }
 }
 
 - (void)startForwardingMultitouchEventsToListeners {
@@ -54,7 +69,7 @@
 				[_multitouchDevices addObject:device];
 			}
 
-            _checkForMultitouchDevicesTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkForMultitouchDevices) userInfo:nil repeats:YES];
+			_multitouchHardwareCheckTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkMultitouchHardware) userInfo:nil repeats:YES];
 
 			_forwardingMultitouchEventsToListeners = YES;
 		}
@@ -67,8 +82,8 @@
 - (void)stopForwardingMultitouchEventsToListeners {
 	if ([[NSThread currentThread] isMainThread]) {
 		if (_forwardingMultitouchEventsToListeners) {
-            [_checkForMultitouchDevicesTimer invalidate];
-            _checkForMultitouchDevicesTimer = nil;
+			[_multitouchHardwareCheckTimer invalidate];
+			_multitouchHardwareCheckTimer = nil;
 
 			int multitouchDeviceCount = (int)_multitouchDevices.count;
 			while (multitouchDeviceCount-- > 0) {
@@ -95,6 +110,16 @@
 	}
 }
 
+- (void)restartMultitouchEventForwardingAfterWake:(NSNotification *)wakeNotification {
+	if ([[NSThread currentThread] isMainThread]) {
+		[self stopForwardingMultitouchEventsToListeners];
+		[self startForwardingMultitouchEventsToListeners];
+	}
+	else {
+		[self performSelectorOnMainThread:@selector(restartMultitouchEventForwardingAfterWake:) withObject:wakeNotification waitUntilDone:NO];
+	}
+}
+
 - (void)removeMultitouchListenersWithTarget:(id)target andCallback:(SEL)callback {
 	int multitouchListenerCount = (int)_multitouchListeners.count;
 	while (multitouchListenerCount-- > 0) {
@@ -113,24 +138,8 @@
 	[self startForwardingMultitouchEventsToListeners];
 }
 
-static bool laptopLidClosed() {
-	CGDirectDisplayID builtInDisplay = 0;
-	CGDirectDisplayID activeDisplays[10];
-	uint32_t numActiveDisplays;
-	CGGetActiveDisplayList(10, activeDisplays, &numActiveDisplays);
-
-	while (numActiveDisplays-- > 0) {
-		if (CGDisplayIsBuiltin(activeDisplays[numActiveDisplays])) {
-			builtInDisplay = activeDisplays[numActiveDisplays];
-			break;
-		}
-	}
-
-	return (builtInDisplay == 0);
-}
-
 static void mtEventHandler(MTDeviceRef mtEventDevice, MTTouch mtEventTouches[], int mtEventTouchesNum, double mtEventTimestamp, int mtEventFrameId) {
-	if (MTDeviceIsBuiltIn && MTDeviceIsBuiltIn(mtEventDevice) && laptopLidClosed()) {
+	if (MTDeviceIsBuiltIn && MTDeviceIsBuiltIn(mtEventDevice) && laptopLidClosed) {
 		/*When a Mac laptop lid is closed, it can cause the trackpad to send random
          multitouch input (insane, I know!). Obviously we want to ignore that input.*/
 		return;
@@ -145,16 +154,6 @@ static void mtEventHandler(MTDeviceRef mtEventDevice, MTTouch mtEventTouches[], 
 	MultitouchEvent *multitouchEvent = [[MultitouchEvent alloc] initWithDeviceIdentifier:(int)mtEventDevice frameIdentifier:mtEventFrameId timestamp:mtEventTimestamp andTouches:multitouchTouches];
 
 	[[MultitouchManager sharedMultitouchManager] handleMultitouchEvent:multitouchEvent];
-}
-
-- (void)restartMultitouchEventForwardingAfterWake:(NSNotification *)wakeNotification {
-	if ([[NSThread currentThread] isMainThread]) {
-		[self stopForwardingMultitouchEventsToListeners];
-		[self startForwardingMultitouchEventsToListeners];
-	}
-	else {
-		[self performSelectorOnMainThread:@selector(restartMultitouchEventForwardingAfterWake:) withObject:wakeNotification waitUntilDone:NO];
-	}
 }
 
 - (id)init {
