@@ -17,6 +17,9 @@
 @property NSMutableArray *recentFourFingerTouches;
 @property NSMutableArray *recentThreeFingerTouches;
 
+@property NSTimer *disableScrollBlockingTimer;
+@property BOOL blockingScrollEvents;
+
 @end
 
 @implementation GestureRecognitionController
@@ -99,10 +102,18 @@
 	else {
 		[self toggleOutRecognitionWindow:NO];
 	}
+
+	_disableScrollBlockingTimer = [NSTimer scheduledTimerWithTimeInterval:1.2 target:self selector:@selector(disableScrollEventBlocking) userInfo:nil repeats:NO];
 }
 
 - (void)shouldStartDetectingGesture:(BOOL)quick {
 	if (_recognitionWindow.alphaValue <= 0) {
+		if (_disableScrollBlockingTimer) {
+			[_disableScrollBlockingTimer invalidate];
+			_disableScrollBlockingTimer = nil;
+		}
+		_blockingScrollEvents = YES;
+
 		_appDescriptionAlert.stringValue = @"";
 		_appIconAlert.image = nil;
 
@@ -113,6 +124,10 @@
 
 		[_recognitionView startDetectingGesture:quick];
 	}
+}
+
+- (void)disableScrollEventBlocking {
+	_blockingScrollEvents = NO;
 }
 
 #pragma mark -
@@ -184,23 +199,8 @@
 
 - (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type {
 	if (_appController.gestureSetupController.setupModel.multitouchOption) {
-		if (_recognitionView.detectingInput) {
-			if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
-				[_recognitionView finishDetectingGesture:YES];
-				return event;
-			}
-			else {
-				return NULL;
-			}
-		}
-		else if (_appController.gestureSetupController.setupView.detectingInput) {
-			if (type == kCGEventKeyUp || type == kCGEventKeyDown) {
-				[_appController.gestureSetupController.setupView finishDetectingGesture:YES];
-				return event;
-			}
-			else {
-				return NULL;
-			}
+        if (_recognitionView.detectingInput || (type == kCGEventScrollWheel && (_recognitionWindow.alphaValue > 0 || (_blockingScrollEvents && CGEventGetIntegerValueField(event, kCGScrollWheelEventScrollCount) > 0)))) {
+			return NULL;
 		}
 	}
 	else if (type == kCGEventRightMouseDown && _recognitionWindow.alphaValue <= 0) {

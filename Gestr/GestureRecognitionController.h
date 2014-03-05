@@ -26,6 +26,7 @@
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes;
 - (void)recognizeGestureWithStrokes:(NSMutableArray *)strokes;
 - (void)shouldStartDetectingGesture:(BOOL)quick;
+- (void)disableScrollEventBlocking;
 #pragma mark -
 
 #pragma mark -
