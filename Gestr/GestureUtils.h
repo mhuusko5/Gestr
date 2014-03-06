@@ -7,9 +7,9 @@
 #define GUGoldenRatio (0.5 * (-1.0 + sqrt(5.0)))
 
 #define GUStartVectorDelay 2
-#define GUStartVectorLength 10
+#define GUStartVectorLength 7
 
-#define GUMinimumPointCount 13
+#define GUMinimumPointCount 10
 
 #define GUScaleLeniency 0.25f
 

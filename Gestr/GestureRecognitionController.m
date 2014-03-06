@@ -136,14 +136,7 @@
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (_recognitionWindow.alphaValue <= 0) {
-		int activeTouchCount = 0;
-		for (MultitouchTouch *touch in event.touches) {
-			if (touch.state == MTTouchStateTouching) {
-				activeTouchCount++;
-			}
-		}
-
-		if (activeTouchCount == 4) {
+		if (event.touches.count == 4) {
 			[_recentFourFingerTouches addObject:event];
 		}
 		else {
@@ -163,16 +156,16 @@
 				}
 			}
 
-			_beforeFourFingerTouches = @[_beforeFourFingerTouches[1], _beforeFourFingerTouches[2], @(activeTouchCount)];
+			_beforeFourFingerTouches = @[_beforeFourFingerTouches[1], _beforeFourFingerTouches[2], @(event.touches.count)];
 
 			[_recentFourFingerTouches removeAllObjects];
 		}
 
-		if (_appController.gestureSetupController.setupModel.quickdrawOption && activeTouchCount == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
+		if (_appController.gestureSetupController.setupModel.quickdrawOption && event.touches.count == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
 			[_recentThreeFingerTouches addObject:event];
 
-			if (_recentThreeFingerTouches.count >= 6) {
-				if (_recentThreeFingerTouches.count >= 16) {
+			if (_recentThreeFingerTouches.count >= 4) {
+				if (_recentThreeFingerTouches.count >= 14) {
 					[_recentThreeFingerTouches removeObjectAtIndex:0];
 				}
 
@@ -185,9 +178,26 @@
 					}
 				}
 
-				if ((totalVelocity / totalCount) >= 0.28) {
-					[self shouldStartDetectingGesture:YES];
-					[_recentThreeFingerTouches removeAllObjects];
+				if ((totalVelocity / totalCount) >= 0.25) {
+                    NSMutableArray *threeFingers = [event.touches mutableCopy];
+                    NSMutableArray *fingerDistances = [NSMutableArray array];
+                    for (int i = threeFingers.count - 1; i > 0; i--) {
+                        MultitouchTouch *finger = threeFingers[i];
+                        for (MultitouchTouch *otherFinger in threeFingers) {
+                            if (finger != otherFinger) {
+                                float diffX = otherFinger.x - finger.x;
+                                float diffY = otherFinger.y - finger.y;
+                                [fingerDistances addObject:@(sqrt(diffX * diffX + diffY * diffY))];
+                            }
+                        }
+                        [threeFingers removeObject:finger];
+                    }
+                    NSArray *orderedFingerDistances = [fingerDistances sortedArrayUsingSelector:@selector(compare:)];
+                    
+                    if (([orderedFingerDistances[0] floatValue] + [orderedFingerDistances[1] floatValue]) / 2 <= 0.25) {
+                        [self shouldStartDetectingGesture:YES];
+                        [_recentThreeFingerTouches removeAllObjects];
+                    }
 				}
 			}
 		}
@@ -199,7 +209,7 @@
 
 - (CGEventRef)handleEvent:(CGEventRef)event withType:(int)type {
 	if (_appController.gestureSetupController.setupModel.multitouchOption) {
-        if (_recognitionView.detectingInput || (type == kCGEventScrollWheel && (_recognitionWindow.alphaValue > 0 || (_blockingScrollEvents && CGEventGetIntegerValueField(event, kCGScrollWheelEventScrollCount) > 0)))) {
+		if (_recognitionView.detectingInput || (type == kCGEventScrollWheel && (_recognitionWindow.alphaValue > 0 || (_blockingScrollEvents && CGEventGetIntegerValueField(event, kCGScrollWheelEventScrollCount) > 0)))) {
 			return NULL;
 		}
 	}
