@@ -137,14 +137,7 @@
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (_recognitionWindow.alphaValue <= 0) {
-        int activeTouchCount = 0;
-		for (MultitouchTouch *touch in event.touches) {
-			if (touch.state == MTTouchStateTouching) {
-				activeTouchCount++;
-			}
-		}
-
-		if (event.touches.count == 4 && activeTouchCount == 4) {
+		if (event.touches.count == 4) {
 			[_recentFourFingerTouches addObject:event];
 		}
 		else {
@@ -169,26 +162,25 @@
 			[_recentFourFingerTouches removeAllObjects];
 		}
 
-		if (_appController.gestureSetupController.setupModel.quickdrawOption && event.touches.count == 3 && activeTouchCount == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
-            if (++_threeFingerTouchCount >= 6) {
-                int totalCount = 0;
+		if (_appController.gestureSetupController.setupModel.quickdrawOption && event.touches.count == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
+			if (++_threeFingerTouchCount >= 6 && _threeFingerTouchCount <= 50) {
+				int totalCount = 0;
 				float totalVelocity = 0.0f;
-                float minimumVelocity = FLT_MAX;
-                for (MultitouchTouch *touch in event.touches) {
-                    totalCount++;
-                    totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
+				NSMutableArray *velocities = [NSMutableArray array];
+				for (MultitouchTouch *touch in event.touches) {
+					totalCount++;
+					totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
 
-                    float newVelocity = sqrtf(touch.velX * touch.velX + touch.velY * touch.velY);
-                    if (newVelocity < minimumVelocity) {
-                        minimumVelocity = newVelocity;
-                    }
-                }
+					[velocities addObject:@(sqrtf(touch.velX * touch.velX + touch.velY * touch.velY))];
+				}
+				NSArray *orderedVelocites = [velocities sortedArrayUsingSelector:@selector(compare:)];
+				float initalVelocitiesRatio = [orderedVelocites[1] floatValue] / ([orderedVelocites[0] floatValue]);
 
-                if ((totalVelocity / totalCount) >= 0.3 && minimumVelocity >= 0.3) {
-                    _threeFingerTouchCount = 0;
-                    [self shouldStartDetectingGesture:YES];
-                }
-            }
+				if ((totalVelocity / totalCount) >= 0.3 && initalVelocitiesRatio <= 1.5) {
+					_threeFingerTouchCount = 0;
+					[self shouldStartDetectingGesture:YES];
+				}
+			}
 		}
 		else {
 			_threeFingerTouchCount = 0;
