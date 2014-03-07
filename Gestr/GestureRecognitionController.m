@@ -15,7 +15,8 @@
 @property NSDate *recentRightClickDate;
 @property NSArray *beforeFourFingerTouches;
 @property NSMutableArray *recentFourFingerTouches;
-@property NSMutableArray *recentThreeFingerTouches;
+
+@property int threeFingerTouchCount;
 
 @property NSTimer *disableScrollBlockingTimer;
 @property BOOL blockingScrollEvents;
@@ -40,7 +41,7 @@
 		_recentRightClickDate = [NSDate date];
 		_beforeFourFingerTouches = @[@0, @0, @0];
 		_recentFourFingerTouches = [NSMutableArray array];
-		_recentThreeFingerTouches = [NSMutableArray array];
+		_threeFingerTouchCount = 0;
 	}
 }
 
@@ -103,7 +104,7 @@
 		[self toggleOutRecognitionWindow:NO];
 	}
 
-	_disableScrollBlockingTimer = [NSTimer scheduledTimerWithTimeInterval:1.2 target:self selector:@selector(disableScrollEventBlocking) userInfo:nil repeats:NO];
+	_disableScrollBlockingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(disableScrollEventBlocking) userInfo:nil repeats:NO];
 }
 
 - (void)shouldStartDetectingGesture:(BOOL)quick {
@@ -136,7 +137,14 @@
 #pragma mark Activation Event Handling
 - (void)handleMultitouchEvent:(MultitouchEvent *)event {
 	if (_recognitionWindow.alphaValue <= 0) {
-		if (event.touches.count == 4) {
+        int activeTouchCount = 0;
+		for (MultitouchTouch *touch in event.touches) {
+			if (touch.state == MTTouchStateTouching) {
+				activeTouchCount++;
+			}
+		}
+
+		if (event.touches.count == 4 && activeTouchCount == 4) {
 			[_recentFourFingerTouches addObject:event];
 		}
 		else {
@@ -161,48 +169,29 @@
 			[_recentFourFingerTouches removeAllObjects];
 		}
 
-		if (_appController.gestureSetupController.setupModel.quickdrawOption && event.touches.count == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
-			[_recentThreeFingerTouches addObject:event];
-
-			if (_recentThreeFingerTouches.count >= 4) {
-				if (_recentThreeFingerTouches.count >= 14) {
-					[_recentThreeFingerTouches removeObjectAtIndex:0];
-				}
-
-				int totalCount = 0;
+		if (_appController.gestureSetupController.setupModel.quickdrawOption && event.touches.count == 3 && activeTouchCount == 3 && _recentFourFingerTouches.count == 0 && _appController.gestureSetupController.setupWindow.alphaValue <= 0) {
+            if (++_threeFingerTouchCount >= 6) {
+                int totalCount = 0;
 				float totalVelocity = 0.0f;
-				for (MultitouchEvent *threeFingerEvent in _recentThreeFingerTouches) {
-					for (MultitouchTouch *touch in threeFingerEvent.touches) {
-						totalCount++;
-						totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
-					}
-				}
+                float minimumVelocity = FLT_MAX;
+                for (MultitouchTouch *touch in event.touches) {
+                    totalCount++;
+                    totalVelocity += (fabs(touch.velX) + fabs(touch.velY));
 
-				if ((totalVelocity / totalCount) >= 0.25) {
-                    NSMutableArray *threeFingers = [event.touches mutableCopy];
-                    NSMutableArray *fingerDistances = [NSMutableArray array];
-                    for (int i = threeFingers.count - 1; i > 0; i--) {
-                        MultitouchTouch *finger = threeFingers[i];
-                        for (MultitouchTouch *otherFinger in threeFingers) {
-                            if (finger != otherFinger) {
-                                float diffX = otherFinger.x - finger.x;
-                                float diffY = otherFinger.y - finger.y;
-                                [fingerDistances addObject:@(sqrt(diffX * diffX + diffY * diffY))];
-                            }
-                        }
-                        [threeFingers removeObject:finger];
+                    float newVelocity = sqrtf(touch.velX * touch.velX + touch.velY * touch.velY);
+                    if (newVelocity < minimumVelocity) {
+                        minimumVelocity = newVelocity;
                     }
-                    NSArray *orderedFingerDistances = [fingerDistances sortedArrayUsingSelector:@selector(compare:)];
-                    
-                    if (([orderedFingerDistances[0] floatValue] + [orderedFingerDistances[1] floatValue]) / 2 <= 0.25) {
-                        [self shouldStartDetectingGesture:YES];
-                        [_recentThreeFingerTouches removeAllObjects];
-                    }
-				}
-			}
+                }
+
+                if ((totalVelocity / totalCount) >= 0.3 && minimumVelocity >= 0.3) {
+                    _threeFingerTouchCount = 0;
+                    [self shouldStartDetectingGesture:YES];
+                }
+            }
 		}
 		else {
-			[_recentThreeFingerTouches removeAllObjects];
+			_threeFingerTouchCount = 0;
 		}
 	}
 }
