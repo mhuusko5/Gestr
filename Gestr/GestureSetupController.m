@@ -205,6 +205,10 @@
 #pragma mark -
 #pragma mark Setup Actions
 - (IBAction)assignSelectedGesture:(id)sender {
+    [_showGestureButton setEnabled:NO];
+    [_assignGestureButton setEnabled:NO];
+    [_clearGestureButton setEnabled:NO];
+
 	[_setupView startDetectingGesture];
 }
 
