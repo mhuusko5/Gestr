@@ -437,7 +437,7 @@
 			dependencies = (
 			);
 			name = Gestr;
-			productName = Tapr;
+			productName = Gestr;
 			productReference = 00D15EB41855520C00336935 /* Gestr.app */;
 			productType = "com.apple.product-type.application";
 		};
