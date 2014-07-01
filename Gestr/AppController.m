@@ -34,6 +34,10 @@
 	[NSApp terminate:self];
 }
 
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    PFMoveToApplicationsFolderIfNecessary();
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
 	[_gestureRecognitionController applicationDidFinishLaunching];
 	[_gestureSetupController applicationDidFinishLaunching];
