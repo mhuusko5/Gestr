@@ -1,10 +1,12 @@
 #import "MultitouchManager.h"
+#import "Script.h"
 #import "Application.h"
 #import "ChromePage.h"
 #import "SafariPage.h"
 
 @interface GestureSetupModel : NSObject
 
+@property NSMutableArray *scriptArray;
 @property NSMutableArray *webPageArray;
 @property NSMutableArray *normalAppArray, *utilitiesAppArray, *systemAppArray;
 @property int readingDelayTime, minimumRecognitionScore;
@@ -19,6 +21,11 @@
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity;
 #pragma mark -
+
+#pragma mark -
+#pragma mark Script Managmeent
+- (NSMutableArray *)fetchScriptArray;
+#pragma mark - 
 
 #pragma mark -
 #pragma mark Web Page Management

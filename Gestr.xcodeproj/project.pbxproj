@@ -53,6 +53,7 @@
 		0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDF018557DE600BDBA25 /* trackpadBackground.png */; };
 		0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDF218557DE600BDBA25 /* WebPage.m */; };
 		003743101885E30600F9B53A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0037430F1885E30600F9B53A /* Images.xcassets */; };
+		00A6B1961968678E007E94BB /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6B1951968678E007E94BB /* Script.m */; };
 		00B20D2518C3EE480037706A /* RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B20D2418C3EE480037706A /* RoundedCornerView.m */; };
 		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
 		00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3A185553AF00336935 /* CoreServices.framework */; };
@@ -163,6 +164,8 @@
 		0029FDF118557DE600BDBA25 /* WebPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPage.h; sourceTree = "<group>"; };
 		0029FDF218557DE600BDBA25 /* WebPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebPage.m; sourceTree = "<group>"; };
 		0037430F1885E30600F9B53A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		00A6B1941968678E007E94BB /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		00A6B1951968678E007E94BB /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
 		00B20D2318C3EE480037706A /* RoundedCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundedCornerView.h; sourceTree = "<group>"; };
 		00B20D2418C3EE480037706A /* RoundedCornerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedCornerView.m; sourceTree = "<group>"; };
 		00D15EB41855520C00336935 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -361,6 +364,8 @@
 				0029FDC718557DE600BDBA25 /* GestureSetupModel.m */,
 				0029FDD218557DE600BDBA25 /* Launchable.h */,
 				0029FDD318557DE600BDBA25 /* Launchable.m */,
+				00A6B1941968678E007E94BB /* Script.h */,
+				00A6B1951968678E007E94BB /* Script.m */,
 				0029FDA318557DE600BDBA25 /* Application.h */,
 				0029FDA418557DE600BDBA25 /* Application.m */,
 				0029FDF118557DE600BDBA25 /* WebPage.h */,
@@ -511,6 +516,7 @@
 				0029FE0318557DE600BDBA25 /* GestureRecognitionWindow.m in Sources */,
 				0029FE1218557DE600BDBA25 /* MultitouchManager.m in Sources */,
 				0029FDF318557DE600BDBA25 /* AppButtonCell.m in Sources */,
+				00A6B1961968678E007E94BB /* Script.m in Sources */,
 				0029FE0A18557DE600BDBA25 /* GestureStroke.m in Sources */,
 				0029FE0918557DE600BDBA25 /* GestureSetupWindow.m in Sources */,
 				0029FDFF18557DE600BDBA25 /* GesturePoint.m in Sources */,

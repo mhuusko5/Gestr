@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
@@ -92,15 +92,16 @@
                         <imageCell key="cell" controlSize="mini" alignment="left" imageScaling="axesIndependently" image="background2" id="4098"/>
                     </imageView>
                     <segmentedControl verticalHuggingPriority="750" id="4109">
-                        <rect key="frame" x="54" y="276" width="257" height="24"/>
+                        <rect key="frame" x="27" y="276" width="310" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="4110" customClass="AppSegmentedCell">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="Apps" width="62"/>
-                                <segment label="Web" width="62" tag="1"/>
-                                <segment label="Utilities" width="62"/>
-                                <segment label="System" width="62"/>
+                                <segment label="Apps" width="60"/>
+                                <segment label="Web" width="60" tag="1"/>
+                                <segment label="Scripts" width="60" tag="2"/>
+                                <segment label="Utilities" width="60" tag="3"/>
+                                <segment label="System" width="60" tag="4"/>
                             </segments>
                         </segmentedCell>
                         <connections>
@@ -289,14 +290,14 @@
                         <rect key="frame" x="0.0" y="145" width="365" height="136"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="3522">
+                            <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="3522">
                                 <rect key="frame" x="0.0" y="2" width="365" height="131"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="naK-Z8-zy8">
                                     <rect key="frame" x="0.0" y="0.0" width="365" height="131"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="3523" customClass="AppTableView">
+                                        <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="36" rowSizeStyle="automatic" viewBased="YES" id="3523" customClass="AppTableView">
                                             <rect key="frame" x="0.0" y="0.0" width="365" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" red="0.21448237889999999" green="0.21448237889999999" blue="0.21448237889999999" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>

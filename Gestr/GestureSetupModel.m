@@ -19,6 +19,8 @@
 #pragma mark -
 #pragma mark Setup
 - (void)setup {
+    [self fetchScriptArray];
+
 	[self fetchWebPageArray];
 
 	[self fetchNormalAppArray];
@@ -38,6 +40,12 @@
 #pragma mark -
 #pragma mark Launchable Management
 - (Launchable *)findLaunchableWithId:(NSString *)identity {
+    for (Script *script in _scriptArray) {
+        if ([script.launchId isEqualTo: identity]) {
+            return script;
+        }
+    }
+
 	for (ChromePage *page in _webPageArray) {
 		if ([page.launchId isEqualTo:identity]) {
 			return page;
@@ -63,6 +71,40 @@
 	}
 
 	return nil;
+}
+
+#pragma mark -
+
+#pragma mark -
+#pragma mark Script Managmeent
+- (NSMutableArray *)fetchScriptArray {
+    NSMutableArray *scriptArray = [NSMutableArray array];
+
+    @try {
+        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Gestr/Scripts"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path] || [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil]) {
+            NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL URLWithString:[path stringByReplacingOccurrencesOfString:@" " withString:@"%20"]] includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+            NSURL *fileUrl;
+            while (fileUrl = [directoryEnumerator nextObject]) {
+                NSString *filePath = [fileUrl path];
+                BOOL isDir;
+                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir]) {
+                    if ([[fileUrl pathExtension] isEqualToString:@"scpt"] || [[fileUrl pathExtension] isEqualToString:@"AppleScript"]) {
+                        NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
+                        NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
+                        if (displayName && icon) {
+                            [scriptArray addObject:[[Script alloc] initWithDisplayName:displayName icon:icon fileURL:fileUrl]];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        scriptArray = [NSMutableArray array];
+    }
+
+    return (_scriptArray = scriptArray);
 }
 
 #pragma mark -

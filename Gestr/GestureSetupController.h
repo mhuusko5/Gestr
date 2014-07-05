@@ -27,7 +27,6 @@
 - (IBAction)launchableTypeChanged:(id)sender;
 - (void)tableViewFocus:(BOOL)lost;
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification;
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 #pragma mark -
 

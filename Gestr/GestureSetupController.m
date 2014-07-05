@@ -88,12 +88,17 @@
 			_launchableArrayController.content = _setupModel.webPageArray;
 			break;
 
-		case 2:
+        case 2:
+			[_setupModel fetchScriptArray];
+			_launchableArrayController.content = _setupModel.scriptArray;
+			break;
+
+		case 3:
 			[_setupModel fetchUtilitiesAppArray];
 			_launchableArrayController.content = _setupModel.utilitiesAppArray;
 			break;
 
-		case 3:
+		case 4:
 			[_setupModel fetchSystemAppArray];
 			_launchableArrayController.content = _setupModel.systemAppArray;
 			break;
@@ -122,10 +127,6 @@
 	[_setupView finishDetectingGesture:YES];
 
 	[self updateSetupControls];
-}
-
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return [self currentLaunchableArray].count;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
