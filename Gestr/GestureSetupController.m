@@ -91,6 +91,7 @@
         case 2:
 			[_setupModel fetchScriptArray];
 			_launchableArrayController.content = _setupModel.scriptArray;
+            [self shouldShowCustomScriptsAlert];
 			break;
 
 		case 3:
@@ -239,6 +240,25 @@
 #pragma mark -
 
 #pragma mark -
+#pragma mark Custom Scripts
+- (void)shouldShowCustomScriptsAlert {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"shownCustomScriptsAlert"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"shownCustomScriptsAlert"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        showingAlert = YES;
+
+        [[NSAlert alertWithMessageText:@"Custom AppleScripts" defaultButton:@"Cool!" alternateButton:nil otherButton:nil informativeTextWithFormat:@"You can add your own AppleScripts to this list by placing them under ~/Library/Application Support/Gestr/Scripts"] beginSheetModalForWindow:_setupWindow modalDelegate:self didEndSelector:@selector(finishShowingCustomScriptsAlert) contextInfo:nil];
+    }
+}
+
+- (void)finishShowingCustomScriptsAlert {
+    showingAlert = NO;
+}
+
+#pragma mark -
+
+#pragma mark -
 #pragma mark Window Methods
 - (void)positionSetupWindow {
 	NSRect menuBarFrame = [[[_statusBarItem view] window] frame];
@@ -288,7 +308,12 @@
 	[_setupWindow setFrameOrigin:NSMakePoint(-10000, -10000)];
 }
 
+static BOOL showingAlert = NO;
 - (void)windowDidResignKey:(NSNotification *)notification {
+    if (showingAlert) {
+        return;
+    }
+
 	if (_setupWindow.alphaValue > 0) {
 		if (_setupView.detectingInput) {
 			[_setupView finishDetectingGesture:YES];

@@ -78,7 +78,18 @@
 #pragma mark -
 #pragma mark Script Managmeent
 - (NSMutableArray *)fetchScriptArray {
-    NSMutableArray *scriptArray = [NSMutableArray array];
+    _scriptArray = [NSMutableArray array];
+
+    NSArray *paths = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"scpt" subdirectory:@"Scripts"];
+    for (NSURL *pathURL in paths) {
+        NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:[pathURL path]] stringByDeletingPathExtension];
+        NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:[pathURL path]];
+        if (displayName && icon) {
+            [_scriptArray addObject:[[Script alloc] initWithDisplayName:displayName icon:icon fileURL:pathURL]];
+        }
+    }
+
+    NSMutableArray *customScripts = [NSMutableArray array];
 
     @try {
         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"Gestr/Scripts"];
@@ -93,7 +104,7 @@
                         NSString *displayName = [[[NSFileManager defaultManager] displayNameAtPath:filePath] stringByDeletingPathExtension];
                         NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:filePath];
                         if (displayName && icon) {
-                            [scriptArray addObject:[[Script alloc] initWithDisplayName:displayName icon:icon fileURL:fileUrl]];
+                            [customScripts addObject:[[Script alloc] initWithDisplayName:displayName icon:icon fileURL:fileUrl]];
                         }
                     }
                 }
@@ -101,10 +112,16 @@
         }
     }
     @catch (NSException *exception) {
-        scriptArray = [NSMutableArray array];
+        customScripts = [NSMutableArray array];
     }
 
-    return (_scriptArray = scriptArray);
+    [_scriptArray addObjectsFromArray:customScripts];
+
+    _scriptArray = [[_scriptArray sortedArrayUsingComparator: ^NSComparisonResult (Script *a, Script *b) {
+        return [a.displayName compare:b.displayName];
+    }] mutableCopy];
+
+    return _scriptArray;
 }
 
 #pragma mark -

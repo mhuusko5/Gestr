@@ -92,7 +92,7 @@
                         <imageCell key="cell" controlSize="mini" alignment="left" imageScaling="axesIndependently" image="background2" id="4098"/>
                     </imageView>
                     <segmentedControl verticalHuggingPriority="750" id="4109">
-                        <rect key="frame" x="27" y="276" width="310" height="24"/>
+                        <rect key="frame" x="26" y="276" width="310" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <segmentedCell key="cell" alignment="left" style="rounded" trackingMode="selectOne" id="4110" customClass="AppSegmentedCell">
                             <font key="font" metaFont="system"/>

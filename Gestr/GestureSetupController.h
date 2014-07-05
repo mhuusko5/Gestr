@@ -49,6 +49,12 @@
 #pragma mark -
 
 #pragma mark -
+#pragma mark Custom Scripts
+- (void)shouldShowCustomScriptsAlert;
+- (void)finishShowingCustomScriptsAlert;
+#pragma mark -
+
+#pragma mark -
 #pragma mark Window Methods
 - (void)positionSetupWindow;
 - (IBAction)toggleSetupWindow:(id)sender;

@@ -53,6 +53,7 @@
 		0029FE1E18557DE600BDBA25 /* trackpadBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 0029FDF018557DE600BDBA25 /* trackpadBackground.png */; };
 		0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029FDF218557DE600BDBA25 /* WebPage.m */; };
 		003743101885E30600F9B53A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0037430F1885E30600F9B53A /* Images.xcassets */; };
+		005C026C1968A72000A586B2 /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 005C026B1968A72000A586B2 /* Scripts */; };
 		00A6B1961968678E007E94BB /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6B1951968678E007E94BB /* Script.m */; };
 		00B20D2518C3EE480037706A /* RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B20D2418C3EE480037706A /* RoundedCornerView.m */; };
 		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
@@ -164,6 +165,7 @@
 		0029FDF118557DE600BDBA25 /* WebPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPage.h; sourceTree = "<group>"; };
 		0029FDF218557DE600BDBA25 /* WebPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebPage.m; sourceTree = "<group>"; };
 		0037430F1885E30600F9B53A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		005C026B1968A72000A586B2 /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
 		00A6B1941968678E007E94BB /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
 		00A6B1951968678E007E94BB /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
 		00B20D2318C3EE480037706A /* RoundedCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundedCornerView.h; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				00F58E8218557F0A00F23D42 /* Gesture Detection */,
 				00F58E8618557F9600F23D42 /* Helpers */,
 				00F58E8118557EC600F23D42 /* Supporting Files */,
+				005C026B1968A72000A586B2 /* Scripts */,
 			);
 			path = Gestr;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				0029FDFB18557DE600BDBA25 /* background2.png in Resources */,
 				0029FE1D18557DE600BDBA25 /* tableCellBack.png in Resources */,
 				0029FE1518557DE600BDBA25 /* niceLineFlipped.png in Resources */,
+				005C026C1968A72000A586B2 /* Scripts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
