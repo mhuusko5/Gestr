@@ -1,4 +1,6 @@
+.DS_Store
 
-Gestr.xcodeproj/project.xcworkspace/xcuserdata/mhuusko.xcuserdatad/UserInterfaceState.xcuserstate
-
-Gestr.xcodeproj/xcuserdata/mhuusko.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+*.xcuserstate
+*.xccheckout
+*.xcscheme
+*.xcsettings

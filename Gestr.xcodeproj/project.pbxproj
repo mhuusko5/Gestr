@@ -56,13 +56,13 @@
 		005C026C1968A72000A586B2 /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 005C026B1968A72000A586B2 /* Scripts */; };
 		00A6B1961968678E007E94BB /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6B1951968678E007E94BB /* Script.m */; };
 		00B20D2518C3EE480037706A /* RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B20D2418C3EE480037706A /* RoundedCornerView.m */; };
-		00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15EB71855520C00336935 /* Cocoa.framework */; };
-		00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3A185553AF00336935 /* CoreServices.framework */; };
-		00D15F3F185553D100336935 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F3E185553D100336935 /* Carbon.framework */; };
-		00D15F41185553D900336935 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D15F40185553D900336935 /* QuartzCore.framework */; };
 		00E2A937196350B6009DC01E /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E2A935196350B6009DC01E /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		00E2A939196350D9009DC01E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E2A938196350D9009DC01E /* Security.framework */; };
-		00F58E8018557E9300F23D42 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */; };
+		D040287319CA590100E372E7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287219CA590100E372E7 /* Security.framework */; };
+		D040287519CA590500E372E7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287419CA590500E372E7 /* QuartzCore.framework */; };
+		D040287719CA591100E372E7 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287619CA591100E372E7 /* CoreServices.framework */; };
+		D040287919CA591500E372E7 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287819CA591500E372E7 /* Carbon.framework */; };
+		D040287B19CA591900E372E7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287A19CA591900E372E7 /* Cocoa.framework */; };
+		D040287D19CA597200E372E7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287C19CA597200E372E7 /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -171,16 +171,14 @@
 		00B20D2318C3EE480037706A /* RoundedCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundedCornerView.h; sourceTree = "<group>"; };
 		00B20D2418C3EE480037706A /* RoundedCornerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedCornerView.m; sourceTree = "<group>"; };
 		00D15EB41855520C00336935 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		00D15EB71855520C00336935 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		00D15EBA1855520C00336935 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		00D15EBC1855520C00336935 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		00D15F3A185553AF00336935 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
-		00D15F3E185553D100336935 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		00D15F40185553D900336935 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		00E2A935196350B6009DC01E /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
 		00E2A936196350B6009DC01E /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
-		00E2A938196350D9009DC01E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		D040287219CA590100E372E7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		D040287419CA590500E372E7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		D040287619CA591100E372E7 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		D040287819CA591500E372E7 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
+		D040287A19CA591900E372E7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		D040287C19CA597200E372E7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,14 +186,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E2A939196350D9009DC01E /* Security.framework in Frameworks */,
+				D040287D19CA597200E372E7 /* ScriptingBridge.framework in Frameworks */,
+				D040287B19CA591900E372E7 /* Cocoa.framework in Frameworks */,
+				D040287919CA591500E372E7 /* Carbon.framework in Frameworks */,
+				D040287719CA591100E372E7 /* CoreServices.framework in Frameworks */,
+				D040287519CA590500E372E7 /* QuartzCore.framework in Frameworks */,
+				D040287319CA590100E372E7 /* Security.framework in Frameworks */,
 				0021B2621855830000C42444 /* Sparkle.framework in Frameworks */,
 				0021B260185582D100C42444 /* MultitouchSupport.framework in Frameworks */,
-				00F58E8018557E9300F23D42 /* ScriptingBridge.framework in Frameworks */,
-				00D15F41185553D900336935 /* QuartzCore.framework in Frameworks */,
-				00D15F3F185553D100336935 /* Carbon.framework in Frameworks */,
-				00D15F3B185553AF00336935 /* CoreServices.framework in Frameworks */,
-				00D15EB81855520C00336935 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,26 +220,16 @@
 		00D15EB61855520C00336935 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				00E2A938196350D9009DC01E /* Security.framework */,
+				D040287C19CA597200E372E7 /* ScriptingBridge.framework */,
+				D040287A19CA591900E372E7 /* Cocoa.framework */,
+				D040287819CA591500E372E7 /* Carbon.framework */,
+				D040287619CA591100E372E7 /* CoreServices.framework */,
+				D040287419CA590500E372E7 /* QuartzCore.framework */,
+				D040287219CA590100E372E7 /* Security.framework */,
 				0021B2611855830000C42444 /* Sparkle.framework */,
 				0021B25F185582D100C42444 /* MultitouchSupport.framework */,
-				00F58E7F18557E9300F23D42 /* ScriptingBridge.framework */,
-				00D15F40185553D900336935 /* QuartzCore.framework */,
-				00D15F3E185553D100336935 /* Carbon.framework */,
-				00D15F3A185553AF00336935 /* CoreServices.framework */,
-				00D15EB71855520C00336935 /* Cocoa.framework */,
-				00D15EB91855520C00336935 /* Other Frameworks */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		00D15EB91855520C00336935 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				00D15EBA1855520C00336935 /* AppKit.framework */,
-				00D15EBC1855520C00336935 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 		00D15EBD1855520C00336935 /* Gestr */ = {
@@ -581,7 +569,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -593,7 +582,8 @@
 				INFOPLIST_FILE = "Gestr/Gestr-Info.plist";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = Gestr;
-				PROVISIONING_PROFILE = "39B56C00-1F1C-4E8B-9055-22A67468A3B9";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -602,7 +592,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -614,7 +605,8 @@
 				INFOPLIST_FILE = "Gestr/Gestr-Info.plist";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = Gestr;
-				PROVISIONING_PROFILE = "39B56C00-1F1C-4E8B-9055-22A67468A3B9";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
