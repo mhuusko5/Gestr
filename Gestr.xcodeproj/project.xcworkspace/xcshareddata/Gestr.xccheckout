@@ -10,17 +10,13 @@
 	<string>Gestr</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6B90BA9E503F726FF954E8CCF34F536A954A6666</key>
-		<string>https://github.com/mhuusko5/Tapr.git</string>
 		<key>9F5B72516961C41DD7382622640ABC197CA6F2F8</key>
 		<string>https://github.com/mhuusko5/Gestr.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Gestr.xcodeproj/project.xcworkspace</string>
+	<string>Gestr.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6B90BA9E503F726FF954E8CCF34F536A954A6666</key>
-		<string>../../../Tapr</string>
 		<key>9F5B72516961C41DD7382622640ABC197CA6F2F8</key>
 		<string>../..</string>
 	</dict>
@@ -39,14 +35,6 @@
 			<string>9F5B72516961C41DD7382622640ABC197CA6F2F8</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Gestr</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6B90BA9E503F726FF954E8CCF34F536A954A6666</string>
-			<key>IDESourceControlWCCName</key>
-			<string>Tapr</string>
 		</dict>
 	</array>
 </dict>

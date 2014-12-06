@@ -4,3 +4,8 @@
 *.xccheckout
 *.xcscheme
 *.xcsettings
+
+xcuserdata/
+
+Pods/
+Podfile.lock

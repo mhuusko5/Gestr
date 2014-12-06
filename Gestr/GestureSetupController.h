@@ -5,6 +5,7 @@
 #import "Launchable.h"
 #import "MultitouchManager.h"
 #import "NSStatusItemPrioritizer.h"
+#import "NSImage+M5Darkable.h"
 @class GestureSetupView, AppController;
 
 @interface GestureSetupController : NSObject

@@ -63,6 +63,7 @@
 		D040287919CA591500E372E7 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287819CA591500E372E7 /* Carbon.framework */; };
 		D040287B19CA591900E372E7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287A19CA591900E372E7 /* Cocoa.framework */; };
 		D040287D19CA597200E372E7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287C19CA597200E372E7 /* ScriptingBridge.framework */; };
+		D05227061A33BBEE00AAF6FD /* NSImage+M5Darkable.m in Sources */ = {isa = PBXBuildFile; fileRef = D05227051A33BBEE00AAF6FD /* NSImage+M5Darkable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -179,6 +180,8 @@
 		D040287819CA591500E372E7 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		D040287A19CA591900E372E7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D040287C19CA597200E372E7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
+		D05227041A33BBEE00AAF6FD /* NSImage+M5Darkable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+M5Darkable.h"; sourceTree = "<group>"; };
+		D05227051A33BBEE00AAF6FD /* NSImage+M5Darkable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+M5Darkable.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +336,8 @@
 				0029FDE218557DE600BDBA25 /* NSBezierPath+MCAdditions.m */,
 				0029FDE318557DE600BDBA25 /* NSColor+ColorExtensions.h */,
 				0029FDE418557DE600BDBA25 /* NSColor+ColorExtensions.m */,
+				D05227041A33BBEE00AAF6FD /* NSImage+M5Darkable.h */,
+				D05227051A33BBEE00AAF6FD /* NSImage+M5Darkable.m */,
 				0029FDE518557DE600BDBA25 /* NSStatusItemPrioritizer.h */,
 				0029FDE618557DE600BDBA25 /* NSStatusItemPrioritizer.m */,
 			);
@@ -531,6 +536,7 @@
 				0029FE1118557DE600BDBA25 /* MultitouchListener.m in Sources */,
 				0029FE1A18557DE600BDBA25 /* SafariPage.m in Sources */,
 				0029FDF918557DE600BDBA25 /* AppTextFieldCell.m in Sources */,
+				D05227061A33BBEE00AAF6FD /* NSImage+M5Darkable.m in Sources */,
 				0029FE1F18557DE600BDBA25 /* WebPage.m in Sources */,
 				0029FE0218557DE600BDBA25 /* GestureRecognitionView.m in Sources */,
 				0029FE0718557DE600BDBA25 /* GestureSetupModel.m in Sources */,

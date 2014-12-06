@@ -43,6 +43,7 @@
 		_statusBarItem = [NSStatusItemPrioritizer prioritizedStatusItem];
 		_statusBarItem.title = @"";
 		_statusBarView.alphaValue = 0.0;
+        [[_statusBarView viewWithTag:3] image].M5_darkable = YES;
 		_statusBarItem.view = _statusBarView;
 	}
 }
