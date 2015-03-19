@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Gestr Update</title>
+        <link>https://raw.githubusercontent.com/mhuusko5/Gestr/master/Sparkle.xml</link>
+        <description>Gestr Update</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.85</title>
+            <description>1.82, add ability to assign gestures to AppleScripts (there are some default ones, and custom ones can be put in ~/Library/Application Support/Gestr/Scripts). 1.84, support Yosemite dark mode. 1.85, bug fixes.</description>
+            <enclosure url="https://dl.dropboxusercontent.com/s/kfa2xgygeuhrla3/Gestr.zip" sparkle:version="1.85"/>
+        </item>
+    </channel>
+</rss>

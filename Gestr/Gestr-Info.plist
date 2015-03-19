@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.84</string>
+	<string>1.85</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.84</string>
+	<string>1.85</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014 Mathew Huusko V. All rights reserved.</string>
+	<string>Copyright © 2015 Mathew Huusko V. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -35,6 +35,6 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://mhuusko5.com/gestrUpdate</string>
+	<string>https://raw.githubusercontent.com/mhuusko5/Gestr/master/Sparkle.xml</string>
 </dict>
 </plist>
