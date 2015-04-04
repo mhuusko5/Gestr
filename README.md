@@ -2,7 +2,7 @@
 
 Launch apps and bookmarks on your Mac with multitouch trackpad drawings.
 
-Signed/packaged/auto-updating version download [here](http://goo.gl/Zc5C7B).
+Signed/packaged/auto-updating version download [here](http://tiny.cc/gestr-mac-download).
 
 Demo video below.
 
