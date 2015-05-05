@@ -7,7 +7,7 @@
         <language>en</language>
         <item>
             <title>Version 1.86</title>
-            <description>1.86 is a transition to a new code signing (security) profile, so it requires a fresh installer. Download/run the new installer to update, and Gestr will work/update as normal from now on.</description>
+            <description>*IMPORTANT*: 1.86 is a transition to a new code signing (security) profile, so it requires a fresh installer – click "Learn more..." to download this installer. Run it and Gestr will work/update as normal from now on. Thanks!</description>
             <sparkle:version>1.86</sparkle:version>
             <link>https://github.com/mhuusko5/Gestr/releases/download/1.86/Gestr.pkg</link>
         </item>
