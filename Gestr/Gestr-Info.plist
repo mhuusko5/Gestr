@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.85</string>
+	<string>1.86</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.85</string>
+	<string>1.86</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
@@ -36,5 +36,7 @@
 	<true/>
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/mhuusko5/Gestr/master/Sparkle.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>Sparkle_DSA_Public.pem</string>
 </dict>
 </plist>

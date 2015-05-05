@@ -6,9 +6,9 @@
         <description>Gestr Update</description>
         <language>en</language>
         <item>
-            <title>Version 1.85</title>
-            <description>1.82, add ability to assign gestures to AppleScripts (there are some default ones, and custom ones can be put in ~/Library/Application Support/Gestr/Scripts). 1.84, support Yosemite dark mode. 1.85, bug fixes.</description>
-            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.85/Gestr.zip" sparkle:version="1.85"/>
+            <title>Version 1.86</title>
+            <description>1.82, add ability to assign gestures to AppleScripts (custom ones can be put in ~/Library/Application Support/Gestr/Scripts). 1.86, new code signing identity.</description>
+            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.86/Gestr.zip" sparkle:version="1.86" sparkle:dsaSignature="MC0CFA9rpN9okYSi/XLXQgdczQm97EJrAhUAgvqCJyD2Enpma+FSUEVWG/7ghWw="/>
         </item>
     </channel>
 </rss>
