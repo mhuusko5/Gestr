@@ -57,7 +57,6 @@
 		00A6B1961968678E007E94BB /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A6B1951968678E007E94BB /* Script.m */; };
 		00B20D2518C3EE480037706A /* RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B20D2418C3EE480037706A /* RoundedCornerView.m */; };
 		00E2A937196350B6009DC01E /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E2A935196350B6009DC01E /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D01967AB1AF9420A00B736ED /* Sparkle_DSA_Public.pem in Resources */ = {isa = PBXBuildFile; fileRef = D01967AA1AF9420A00B736ED /* Sparkle_DSA_Public.pem */; };
 		D040287319CA590100E372E7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287219CA590100E372E7 /* Security.framework */; };
 		D040287519CA590500E372E7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287419CA590500E372E7 /* QuartzCore.framework */; };
 		D040287719CA591100E372E7 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287619CA591100E372E7 /* CoreServices.framework */; };
@@ -175,7 +174,6 @@
 		00D15EB41855520C00336935 /* Gestr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gestr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E2A935196350B6009DC01E /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
 		00E2A936196350B6009DC01E /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
-		D01967AA1AF9420A00B736ED /* Sparkle_DSA_Public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sparkle_DSA_Public.pem; sourceTree = SOURCE_ROOT; };
 		D040287219CA590100E372E7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		D040287419CA590500E372E7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		D040287619CA591100E372E7 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
@@ -257,7 +255,6 @@
 		00F58E8118557EC600F23D42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D01967AA1AF9420A00B736ED /* Sparkle_DSA_Public.pem */,
 				0037430F1885E30600F9B53A /* Images.xcassets */,
 				0029FDAF18557DE600BDBA25 /* Chrome.h */,
 				0029FDE918557DE600BDBA25 /* Safari.h */,
@@ -495,7 +492,6 @@
 				003743101885E30600F9B53A /* Images.xcassets in Resources */,
 				0029FE1418557DE600BDBA25 /* niceLine.png in Resources */,
 				0029FE0F18557DE600BDBA25 /* MainMenu.xib in Resources */,
-				D01967AB1AF9420A00B736ED /* Sparkle_DSA_Public.pem in Resources */,
 				0029FDFB18557DE600BDBA25 /* background2.png in Resources */,
 				0029FE1D18557DE600BDBA25 /* tableCellBack.png in Resources */,
 				0029FE1518557DE600BDBA25 /* niceLineFlipped.png in Resources */,

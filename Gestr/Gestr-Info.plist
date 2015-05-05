@@ -35,8 +35,6 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/mhuusko5/Gestr/master/Sparkle.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>Sparkle_DSA_Public.pem</string>
+	<string>https://raw.githubusercontent.com/mhuusko5/Gestr/master/Sparkle2.xml</string>
 </dict>
 </plist>
