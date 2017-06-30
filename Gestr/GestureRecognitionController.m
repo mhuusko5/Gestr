@@ -63,16 +63,20 @@
 #pragma mark -
 #pragma mark Recognition Utilities
 - (void)checkPartialGestureWithStrokes:(NSMutableArray *)strokes {
-	_partialDescriptionAlert.stringValue = @"";
-	_partialIconAlert.image = nil;
+//    _partialDescriptionAlert.stringValue = @"";
+    [_partialDescriptionAlert performSelectorOnMainThread:@selector(setStringValue:) withObject:@"" waitUntilDone:YES];
+    [_partialIconAlert performSelectorOnMainThread:@selector(setImage:) withObject:nil waitUntilDone:YES];
+//    _partialIconAlert.image = nil;
 
 	GestureResult *result = [_recognitionModel.gestureDetector recognizeGestureWithStrokes:strokes];
 	int rating;
 	if (result && (rating = result.score) >= _appController.gestureSetupController.setupModel.minimumRecognitionScore) {
 		Launchable *launchableToShow = [_appController.gestureSetupController.setupModel findLaunchableWithId:result.gestureIdentity];
 		if (launchableToShow != nil) {
-			_partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
-			_partialIconAlert.image = launchableToShow.icon;
+//            _partialDescriptionAlert.stringValue = [NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating];
+            [_partialDescriptionAlert performSelectorOnMainThread:@selector(setStringValue:) withObject:[NSString stringWithFormat:@"%@ - %i%%", launchableToShow.displayName, rating] waitUntilDone:YES];
+//            _partialIconAlert.image = launchableToShow.icon;
+            [_partialIconAlert performSelectorOnMainThread:@selector(setImage:) withObject:launchableToShow.icon waitUntilDone:YES];
 		}
 		else {
 			[_recognitionModel deleteGestureWithName:result.gestureIdentity];
