@@ -7,8 +7,8 @@
         <language>en</language>
         <item>
             <title>Version 1.87</title>
-            <description>1.82, add ability to assign gestures to AppleScripts (custom ones can be placed at ~/Library/Application Support/Gestr/Scripts). 1.84, support Yosemite dark mode. 1.87, bug fixes.</description>
-            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.87/Gestr.zip" sparkle:version="1.86"/>
+            <description>1.82, AppleScripts (from ~/Library/Application Support/Gestr/Scripts). 1.87, bug fixes (wont crash on wake!).</description>
+            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.87/Gestr.zip" sparkle:version="1.87"/>
         </item>
     </channel>
 </rss>

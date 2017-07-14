@@ -8,7 +8,7 @@ float GUDistanceAtBestAngle(GestureStroke *inputPoints, GestureStroke *matchPoin
 	float f1 = GUDistanceAtAngle(inputPoints, matchPoints, x1);
 	float x2 = (1.0 - GUGoldenRatio) * minAngleRange + GUGoldenRatio * maxAngleRange;
 	float f2 = GUDistanceAtAngle(inputPoints, matchPoints, x2);
-	while (abs(maxAngleRange - minAngleRange) > GUDegreesToRadians(GUGoldenRatioDegreeConstant)) {
+	while (fabs(maxAngleRange - minAngleRange) > GUDegreesToRadians(GUGoldenRatioDegreeConstant)) {
 		if (f1 < f2) {
 			maxAngleRange = x2;
 			x2 = x1;

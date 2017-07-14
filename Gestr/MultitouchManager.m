@@ -95,7 +95,6 @@ static BOOL laptopLidClosed = NO;
 					MTDeviceRef mtDevice = (__bridge MTDeviceRef)device;
 					MTUnregisterContactFrameCallback(mtDevice, mtEventHandler);
 					MTDeviceStop(mtDevice);
-					MTDeviceRelease(mtDevice);
 				}
 				@catch (NSException *exception)
 				{
