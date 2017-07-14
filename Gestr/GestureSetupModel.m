@@ -211,7 +211,10 @@
 #pragma mark -
 #pragma mark Applications Management
 - (NSMutableArray *)fetchNormalAppArray {
-	return (_normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1]);
+    _normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1];
+
+    [_normalAppArray addObjectsFromArray:[self addApplicationsAtPath:[NSHomeDirectory() stringByAppendingString:@"/Applications"]  toArray:[NSMutableArray array] depth:1]];
+    return _normalAppArray;
 }
 
 - (NSMutableArray *)fetchUtilitiesAppArray {
