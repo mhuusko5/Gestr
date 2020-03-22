@@ -14,7 +14,7 @@
 
 - (void)launchWithNewThread:(BOOL)newThread {
 	if (newThread) {
-		[NSThread detachNewThreadSelector:@selector(launchWithNewThread:) toTarget:self withObject:NO];
+		[NSThread detachNewThreadSelector:@selector(launchWithNewThread:) toTarget:self withObject:nil];
 	}
 	else {
 		@try {

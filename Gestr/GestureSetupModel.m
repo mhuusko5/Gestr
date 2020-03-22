@@ -213,16 +213,35 @@
 - (NSMutableArray *)fetchNormalAppArray {
     _normalAppArray = [self addApplicationsAtPath:@"/Applications" toArray:[NSMutableArray array] depth:1];
 
-    [_normalAppArray addObjectsFromArray:[self addApplicationsAtPath:[NSHomeDirectory() stringByAppendingString:@"/Applications"]  toArray:[NSMutableArray array] depth:1]];
+    [_normalAppArray addObjectsFromArray:[self addApplicationsAtPath:@"/System/Applications" toArray:[NSMutableArray array] depth:1]];
+    [_normalAppArray addObjectsFromArray:[self addApplicationsAtPath:[NSHomeDirectory() stringByAppendingString:@"/Applications"] toArray:[NSMutableArray array] depth:1]];
+
+    [_normalAppArray sortUsingComparator:^NSComparisonResult(Application *app1, Application *app2) {
+        return [app1.displayName compare:app2.displayName];
+    }];
+
     return _normalAppArray;
 }
 
 - (NSMutableArray *)fetchUtilitiesAppArray {
-	return (_utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1]);
+    _utilitiesAppArray = [self addApplicationsAtPath:@"/Applications/Utilities" toArray:[NSMutableArray array] depth:1];
+
+    [_utilitiesAppArray addObjectsFromArray:[self addApplicationsAtPath:@"/System/Applications/Utilities" toArray:[NSMutableArray array] depth:1]];
+
+    [_utilitiesAppArray sortUsingComparator:^NSComparisonResult(Application *app1, Application *app2) {
+        return [app1.displayName compare:app2.displayName];
+    }];
+
+    return _utilitiesAppArray;
 }
 
 - (NSMutableArray *)fetchSystemAppArray {
 	_systemAppArray = [self addApplicationsAtPath:@"/System/Library/CoreServices" toArray:[NSMutableArray array] depth:0];
+
+    [_systemAppArray sortUsingComparator:^NSComparisonResult(Application *app1, Application *app2) {
+        return [app1.displayName compare:app2.displayName];
+    }];
+
 	for (Application *maybeFinder in _systemAppArray) {
 		if ([[maybeFinder.launchId lowercaseString] isEqualToString:@"com.apple.finder"]) {
 			Application *finder = maybeFinder;
@@ -231,6 +250,7 @@
 			break;
 		}
 	}
+
 	return _systemAppArray;
 }
 
@@ -239,7 +259,12 @@
 	if (!(url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]])) {
 		return nil;
 	}
-	NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:url includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants | NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *directoryEnumerator =
+        [[NSFileManager defaultManager] enumeratorAtURL:url
+                             includingPropertiesForKeys:nil
+                                                options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants
+                                                         | NSDirectoryEnumerationSkipsPackageDescendants
+                                                         | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
 	NSURL *fileUrl;
 	while (fileUrl = [directoryEnumerator nextObject]) {
 		NSString *filePath = [fileUrl path];
@@ -256,7 +281,7 @@
 					[arr addObject:[[Application alloc] initWithDisplayName:displayName icon:icon bundleId:bundleId]];
 				}
 			}
-			else if (isDir && depth > 0 && ![filePath isEqualToString:@"/Applications/Utilities"]) {
+			else if (isDir && depth > 0 && ![filePath containsString:@"/Applications/Utilities"]) {
 				[self addApplicationsAtPath:filePath toArray:arr depth:depth - 1];
 			}
 		}

@@ -50,13 +50,14 @@
 			_gestureStrokes[identity] = [[GestureStroke alloc] init];
 		}
 
-		GesturePoint *detectorPoint = [[GesturePoint alloc] initWithX:(drawPoint.x / _frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / _frame.size.height) * GUBoundingBoxSize andStrokeId:[identity intValue]];
+		GesturePoint *detectorPoint =
+            [[GesturePoint alloc] initWithX:(drawPoint.x / self.frame.size.width) * GUBoundingBoxSize andY:(drawPoint.y / self.frame.size.height) * GUBoundingBoxSize andStrokeId:[identity intValue]];
 
 		[_gestureStrokes[identity] addPoint:detectorPoint];
 
 		if ([mouseType isEqualToString:@"down"]) {
 			NSBezierPath *tempPath = [NSBezierPath bezierPath];
-			[tempPath setLineWidth:_frame.size.width / 95];
+			[tempPath setLineWidth:self.frame.size.width / 95];
 			[tempPath setLineCapStyle:NSRoundLineCapStyle];
 			[tempPath setLineJoinStyle:NSRoundLineJoinStyle];
 			[tempPath moveToPoint:drawPoint];

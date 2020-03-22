@@ -225,23 +225,35 @@
 }
 
 - (void)showGesture:(Gesture *)gesture {
-	_showingStoredGesture = YES;
+    __block CGFloat width;
+    __block CGFloat height;
 
-	[self resetAll];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self resetAll];
+
+        width = self.frame.size.width;
+        height = self.frame.size.height;
+    });
+
+    _showingStoredGesture = YES;
+
 	if (gesture) {
 		int pointIndex = 0;
 		while (YES) {
 			if ([[NSThread currentThread] isCancelled] || _detectingInput) {
 				[NSThread exit];
+                break;
 			}
 
 			if (pointIndex % 2 == 0) {
-				[self setNeedsDisplay:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setNeedsDisplay:YES];
+                });
 			}
 
 			pointIndex++;
 
-			BOOL contin;
+			BOOL contin = NO;
 			for (GestureStroke *stroke in gesture.strokes) {
 				if (pointIndex < stroke.pointCount) {
 					contin = YES;
@@ -250,6 +262,7 @@
 			}
 
 			if (!contin) {
+                [NSThread exit];
 				break;
 			}
 
@@ -258,7 +271,7 @@
 				if (pointIndex < cStroke.pointCount) {
 					GesturePoint *cPoint = cStroke.points[pointIndex];
 
-					NSPoint drawPoint = NSMakePoint(cPoint.x / GUBoundingBoxSize * self.frame.size.width, cPoint.y / GUBoundingBoxSize * self.frame.size.height);
+					NSPoint drawPoint = NSMakePoint(cPoint.x / GUBoundingBoxSize * width, cPoint.y / GUBoundingBoxSize * height);
 
 					NSString *ident = [NSString stringWithFormat:@"%i", strokeIndex];
 
@@ -285,8 +298,6 @@
 			[NSThread sleepForTimeInterval:0.006];
 		}
 	}
-
-	_showingStoredGesture = NO;
 }
 
 - (BOOL)resignFirstResponder {
@@ -322,6 +333,8 @@
 	_touchPaths = [NSMutableDictionary dictionary];
 
 	_lastMultitouchRedraw = [NSDate date];
+
+    _showingStoredGesture = NO;
 
 	[self setNeedsDisplay:YES];
 }

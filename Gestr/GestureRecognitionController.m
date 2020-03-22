@@ -46,8 +46,18 @@
 }
 
 - (void)applicationDidFinishLaunching {
-	eventHandler = CGEventTapCreate(kCGHIDEventTap, kCGHeadInsertEventTap, kCGEventTapOptionDefault, kCGEventMaskForAllEvents, handleEvent, (__bridge void *)(self));
-	CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventHandler, 0);
+	eventHandler = CGEventTapCreate(
+        kCGHIDEventTap,
+        kCGHeadInsertEventTap,
+        kCGEventTapOptionDefault,
+        kCGEventMaskForAllEvents,
+        handleEvent,
+        (__bridge void *)(self)
+    );
+
+    CFRunLoopSourceRef runLoopSource =
+        CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventHandler, 0);
+
 	CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, kCFRunLoopCommonModes);
 	CGEventTapEnable(eventHandler, YES);
 
