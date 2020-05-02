@@ -62,7 +62,6 @@
 		D040287719CA591100E372E7 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287619CA591100E372E7 /* CoreServices.framework */; };
 		D040287919CA591500E372E7 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287819CA591500E372E7 /* Carbon.framework */; };
 		D040287B19CA591900E372E7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287A19CA591900E372E7 /* Cocoa.framework */; };
-		D040287D19CA597200E372E7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D040287C19CA597200E372E7 /* ScriptingBridge.framework */; };
 		D05227061A33BBEE00AAF6FD /* NSImage+M5Darkable.m in Sources */ = {isa = PBXBuildFile; fileRef = D05227051A33BBEE00AAF6FD /* NSImage+M5Darkable.m */; };
 /* End PBXBuildFile section */
 
@@ -98,7 +97,6 @@
 		0029FDAB18557DE600BDBA25 /* AppTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTextFieldCell.h; sourceTree = "<group>"; };
 		0029FDAC18557DE600BDBA25 /* AppTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTextFieldCell.m; sourceTree = "<group>"; };
 		0029FDAE18557DE600BDBA25 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
-		0029FDAF18557DE600BDBA25 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chrome.h; sourceTree = "<group>"; };
 		0029FDB018557DE600BDBA25 /* ChromePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromePage.h; sourceTree = "<group>"; };
 		0029FDB118557DE600BDBA25 /* ChromePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromePage.m; sourceTree = "<group>"; };
 		0029FDB218557DE600BDBA25 /* Gestr-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Gestr-Info.plist"; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 		0029FDE618557DE600BDBA25 /* NSStatusItemPrioritizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStatusItemPrioritizer.m; sourceTree = "<group>"; };
 		0029FDE718557DE600BDBA25 /* RepeatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RepeatedImageView.h; sourceTree = "<group>"; };
 		0029FDE818557DE600BDBA25 /* RepeatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RepeatedImageView.m; sourceTree = "<group>"; };
-		0029FDE918557DE600BDBA25 /* Safari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Safari.h; sourceTree = "<group>"; };
 		0029FDEA18557DE600BDBA25 /* SafariPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariPage.h; sourceTree = "<group>"; };
 		0029FDEB18557DE600BDBA25 /* SafariPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafariPage.m; sourceTree = "<group>"; };
 		0029FDEC18557DE600BDBA25 /* ShadowTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowTextFieldCell.h; sourceTree = "<group>"; };
@@ -190,7 +187,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D040287D19CA597200E372E7 /* ScriptingBridge.framework in Frameworks */,
 				D040287B19CA591900E372E7 /* Cocoa.framework in Frameworks */,
 				D040287919CA591500E372E7 /* Carbon.framework in Frameworks */,
 				D040287719CA591100E372E7 /* CoreServices.framework in Frameworks */,
@@ -258,8 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				0037430F1885E30600F9B53A /* Images.xcassets */,
-				0029FDAF18557DE600BDBA25 /* Chrome.h */,
-				0029FDE918557DE600BDBA25 /* Safari.h */,
 				0029FDEF18557DE600BDBA25 /* tableCellBack.png */,
 				0029FDF018557DE600BDBA25 /* trackpadBackground.png */,
 				0029FDB218557DE600BDBA25 /* Gestr-Info.plist */,
@@ -637,7 +631,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gestr/Gestr.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.88;
+				CURRENT_PROJECT_VERSION = 1.89;
 				DEVELOPMENT_TEAM = EGQME33F5E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -648,7 +642,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
 				INFOPLIST_FILE = "Gestr/Gestr-Info.plist";
-				MARKETING_VERSION = 1.88;
+				MARKETING_VERSION = 1.89;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mhuusko5.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Gestr;
@@ -665,7 +659,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gestr/Gestr.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.88;
+				CURRENT_PROJECT_VERSION = 1.89;
 				DEVELOPMENT_TEAM = EGQME33F5E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -676,7 +670,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Gestr/Gestr-Prefix.pch";
 				INFOPLIST_FILE = "Gestr/Gestr-Info.plist";
-				MARKETING_VERSION = 1.88;
+				MARKETING_VERSION = 1.89;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mhuusko5.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Gestr;

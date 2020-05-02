@@ -6,6 +6,6 @@
 @property NSString *targetBrowserId;
 
 - (id)initWithDisplayName:(NSString *)displayName icon:(NSImage *)icon url:(NSString *)url targetBrowserId:(NSString *)targetBrowserId;
-+ (NSString *)stripUrl:(NSString *)url;
+- (void)launch;
 
 @end

@@ -6,9 +6,9 @@
         <description>Gestr Update</description>
         <language>en</language>
         <item>
-            <title>Version 1.88</title>
-            <description>1.82, AppleScripts (from ~/Library/Application Support/Gestr/Scripts). 1.88, updated for Catalina!.</description>
-            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.88/Gestr.zip" sparkle:version="1.88"/>
+            <title>Version 1.89</title>
+            <description>1.82, AppleScripts (from ~/Library/Application Support/Gestr/Scripts). 1.88, updated for Catalina!. 1.89, faster bookmark launching.</description>
+            <enclosure url="https://github.com/mhuusko5/Gestr/releases/download/1.89/Gestr.zip" sparkle:version="1.89"/>
         </item>
     </channel>
 </rss>

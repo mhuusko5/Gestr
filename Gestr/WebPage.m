@@ -13,15 +13,12 @@
 	return self;
 }
 
-+ (NSString *)stripUrl:(NSString *)url {
-	NSUInteger prefix = [url rangeOfString:@"://"].location;
-	if (prefix != NSNotFound) {
-		url = [url substringFromIndex:prefix + 3];
-	}
-	if ([url characterAtIndex:url.length - 1] == '/') {
-		url = [url substringToIndex:url.length - 1];
-	}
-	return url;
+- (void)launch {
+    [NSWorkspace.sharedWorkspace openURLs:@[[NSURL URLWithString:self.url]]
+                  withAppBundleIdentifier:self.targetBrowserId
+                                  options:0
+           additionalEventParamDescriptor:nil
+                        launchIdentifiers:nil];
 }
 
 @end
